@@ -10,3 +10,8 @@ Para obtener la plantilla, solo sigue estas simples instrucciones:
 
 > [!important]
 > El último paso se utiliza para iniciar el compilador de **Tailwind CSS**. Si no has cambiado nada en la estructura del proyecto, no te preocupes por esta nota. Pero en caso de que lo hayas hecho, asegúrate de especificar la ruta correcta para el archivo CSS de entrada y enlazar el archivo CSS de salida generado después de ejecutar este comando. Los cambios deben realizarse dentro de **index.html**, que se encuentra en **/wwwroot**.
+
+## Creditos especiales
+A: [**Rasheed K Mozaffar**](https://github.com/rasheed-k-mozaffar/FlowbiteBlazorWasmStarter) 
+
+Por: La base del proyecto, con las modificaciones de Blazor para utilizar [**Tailwind CSS**](https://tailwindcss.com/) junto con [**Flowbite**](https://flowbite.com/).

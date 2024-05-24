@@ -5,14 +5,14 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class"alert alert-success"> Usted ya se encuentra logeado con @context.User.Identity?.Name </div>
+        <div p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400> Usted ya se encuentra logeado con @context.User.Identity?.Name </div>
     </Authorized>
     <NotAuthorized>
         @if (errors)
         {
             @foreach(var error in errorList)
             {
-                <div class="alert alert-success">@error</div>
+                <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">@error</div>
             }
         }
 

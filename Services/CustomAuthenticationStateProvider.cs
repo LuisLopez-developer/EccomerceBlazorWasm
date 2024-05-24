@@ -82,7 +82,6 @@ namespace EccomerceBlazorWasm.Services
             catch (Exception ex)
             {
 
-
             }
 
             return new AuthenticationState(user);
@@ -153,7 +152,6 @@ namespace EccomerceBlazorWasm.Services
             catch (Exception ex)
             {
 
-                throw;
             }
 
             return new FormResult

@@ -1,3 +1,11 @@
+# Antes de Empezar 
+Requisitos para levantar el proyecto:
+
+- Node.js v20.13.1+
+- npm 10.8.0+
+- .NET 8.0.5
+- .NET SDK 8.0.300
+
 ## Cómo empezar
 Esta plantilla está diseñada para ayudarte a configurar rápidamente un proyecto Blazor con Flowbite. Si deseas conocer más sobre el proceso y entender los pasos en mayor profundidad, puedes consultar este enlace: https://flowbite.com/docs/getting-started/blazor/
 

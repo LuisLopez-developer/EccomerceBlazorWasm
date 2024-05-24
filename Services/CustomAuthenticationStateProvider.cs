@@ -94,7 +94,7 @@ namespace EccomerceBlazorWasm.Services
 
             try
             {
-                var result = await _httpClient.PostAsJsonAsync("api/Account/register-simple",
+                var result = await _httpClient.PostAsJsonAsync("register",
                    new { email, password });
                 if (result.IsSuccessStatusCode)
                 {

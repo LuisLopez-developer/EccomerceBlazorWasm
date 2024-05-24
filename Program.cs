@@ -22,7 +22,7 @@ builder.Services.AddScoped(sp => new HttpClient
 
 
 builder.Services.AddHttpClient("Auth", opt => opt.BaseAddress =
-new Uri(builder.Configuration["BackendUrl"] ?? "http://localhost:55977/"));
+new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:7239"));
 //   .AddHttpMessageHandler<CutomHttpHandler>();
 
 await builder.Build().RunAsync();

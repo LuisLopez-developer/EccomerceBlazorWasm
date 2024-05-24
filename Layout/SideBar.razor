@@ -16,8 +16,7 @@
                 <a href="/" class="flex ms-2 md:me-24">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
                     <span
-                        class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite
-                        Blazor</span>
+                        class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Cell Mania</span>
                 </a>
             </div>
             <div class="flex items-center">
@@ -46,28 +45,28 @@
                     <span class="ms-3">Home</span>
                 </a>
             </li>
-            <li>
-                <a href="/counter"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 12h14m-7 7V5" />
-                    </svg>
-                    <span class="ms-3">Counter</span>
-                </a>
-            </li>
-            <li>
-                <a href="/weather"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 5V3m0 18v-2M7 7 5.7 5.7m12.8 12.8L17 17M5 12H3m18 0h-2M7 17l-1.4 1.4M18.4 5.6 17 7.1M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
-                    </svg>
-                    <span class="ms-3">Weather</span>
-                </a>
-            </li>
+
+            <!-- INVENTARIO -->
+
+            <InventarioSideBar />
+
+            <!--  COMPRA  -->
+
+            <CompraSideBar />
+
+            <!--  VENTA -->
+
+            <VentaSideBar />
+
+            <!--  PRODUCTO -->
+
+            <ProductoSideBar />
+
+            <!--  CATEGORIA -->
+
+            <CategoriaSideBar />
+
+
         </ul>
     </div>
 </aside>

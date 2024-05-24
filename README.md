@@ -12,12 +12,23 @@ Esta plantilla está diseñada para ayudarte a configurar rápidamente un proyec
 Para obtener la plantilla, solo sigue estas simples instrucciones:
 
 1. Clona el repositorio en una carpeta local en tu máquina.
-1. Abre el proyecto en un editor de texto.
-1. En una ventana de terminal, ejecuta `npm install`, esto descargará los módulos de Node necesarios para la plantilla.
-1. Cuando termine, en la ventana de terminal, ejecuta `npx tailwindcss -i wwwroot/css/app.css -o wwwroot/css/app.min.css --watch`
+```bash
+git clone https://github.com/LuisLopez-developer/EccomerceBlazorWasm
+```
+
+2. Abre la solución del proyecto.
+
+3. En una ventana de terminal, instala las dependencias necesarias con:
+```bash
+npm install
+```
+4. Listo, para finalizar ejecuta:
+```bash
+dotnet watch
+```
 
 > [!important]
-> Para que los cambios se copilen al momento, en una terminal ejecuta el codigo:
+> Para que los cambios **CSS** se **copilen al momento**, en una terminal ejecuta:
 > ```bash
 > npx tailwindcss -i wwwroot/css/app.css -o wwwroot/css/app.min.css --watch
 > ```
@@ -25,6 +36,7 @@ Para obtener la plantilla, solo sigue estas simples instrucciones:
 > ```bash
 > dotnet watch
 > ```
+
 ## Creditos especiales
 A: [**Rasheed K Mozaffar**](https://github.com/rasheed-k-mozaffar/FlowbiteBlazorWasmStarter) 
 

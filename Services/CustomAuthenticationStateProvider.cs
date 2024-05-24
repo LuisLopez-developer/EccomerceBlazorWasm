@@ -36,54 +36,54 @@ namespace EccomerceBlazorWasm.Services
             // por defecto no esta autenticado
             var user = Unauthenticated;
 
-            //try
-            //{
-            //    var userResponse = await _httpClient.GetAsync("manage/info");
+            try
+            {
+                var userResponse = await _httpClient.GetAsync("manage/info");
 
-            //    userResponse.EnsureSuccessStatusCode();
+                userResponse.EnsureSuccessStatusCode();
 
-            //    var userJson = await userResponse.Content.ReadAsStringAsync();
-            //    var userInfo = JsonSerializer.Deserialize<UserInfo>(userJson, jsonSerializerOptions);
+                var userJson = await userResponse.Content.ReadAsStringAsync();
+                var userInfo = JsonSerializer.Deserialize<UserInfo>(userJson, jsonSerializerOptions);
 
-            //    if (userInfo != null)
-            //    {
-            //        var claims = new List<Claim>
-            //        {
-            //            new(ClaimTypes.Name, userInfo.Email),
-            //            new(ClaimTypes.Email, userInfo.Email)
-            //        };
+                if (userInfo != null)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new(ClaimTypes.Name, userInfo.Email),
+                        new(ClaimTypes.Email, userInfo.Email)
+                    };
 
-            //        claims.AddRange(
-            //          userInfo.Claims.Where(c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
-            //        .Select(c => new Claim(c.Key, c.Value)));
+                    claims.AddRange(
+                      userInfo.Claims.Where(c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
+                    .Select(c => new Claim(c.Key, c.Value)));
 
-            //        var rolesResponse = await _httpClient.GetAsync($"api/Role/GetuserRole?userEmail={userInfo.Email}");
+                    var rolesResponse = await _httpClient.GetAsync($"api/Role/GetuserRole?userEmail={userInfo.Email}");
 
-            //        rolesResponse.EnsureSuccessStatusCode();
-            //        var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
+                    rolesResponse.EnsureSuccessStatusCode();
+                    var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
 
-            //        var roles = JsonSerializer.Deserialize<string[]>(rolesJson, jsonSerializerOptions);
-            //        if (roles != null && roles?.Length > 0)
-            //        {
-            //            foreach (var role in roles)
-            //            {
-            //                claims.Add(new(ClaimTypes.Role, role));
-            //            }
-            //        }
+                    var roles = JsonSerializer.Deserialize<string[]>(rolesJson, jsonSerializerOptions);
+                    if (roles != null && roles?.Length > 0)
+                    {
+                        foreach (var role in roles)
+                        {
+                            claims.Add(new(ClaimTypes.Role, role));
+                        }
+                    }
 
-            //        var id = new ClaimsIdentity(claims, nameof(CustomAuthenticationStateProvider));
+                    var id = new ClaimsIdentity(claims, nameof(CustomAuthenticationStateProvider));
 
-            //        user = new ClaimsPrincipal(id);
+                    user = new ClaimsPrincipal(id);
 
-            //        _authenticated = true;
+                    _authenticated = true;
 
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
+                }
+            }
+            catch (Exception ex)
+            {
 
 
-            //}
+            }
 
             return new AuthenticationState(user);
         }
@@ -132,5 +132,36 @@ namespace EccomerceBlazorWasm.Services
             }
 
         }
+
+        public async Task<FormResult> LoginAsync(string email, string password)
+        {
+            try
+            {
+                var result = await _httpClient.PostAsJsonAsync(
+                    "login?useCookies=true", new
+                    {
+                        email,
+                        password
+                    });
+
+                if (result.IsSuccessStatusCode)
+                {
+                    NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+                    return new FormResult { Succeeded = true };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+            return new FormResult
+            {
+                Succeeded = false,
+                ErrorList = ["Correo electrónico inválido y / o contraseña."]
+            };
+        }
+
     }
 }

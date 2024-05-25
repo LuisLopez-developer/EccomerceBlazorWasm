@@ -60,7 +60,7 @@ namespace EccomerceBlazorWasm.Services
         public async Task<bool> UpdateAsync(int id, ProductCategoryViewModel productCategory)
         {
             var emptyContent = new StringContent(JsonSerializer.Serialize(productCategory), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"api/ProductCategory{id}", emptyContent);
+            var response = await _httpClient.PutAsync($"api/ProductCategory/{id}", emptyContent);
             return response.IsSuccessStatusCode;
         }
     }

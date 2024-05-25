@@ -4,6 +4,7 @@ using EccomerceBlazorWasm.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Data;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text;
@@ -38,15 +39,26 @@ namespace EccomerceBlazorWasm.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            _authenticated = false;
+            if (_authenticated)
+            {
+                // Si ya está autenticado, no realizar nuevamente la llamada a /manage/info
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())); // devolver el estado actual
+            }
 
-            // por defecto no esta autenticado
+            _authenticated = false;
             var user = Unauthenticated;
 
             try
             {
-                var userResponse = await _httpClient.GetAsync("manage/info");
+                var accessToken = await _localStorageService.GetItemAsync<string>("accessToken");
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    return new AuthenticationState(user);
+                }
 
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                var userResponse = await _httpClient.GetAsync("manage/info");
                 userResponse.EnsureSuccessStatusCode();
 
                 var userJson = await userResponse.Content.ReadAsStringAsync();
@@ -55,22 +67,21 @@ namespace EccomerceBlazorWasm.Services
                 if (userInfo != null)
                 {
                     var claims = new List<Claim>
-                    {
-                        new(ClaimTypes.Name, userInfo.Email),
-                        new(ClaimTypes.Email, userInfo.Email)
-                    };
+            {
+                new(ClaimTypes.Name, userInfo.Email),
+                new(ClaimTypes.Email, userInfo.Email)
+            };
 
                     claims.AddRange(
                       userInfo.Claims.Where(c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
                     .Select(c => new Claim(c.Key, c.Value)));
 
                     var rolesResponse = await _httpClient.GetAsync($"api/Role/GetuserRole?userEmail={userInfo.Email}");
-
                     rolesResponse.EnsureSuccessStatusCode();
                     var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
 
                     var roles = JsonSerializer.Deserialize<string[]>(rolesJson, jsonSerializerOptions);
-                    if (roles != null && roles?.Length > 0)
+                    if (roles != null && roles.Length > 0)
                     {
                         foreach (var role in roles)
                         {
@@ -79,20 +90,18 @@ namespace EccomerceBlazorWasm.Services
                     }
 
                     var id = new ClaimsIdentity(claims, nameof(CustomAuthenticationStateProvider));
-
                     user = new ClaimsPrincipal(id);
-
                     _authenticated = true;
-
                 }
             }
             catch (Exception ex)
             {
-
+                // Manejar la excepción según sea necesario
             }
 
             return new AuthenticationState(user);
         }
+
 
         public async Task<FormResult> RegisterAsync(string email, string password)
         {
@@ -178,7 +187,6 @@ namespace EccomerceBlazorWasm.Services
         public async Task LogoutAsync()
         {
             const string Empty = "{}";
-
             var emptyContent = new StringContent(Empty, Encoding.UTF8, "application/json");
 
             var result = await _httpClient.PostAsync("api/User/logout", emptyContent);
@@ -186,10 +194,13 @@ namespace EccomerceBlazorWasm.Services
             if (result.IsSuccessStatusCode)
             {
                 await _localStorageService.RemoveItemAsync("accessToken");
-                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            }
 
+                // Asegurar que solo una vez se notifique el cambio de estado
+                _authenticated = false;
+                NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(Unauthenticated)));
+            }
         }
+
         public async Task<bool> CheckAuthenticatedAsync()
         {
             await GetAuthenticationStateAsync();

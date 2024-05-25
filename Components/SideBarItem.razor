@@ -1,0 +1,19 @@
+﻿<li>
+    <a href="@Href" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="@SvgPath" />
+        </svg>
+        <span class="ms-3">@Label</span>
+    </a>
+</li>
+
+@code {
+    [Parameter]
+    public string Href { get; set; }
+
+    [Parameter]
+    public string SvgPath { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+}

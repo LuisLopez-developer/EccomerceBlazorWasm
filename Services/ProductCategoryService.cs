@@ -32,6 +32,13 @@ namespace EccomerceBlazorWasm.Services
             return createProductCategory;
         }
 
+        public async Task<List<ProductCategoryViewModel>> SearchAsync(string name)
+        {
+            var productCategories = await _httpClient.GetFromJsonAsync<List<ProductCategoryViewModel>>($"api/ProductCategory/search?name={name}");
+            return productCategories;
+        }
+
+
         public async Task<bool> DeleteAsync(int id)
         {
             var result = await _httpClient.DeleteAsync($"api/productCategory{id}");

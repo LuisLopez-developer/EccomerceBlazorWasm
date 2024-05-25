@@ -1,4 +1,5 @@
-﻿using EccomerceBlazorWasm.Interfaces;
+﻿using Blazored.LocalStorage;
+using EccomerceBlazorWasm.Interfaces;
 using EccomerceBlazorWasm.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Data;
@@ -26,9 +27,13 @@ namespace EccomerceBlazorWasm.Services
               PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
           };
 
-        public CustomAuthenticationStateProvider(IHttpClientFactory httpClientFactory)
+        private readonly ILocalStorageService _localStorageService;
+
+        public CustomAuthenticationStateProvider(IHttpClientFactory httpClientFactory, 
+            ILocalStorageService localStorageService)
         {
             _httpClient = httpClientFactory.CreateClient("Auth");
+            _localStorageService = localStorageService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -139,7 +144,8 @@ namespace EccomerceBlazorWasm.Services
             try
             {
                 var result = await _httpClient.PostAsJsonAsync(
-                    "login?useCookies=true", new
+                    //"login?useCookies=true", new //usar cookies
+                    "login", new
                     {
                         email,
                         password
@@ -147,6 +153,12 @@ namespace EccomerceBlazorWasm.Services
 
                 if (result.IsSuccessStatusCode)
                 {
+                    var tokenResponse = await result.Content.ReadAsStringAsync();
+
+                    var tokenInfo = JsonSerializer.Deserialize<TokenInfo>(tokenResponse, jsonSerializerOptions);
+
+                    await _localStorageService.SetItemAsync("accessToken", tokenInfo.AccessToken);
+                    
                     NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
                     return new FormResult { Succeeded = true };
                 }
@@ -169,9 +181,14 @@ namespace EccomerceBlazorWasm.Services
 
             var emptyContent = new StringContent(Empty, Encoding.UTF8, "application/json");
 
-            await _httpClient.PostAsync("api/User/logout", emptyContent);
+            var result = await _httpClient.PostAsync("api/User/logout", emptyContent);
 
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            if (result.IsSuccessStatusCode)
+            {
+                await _localStorageService.RemoveItemAsync("accessToken");
+                NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+            }
+
         }
         public async Task<bool> CheckAuthenticatedAsync()
         {

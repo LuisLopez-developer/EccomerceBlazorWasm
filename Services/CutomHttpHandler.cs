@@ -1,14 +1,24 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Http;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace EccomerceBlazorWasm.Services
 {
     public class CutomHttpHandler : DelegatingHandler
     {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        private readonly ILocalStorageService _localStorageService;
+
+        public CutomHttpHandler(ILocalStorageService localStorageService) { 
+            _localStorageService = localStorageService;
+        }
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-            request.Headers.Add("X-Requested-With", ["XMLHttpRequest"]);
-            return base.SendAsync(request, cancellationToken);
+            var accessToken = await _localStorageService.GetItemAsync<string>("accessToken");
+
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+
+
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

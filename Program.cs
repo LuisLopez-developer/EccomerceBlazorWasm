@@ -17,6 +17,8 @@ builder.Services.AddTransient<CutomHttpHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped(sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());
 
+builder.Services.AddScoped<IProductCategory, ProductCategoryService>();
+
 builder.Services.AddScoped(sp => new HttpClient
 {
     BaseAddress = new Uri(builder.Configuration["FrontendUrl"] ?? "https://localhost:7033")

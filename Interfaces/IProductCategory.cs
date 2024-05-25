@@ -1,13 +1,13 @@
-﻿using EccomerceBlazorWasm.Models;
+﻿using EccomerceBlazorWasm.Models.ViewModel;
 
 namespace EccomerceBlazorWasm.Interfaces
 {
     public interface IProductCategory
     {
-        Task<List<ProductCategory>> GetAllAsync();
-        Task<ProductCategory> GetByIdAsync(int id);
-        Task<ProductCategory> CreateAsync(ProductCategory productCategory);
-        Task<bool> UpdateAsync(int id, ProductCategory productCategory);
+        Task<List<ProductCategoryViewModel>> GetAllAsync();
+        Task<ProductCategoryViewModel> GetByIdAsync(int id);
+        Task<ProductCategoryViewModel> CreateAsync(ProductCategoryViewModel productCategory);
+        Task<bool> UpdateAsync(int id, ProductCategoryViewModel productCategory);
         Task<bool> DeleteAsync(int id);
     }
 }

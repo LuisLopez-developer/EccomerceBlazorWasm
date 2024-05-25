@@ -1,6 +1,6 @@
-﻿namespace EccomerceBlazorWasm.Models
+﻿namespace EccomerceBlazorWasm.Models.ViewModel
 {
-    public class ProductCategory
+    public class ProductCategoryViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

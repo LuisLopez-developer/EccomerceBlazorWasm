@@ -21,12 +21,11 @@ namespace EccomerceBlazorWasm.Services
 
         private readonly HttpClient _httpClient;
 
-
         private readonly JsonSerializerOptions jsonSerializerOptions =
-          new()
-          {
-              PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-          };
+        new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
 
         private readonly ILocalStorageService _localStorageService;
 

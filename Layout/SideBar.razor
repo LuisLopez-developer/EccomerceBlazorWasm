@@ -66,26 +66,16 @@
        aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
-            <li>
-                <a href="/"
-                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"  d="m4 12 8-8 8 8M6 10.5V19c0 .6.4 1 1 1h3v-3c0-.6.4-1 1-1h2c.6 0 1 .4 1 1v3h3c.6 0 1-.4 1-1v-8.5" />
-                    </svg>
-                    <span class="ms-3">Home</span>
-                </a>
-            </li>
+
+            <SideBarItem Href="/" SvgPath="@IconPaths.Home" Label="Home" />
+            <SideBarItem Href="/inventario" SvgPath="@IconPaths.Inventario" Label="Inventario" />
+            <SideBarItem Href="/producto" SvgPath="@IconPaths.Producto" Label="Producto" />
+            <SideBarItem Href="/venta" SvgPath="@IconPaths.Venta" Label="Venta" />
+            <SideBarItem Href="/compra" SvgPath="@IconPaths.Compra" Label="Compra" />
+            <SideBarItem Href="/categoria" SvgPath="@IconPaths.Categoria" Label="Categoría" />
+           
             <AuthorizeView Roles="admin">
                 <Authorized>
-                    <InventarioSideBar /> <!-- INVENTARIO -->
-
-                    <CompraSideBar /> <!--  COMPRA  -->
-
-                    <VentaSideBar /><!--  VENTA -->
-
-                    <ProductoSideBar /><!--  PRODUCTO -->
-
-                    <CategoriaSideBar /><!--  CATEGORIA -->
 
                     <li>
                         <a href="/manage-users"
@@ -96,6 +86,7 @@
                             <span class="ms-3">Gestion de Usuarios</span>
                         </a>
                     </li>
+
                 </Authorized>
 
             </AuthorizeView>

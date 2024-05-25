@@ -41,7 +41,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var result = await _httpClient.DeleteAsync($"api/productCategory{id}");
+            var result = await _httpClient.DeleteAsync($"api/productCategory/{id}");
             return result.IsSuccessStatusCode;
         }
 

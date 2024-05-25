@@ -1,0 +1,30 @@
+﻿@page "/logout"
+@using EccomerceBlazorWasm.Interfaces
+
+@inject IAccountManagement Acct
+
+<h3>Logout</h3>
+<AuthorizeView>
+    <Authorized>
+        <span p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400> Desconectado </span>
+
+    </Authorized>
+    <NotAuthorized>
+        <span p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400> Estas desconectado <a href="/login">Iniciar Sessión</a></span>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private AuthorizeView? authView;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await Acct.CheckAuthenticatedAsync())
+        {
+            await Acct.LogoutAsync();
+        }
+        await base.OnInitializedAsync();
+    }
+
+}

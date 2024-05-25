@@ -1,9 +1,11 @@
 ﻿using EccomerceBlazorWasm.Interfaces;
 using EccomerceBlazorWasm.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Data;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 
 namespace EccomerceBlazorWasm.Services
@@ -159,6 +161,42 @@ namespace EccomerceBlazorWasm.Services
                 Succeeded = false,
                 ErrorList = ["Correo electrónico inválido y / o contraseña."]
             };
+        }
+
+        public async Task LogoutAsync()
+        {
+            const string Empty = "{}";
+
+            var emptyContent = new StringContent(Empty, Encoding.UTF8, "application/json");
+
+            await _httpClient.PostAsync("api/User/logout", emptyContent);
+
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        }
+        public async Task<bool> CheckAuthenticatedAsync()
+        {
+            await GetAuthenticationStateAsync();
+            return _authenticated;
+        }
+
+        public async Task<List<Role>> GetRoles()
+        {
+            try
+            {
+                var result = await _httpClient.GetAsync("api/Role/GetRoles");
+                var response = await result.Content.ReadAsStringAsync();
+                var rolelist = JsonSerializer.Deserialize<List<Role>>(response, jsonSerializerOptions);
+                if (result.IsSuccessStatusCode)
+                {
+                    return rolelist;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return new List<Role>();
+
         }
 
     }

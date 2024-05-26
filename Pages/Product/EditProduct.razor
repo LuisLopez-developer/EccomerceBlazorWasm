@@ -1,0 +1,108 @@
+﻿@page "/product/edit/{productId:int}"
+
+@using EccomerceBlazorWasm.Interfaces
+@using EccomerceBlazorWasm.Models.CreateModel
+@using EccomerceBlazorWasm.Models.ViewModel
+
+@attribute [Authorize(Roles = "admin")]
+
+@inject IProduct _product
+@inject IProductBrand _productBrand
+@inject IProductCategory _productCategory
+@inject IState _state
+
+@inject NavigationManager _navigation
+
+<section class="bg-white dark:bg-gray-900">
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-9 00 dark:text-white">Producto con id: ""</h2>
+        <form @onsubmit="UpdateProduct">
+            <div Model="product" class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                <div class="sm:col-span-2">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
+                    <input type="text" @bind-value="product.Name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                </div>
+                <div class="w-full">
+                    <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo</label>
+                    <input type="text" @bind-value="product.Code" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
+                </div>
+                <div class="w-full">
+                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
+                    <input type="text" @bind-value="product.Date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
+                </div>
+                <div class="w-full">
+                    <label for="cost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de Coste</label>
+                    <input type="number" @bind-value="product.Cost" step="0.01"  id="cost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                </div>
+                <div class="w-full">
+                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de venta</label>
+                    <input type="number" @bind-value="product.Price" step="0.01" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                </div>
+                <div class="w-full">
+                    <label for="existence" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                    <input type="number" @bind-value="product.Existence" id="existence"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                </div>
+                <div>
+                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <select @bind="product.StateId" id="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option selected="">Selecciona una categoria</option>
+                        @foreach (var state in states)
+                        {
+                            <option value="@state.Id">@state.Name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <select @bind="product.ProductCategoryId" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option selected="">Selecciona una categoria</option>
+                        @foreach(var category in productCategories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <select @bind="product.ProductBrandId" id="brand" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option selected="">Selecciona una marca</option>
+                        @foreach (var brand in productBrands)
+                        {
+                            <option value="@brand.Id">@brand.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                Guardar Cambios
+            </button>
+        </form>
+   
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public int productId { get; set; }
+
+    private ProductCreateModel product = new ProductCreateModel();
+    private List<ProductBrandViewModel> productBrands = new List<ProductBrandViewModel>();
+    private List<ProductCategoryViewModel> productCategories = new List<ProductCategoryViewModel>();
+    private List<StateViewModel> states = new List<StateViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await _product.GetByIdAsync(productId);
+        productBrands = await _productBrand.GetAllAsync();
+        productCategories = await _productCategory.GetAllAsync();
+        states = await _state.GetAllAsync();
+        
+    }
+
+    private async Task UpdateProduct()
+    {
+        await _product.UpdateAsync(productId, product);
+        _navigation.NavigateTo("/product");
+    }
+
+}

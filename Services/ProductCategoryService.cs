@@ -1,7 +1,4 @@
-﻿using Blazored.LocalStorage;
-using EccomerceBlazorWasm.Interfaces;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using EccomerceBlazorWasm.Interfaces;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text;

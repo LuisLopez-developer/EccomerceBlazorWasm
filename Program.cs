@@ -18,6 +18,8 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped(sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());
 
 builder.Services.AddScoped<IProductCategory, ProductCategoryService>();
+builder.Services.AddScoped<IProductBrand, ProductBrandService>();
+
 
 builder.Services.AddScoped(sp => new HttpClient
 {

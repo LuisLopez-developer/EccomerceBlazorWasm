@@ -1,11 +1,12 @@
-﻿using EccomerceBlazorWasm.Models.ViewModel;
+﻿using EccomerceBlazorWasm.Interfaces;
+using EccomerceBlazorWasm.Models.ViewModel;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
 namespace EccomerceBlazorWasm.Services
 {
-    public class ProductBrandService
+    public class ProductBrandService : IProductBrand
     {
         private readonly string api = "api/ProductBrand";
 

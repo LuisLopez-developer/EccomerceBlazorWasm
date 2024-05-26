@@ -4,7 +4,7 @@
 @inject IProductCategory _productCategory
 @inject NavigationManager _navigation
 
-<div class="flex justify-between items-center">
+<div class="flex justify-between items-center mx-4 mt-4"> <!-- Agregado margen horizontal y superior -->
     <!-- InputSearch Component -->
     <InputSearch></InputSearch>
 
@@ -13,7 +13,7 @@
     <ButtonAdd>Agregar</ButtonAdd>
 </div>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4"> <!-- Agregado margen superior -->
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -270,7 +270,7 @@
 
         var result = await _productCategory.DeleteAsync(selectedCategory.Id);
 
-        if (result)
+        if (result) 
         {
             await SearchCategories(); // Actualiza la lista de categorías después de eliminar
         }

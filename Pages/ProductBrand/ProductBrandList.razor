@@ -1,19 +1,37 @@
-﻿@page "/product-category"
+﻿@page "/product-brand"
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Models.ViewModel
-@inject IProductCategory _productCategory
-@inject NavigationManager _navigation
+@inject IProductBrand _productBrand;
 
-<div class="flex justify-between items-center mx-4 mt-4"> <!-- Agregado margen horizontal y superior -->
-    <!-- InputSearch Component -->
-    <InputSearch></InputSearch>
-
-
-    <!-- ButtonAdd Component -->
-    <ButtonAdd>Agregar</ButtonAdd>
+<div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+    <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+        <div class="w-full md:w-1/2">
+            <form class="flex items-center" @onsubmit="SearchBrands">
+                <label for="simple-search" class="sr-only">Buscar</label>
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar" @bind="searchTerm">
+                </div>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Buscar</button>
+            </form>
+        </div>
+        <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+            <button type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" @onclick="ShowModal">
+                <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                </svg>
+                Agregar Categoria
+            </button>
+        </div>
+    </div>
 </div>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4"> <!-- Agregado margen superior -->
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -29,13 +47,13 @@
             </tr>
         </thead>
         <tbody>
-            @if (productCategories == null)
+            @if (productBrands == null)
             {
                 <tr>
                     <td colspan="3" class="text-center py-4">Cargando...</td>
                 </tr>
             }
-            else if (productCategories.Count == 0)
+            else if (productBrands.Count == 0)
             {
                 <tr>
                     <td colspan="3" class="text-center py-4">No hay categorías de productos disponibles.</td>
@@ -43,18 +61,18 @@
             }
             else
             {
-                @foreach (var category in productCategories)
+                @foreach (var brand in productBrands)
                 {
                     <tr>
-                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">@category.Id</th>
-                        <td class="px-6 py-3">@category.Name</td>
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">@brand.Id</th>
+                        <td class="px-6 py-3">@brand.Name</td>
                         <td class="px-6 py-3 flex items-center justify-end">
-                            <button @onclick="()=>ShowEditModal(category)" class="rounded-lg block py-2 px-4 hover:bg-yellow-400 dark:hover:bg-yellow-600 dark:hover:text-white">
+                            <button @onclick="()=>ShowEditModal(brand)" class="rounded-lg block py-2 px-4 hover:bg-yellow-400 dark:hover:bg-yellow-600 dark:hover:text-white">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h4M12 14v4M8 12h8" />
                                 </svg>
                             </button>
-                            <button @onclick="()=>ShowDeleteModal(category)" class="rounded-lg block py-2 px-4 text-sm text-gray-700 hover:bg-red-400 dark:hover:bg-red-600 dark:text-gray-200 dark:hover:text-white">
+                            <button @onclick="()=>ShowDeleteModal(brand)" class="rounded-lg block py-2 px-4 text-sm text-gray-700 hover:bg-red-400 dark:hover:bg-red-600 dark:text-gray-200 dark:hover:text-white">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                 </svg>
@@ -67,7 +85,7 @@
     </table>
 </div>
 
-<!-- Modal para crear una categoria -->
+<!-- Modal para crear una marca -->
 @if (showModal)
 {
     <!-- Main modal -->
@@ -86,12 +104,12 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form @onsubmit="AddCategory">
+                <form @onsubmit="AddBrand">
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div class="col-span-2">
-                            <label for="categoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input @bind="newCategoryName" type="text" id="categoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name">
-                        </div>   
+                            <label for="brandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <input @bind="newBrandName" type="text" id="brandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name">
+                        </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -103,7 +121,7 @@
     </div>
 }
 
-<!-- Modal para editar una categoría -->
+<!-- Modal para editar una marca -->
 @if (_showModalEdit)
 {
     <!-- Main modal -->
@@ -114,11 +132,11 @@
                 <!-- Modal header -->
                 <!-- Agrega el código necesario para el encabezado del modal de edición -->
                 <!-- Modal body -->
-                <form @onsubmit="EditCategory">
+                <form @onsubmit="EditBrand">
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div class="col-span-2">
-                            <label for="editCategoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input @bind="selectedCategory.Name" type="text" id="editCategoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name">
+                            <label for="editBrandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                            <input @bind="selectedBrand.Name" type="text" id="editBrandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name">
                         </div>
                     </div>
                     <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -131,7 +149,7 @@
     </div>
 }
 
-<!-- Modal para eliminar una categoría -->
+<!-- Modal para eliminar una marca -->
 @if (_showModalDelete)
 {
     <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
@@ -152,7 +170,7 @@
                     <button type="button" @onclick="HideDeleteModal" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         No, cancelar
                     </button>
-                    <button type="button" @onclick="DeleteCategory" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                    <button type="button" @onclick="DeleteBrand" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
                         Sí, estoy seguro
                     </button>
                 </div>
@@ -162,52 +180,52 @@
 }
 
 @code {
-    private List<ProductCategoryViewModel>? productCategories;
+    private List<ProductBrandViewModel>? productBrands;
     private string searchTerm = string.Empty;
 
     private bool showModal = false;
     private bool _showModalEdit = false;
     private bool _showModalDelete = false;
 
-    private string newCategoryName = string.Empty;
+    private string newBrandName = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        await SearchCategories();
+        await SearchBrands();
     }
 
-    private async Task SearchCategories()
+    private async Task SearchBrands()
     {
-        productCategories = await _productCategory.SearchAsync(searchTerm);
+        productBrands = await _productBrand.SearchAsync(searchTerm);
     }
 
-    private async Task AddCategory()
+    private async Task AddBrand()
     {
-        if (!string.IsNullOrWhiteSpace(newCategoryName))
+        if (!string.IsNullOrWhiteSpace(newBrandName))
         {
-            var newCategory = new ProductCategoryViewModel
+            var newBrand = new ProductBrandViewModel
                 {
-                    Name = newCategoryName
+                    Name = newBrandName
                 };
 
-            var result = await _productCategory.CreateAsync(newCategory);
+            var result = await _productBrand.CreateAsync(newBrand);
 
             if (result != null)
             {
                 HideModal();
 
-                await SearchCategories();
+                await SearchBrands();
 
-                newCategoryName = string.Empty; // Limpiar el campo del nombre de la nueva categoría después de agregarla
+                newBrandName = string.Empty; // Limpiar el campo del nombre de la nueva marca después de agregarla
             }
             else
             {
-                // Manejar el caso en el que la categoría no se pudo crear
+                // Manejar el caso en el que la marca no se pudo crear
             }
         }
         else
         {
-            // Manejar el caso en el que el nombre de la categoría está vacío
+            // Manejar el caso en el que el nombre de la marca está vacío
         }
     }
 
@@ -233,50 +251,50 @@
     }
 
 
-    private void ShowDeleteModal(ProductCategoryViewModel category)
+    private void ShowDeleteModal(ProductBrandViewModel brand)
     {
-        selectedCategory = category;
+        selectedBrand = brand;
         _showModalDelete = true;
     }
 
-    private ProductCategoryViewModel selectedCategory;
+    private ProductBrandViewModel selectedBrand;
 
-    private void ShowEditModal(ProductCategoryViewModel category)
+    private void ShowEditModal(ProductBrandViewModel brand)
     {
-        selectedCategory = category;
+        selectedBrand = brand;
         _showModalEdit = true;
     }
 
-    private async Task EditCategory()
+    private async Task EditBrand()
     {
         hideModalEdit();
-        var result = await _productCategory.UpdateAsync(selectedCategory.Id, selectedCategory);
+        var result = await _productBrand.UpdateAsync(selectedBrand.Id, selectedBrand);
 
         if (result)
         {
-            await SearchCategories(); // Actualiza la lista de categorías después de editar
+            await SearchBrands(); // Actualiza la lista de marcas después de editar
         }
         else
         {
-            // Manejar el caso en el que la categoría no se pudo editar
+            // Manejar el caso en el que la marca no se pudo editar
         }
     }
 
-    private async Task DeleteCategory()
+    private async Task DeleteBrand()
     {
         _showModalDelete = false;
 
-        productCategories?.Remove(selectedCategory); //Eliminar de la fila de manera local, mientras la eliminacion se hace en segundo plano
+        productBrands?.Remove(selectedBrand); //Eliminar de la lista local, mientras la eliminación se hace en segundo plano
 
-        var result = await _productCategory.DeleteAsync(selectedCategory.Id);
+        var result = await _productBrand.DeleteAsync(selectedBrand.Id);
 
-        if (result) 
+        if (result)
         {
-            await SearchCategories(); // Actualiza la lista de categorías después de eliminar
+            await SearchBrands(); // Actualiza la lista de marcas después de eliminar
         }
         else
         {
-            // Manejar el caso en el que la categoría no se pudo eliminar
+            // Manejar el caso en el que la marca no se pudo eliminar
         }
     }
 

@@ -1,7 +1,12 @@
-﻿@page "/login"
+﻿@layout Layout.EmptyLayout
+
+@page "/login"
+
 @using EccomerceBlazorWasm.Interfaces;
 
 @inject IAccountManagement Acct
+
+@inject NavigationManager NavigationManager
 
 <AuthorizeView>
     <Authorized>
@@ -93,6 +98,8 @@
         {
             success = true;
             email = password = string.Empty;
+
+            NavigationManager.NavigateTo("/sidebar");
         }
         else
         {

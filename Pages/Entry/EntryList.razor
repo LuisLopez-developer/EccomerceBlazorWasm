@@ -1,0 +1,104 @@
+﻿@page "/entry"
+@using EccomerceBlazorWasm.Interfaces
+@using EccomerceBlazorWasm.Models.CreateModel
+@using EccomerceBlazorWasm.Models.ViewModel
+@inject IEntry _entry
+@inject NavigationManager _navigation
+
+<PageTitle>Kardex - Entrada</PageTitle>
+
+<h1 class="text-4xl font-bold">Kardex - entrada</h1>
+
+<p class="text-xl pb-4">Bienvenido al apartado de Kardex - entrada</p>
+
+<div class="flex space-x-4">
+    <label for="startDate" class="text-sm font-medium">Fecha de inicio:</label>
+    <input type="date" id="startDate" @bind="@startDate" />
+    <label for="endDate" class="text-sm font-medium">Fecha de fin:</label>
+    <input type="date" id="endDate" @bind="@endDate" />
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @onclick="FilterEntries">Filtrar</button>
+</div>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    ID
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Fecha
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Nombre
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Precio Unitario
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Cantidad
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Total
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Existencia
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (entrys == null)
+            {
+                <tr>
+                    <td colspan="7" class="text-center py-4">Cargando...</td>
+                </tr>
+            }
+            else if (entrys.Count == 0)
+            {
+                <tr>
+                    <td colspan="7" class="text-center py-4">No hay productos disponibles.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var entry in entrys)
+                {
+                    <tr>
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">@entry.IdEntry</th>
+                        <td class="px-6 py-3">@entry.Date</td>
+                        <td class="px-6 py-3">@entry.Name</td>
+                        <td class="px-6 py-3">@entry.UnitCost</td>
+                        <td class="px-6 py-3">@entry.Amount</td>
+                        <td class="px-6 py-3">@entry.Total</td>
+                        <td class="px-6 py-3">@entry.Existence</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<EntryViewModel>? entrys;
+    private DateTime startDate = DateTime.Today.AddDays(-7);
+    private DateTime endDate = DateTime.Today;
+
+    protected override async Task OnInitializedAsync()
+    {
+        entrys = await _entry.GetAllAsync();
+    }
+
+    private async Task FilterEntries()
+    {
+        // Formatear las fechas en el formato deseado (yyyy-MM-dd)
+        var startDateFormatted = startDate.ToString("yyyy-MM-dd");
+        var endDateFormatted = endDate.ToString("yyyy-MM-dd");
+
+        // Construir la URL con los parámetros formateados
+        var urlParams = $"api/Entry/filter?startDate={startDateFormatted}&endDate={endDateFormatted}";
+
+        // Redirigir a la página con la URL construida
+        _navigation.NavigateTo(urlParams);
+    }
+
+}

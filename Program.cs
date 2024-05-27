@@ -22,7 +22,7 @@ builder.Services.AddScoped<IProductBrand, ProductBrandService>();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<IState, StateService>();
 builder.Services.AddScoped<ILossReason, LossReasonService>();
-builder.Services.AddScoped<IEntry, EntryService>();
+
 
 builder.Services.AddScoped(sp => new HttpClient
 {

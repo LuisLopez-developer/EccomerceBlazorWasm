@@ -23,9 +23,13 @@ namespace EccomerceBlazorWasm.Services
               PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
           };
 
-        public Task<LossCreateModel> CreateAsync(LossCreateModel lossCreateModel)
+        public async Task<LossCreateModel> CreateAsync(LossCreateModel lossCreateModel)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync($"{api}/create", lossCreateModel);
+            var lossObject = await response.Content.ReadAsStringAsync();
+            var createLoss = JsonSerializer.Deserialize<LossCreateModel>(lossObject, jsonSerializerOptions);
+
+            return createLoss;
         }
 
         public Task<bool> DeleteAsync(int id)

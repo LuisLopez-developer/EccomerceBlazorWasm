@@ -23,21 +23,26 @@ namespace EccomerceBlazorWasm.Services
         };
 
 
-        public async Task<List<EntryViewModel>> FilterByDateAsync(DateTime startDate, DateTime endDate)
-        {
-            var startDateFormatted = startDate.ToString("yyyy-MM-dd");
-            var endDateFormatted = endDate.ToString("yyyy-MM-dd");
-            var filterUrl = $"{api}/filter?startDate={startDateFormatted}&endDate={endDateFormatted}";
-
-            var entry = await _httpClient.GetFromJsonAsync<List<EntryViewModel>>(filterUrl);
-
-            return entry;
-        }
+        
 
         public async Task<List<EntryViewModel>> GetAllAsync()
         {
             var entry = await _httpClient.GetFromJsonAsync<List<EntryViewModel>>($"{api}/GetAll");
             return entry;
         }
+
+        public async Task<List<EntryViewModel>> FilterByDateAsync(DateTime startDate, DateTime endDate)
+        {
+            var response = await _httpClient.GetAsync($"{api}/filter?startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var entries = await response.Content.ReadFromJsonAsync<List<EntryViewModel>>(jsonSerializerOptions);
+                return entries ?? new List<EntryViewModel>();
+            }
+
+            throw new Exception("Error fetching data");
+        }
+
     }
 }

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\.gitignore" />
-    <Content Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>

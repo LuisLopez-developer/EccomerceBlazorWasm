@@ -27,12 +27,12 @@ builder.Services.AddScoped<ILoss, LossService>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri(builder.Configuration["FrontendUrl"] ?? "https://localhost:7033")
+    BaseAddress = new Uri(builder.Configuration.GetSection("Url")["FrontendUrl"] ?? "https://localhost:7033")
 });
 
 
 builder.Services.AddHttpClient("Auth", opt => opt.BaseAddress =
-new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:7239"))
+new Uri(builder.Configuration.GetSection("Url")["BackendUrl"] ?? "https://localhost:7239"))
     .AddHttpMessageHandler<CutomHttpHandler>();
 
 await builder.Build().RunAsync();

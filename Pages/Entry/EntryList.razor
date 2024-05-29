@@ -11,32 +11,48 @@
 
 <p class="text-xl pb-4">Bienvenido al apartado de Kardex - entrada</p>
 
-<div class="flex space-x-4 pb-4">
-    <div class="flex items-center space-x-2">
-        <label for="startDate" class="whitespace-nowrap">Inicio:</label>
-        <div class="flex flex-col">
-            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                   type="date" id="startDate" @bind="startDate" @oninput="ClearStartDateError" max="@todayString" />
-            @if (startDateError != null)
-            {
-                <div class="text-red-500 text-xs mt-1">@startDateError</div>
-            }
-        </div>
+<div class="flex flex-wrap w-full">
+    <div class="w-full md:w-1/2 p-2">
+        <form class="flex items-center" @onsubmit="SearchEntries">
+            <label for="simple-search" class="sr-only">Buscar</label>
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input @bind="searchTerm" type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar">
+            </div>
+        </form>
     </div>
-    <div class="flex items-center space-x-2">
-        <label for="endDate" class="whitespace-nowrap">Fin:</label>
-        <div class="flex flex-col">
-            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                   type="date" id="endDate" @bind="endDate" @oninput="ClearEndDateError" min="@startDateString" max="@todayString" />
-            @if (endDateError != null)
-            {
-                <div class="text-red-500 text-xs mt-1">@endDateError</div>
-            }
+
+    <div class="w-full md:w-1/2 p-2 flex items-end">
+        <div class="flex space-x-4 pb-4 w-full">
+            <div class="flex items-center space-x-2">
+                <label for="startDate" class="whitespace-nowrap">Inicio:</label>
+                <div class="flex flex-col">
+                    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" @bind="startDate" @oninput="ClearStartDateError" max="@todayString" />
+                    @if (startDateError != null)
+                    {
+                        <div class="text-red-500 text-xs mt-1">@startDateError</div>
+                    }
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <label for="endDate" class="whitespace-nowrap">Fin:</label>
+                <div class="flex flex-col">
+                    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" @bind="endDate" @oninput="ClearEndDateError" min="@startDateString" max="@todayString" />
+                    @if (endDateError != null)
+                    {
+                        <div class="text-red-500 text-xs mt-1">@endDateError</div>
+                    }
+                </div>
+            </div>
+            <div class="flex items-end space-x-2">
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
+                <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
+            </div>
         </div>
-    </div>
-    <div class="flex items-end space-x-2">
-        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
-        <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
     </div>
 </div>
 
@@ -44,13 +60,13 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="px-6 py-3">ID</th>
-                <th scope="col" class="px-6 py-3">Fecha</th>
-                <th scope="col" class="px-6 py-3">Nombre</th>
-                <th scope="col" class="px-6 py-3">Precio Unitario</th>
-                <th scope="col" class="px-6 py-3">Cantidad</th>
-                <th scope="col" class="px-6 py-3">Total</th>
-                <th scope="col" class="px-6 py-3">Existencia</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.IdEntry))">ID</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Date))">Fecha</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Name))">Nombre</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.UnitCost))">Precio Unitario</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Amount))">Cantidad</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Total))">Total</th>
+                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Existence))">Existencia</th>
             </tr>
         </thead>
         <tbody>
@@ -87,53 +103,114 @@
 
 @code {
     private List<EntryViewModel>? entrys;
+    private string searchTerm = string.Empty;
     private DateTime? startDate;
     private DateTime? endDate;
     private string? startDateError;
     private string? endDateError;
     private string todayString = DateTime.Today.ToString("yyyy-MM-dd");
     private string startDateString => startDate?.ToString("yyyy-MM-dd") ?? "";
+    private string sortColumn = "";
+    private bool sortAscending = true;
 
     protected override async Task OnInitializedAsync()
     {
-        entrys = await _entry.GetAllAsync();
+        await LoadEntries();
+    }
+
+    private async Task SearchEntries()
+    {
+        // Limpiar las fechas cuando se realice una nueva búsqueda
+        startDate = null;
+        endDate = null;
+        startDateError = null;
+        endDateError = null;
+
+        // Realizar la búsqueda
+        entrys = await _entry.SearchAsync(searchTerm);
     }
 
     private async Task ApplyFilter()
     {
         ValidateDates();
 
-        if (startDateError == null && endDateError == null)
+        // Realizar la búsqueda inicialmente
+        if (!string.IsNullOrWhiteSpace(searchTerm))
         {
+            // Realizar la búsqueda
+            var searchResults = await _entry.SearchAsync(searchTerm);
+
+            // Aplicar filtro de fechas solo a los resultados de la búsqueda
             if (startDate.HasValue && endDate.HasValue)
             {
+                // Añadir un día a endDate
                 var endDatePlusOne = endDate.Value.AddDays(1);
+
+                // Aplicar el filtro de fechas a los resultados de la búsqueda
+                entrys = searchResults.Where(e => e.Date >= startDate.Value && e.Date < endDatePlusOne).ToList();
+            }
+            else
+            {
+                // Si no hay filtro de fechas, mostrar solo los resultados de la búsqueda
+                entrys = searchResults;
+            }
+        }
+        else
+        {
+            // Si no se proporciona un término de búsqueda, aplicar solo el filtro de fechas
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                // Añadir un día a endDate
+                var endDatePlusOne = endDate.Value.AddDays(1);
+
+                // Aplicar el filtro de fechas a todas las entradas
                 entrys = await _entry.FilterByDateAsync(startDate.Value, endDatePlusOne);
+            }
+            else
+            {
+                // Si no se proporciona un filtro de fechas ni un término de búsqueda,
+                // cargar todas las entradas
+                await LoadEntries();
             }
         }
     }
 
+
+
     private async Task ClearFilter()
     {
+        // Limpiar los filtros
         startDate = null;
         endDate = null;
+        searchTerm = string.Empty;
         startDateError = null;
         endDateError = null;
+
+        // Esperar a que se limpien los filtros antes de cargar las entradas
+        await LoadEntries();
+    }
+
+
+    private async Task LoadEntries()
+    {
         entrys = await _entry.GetAllAsync();
     }
 
     private void ValidateDates()
     {
-        startDateError = startDate == null ? "Seleccione la fecha de inicio" : null;
-        endDateError = endDate == null ? "Seleccione la fecha de fin" : null;
+        startDateError = startDate == null ? "La fecha de inicio es requerida" : null;
+        endDateError = endDate == null ? "La fecha de fin es requerida" : null;
+
+        if (startDate.HasValue && endDate.HasValue && startDate > endDate)
+        {
+            endDateError = "La fecha de fin no puede ser menor a la fecha de inicio";
+        }
     }
 
     private void ClearStartDateError(ChangeEventArgs e)
     {
         startDate = DateTime.TryParse(e.Value?.ToString(), out var result) ? result : null;
         startDateError = null;
-        UpdateEndDateMin();
-
         if (startDate.HasValue && endDate.HasValue && startDate > endDate)
         {
             endDate = null;
@@ -146,8 +223,27 @@
         endDateError = null;
     }
 
-    private void UpdateEndDateMin()
+    private void SortTable(string columnName)
     {
-        StateHasChanged();
+        if (sortColumn == columnName)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = columnName;
+            sortAscending = true;
+        }
+
+        entrys = sortAscending
+            ? entrys?.OrderBy(e => GetPropertyValue(e, columnName)).ToList()
+            : entrys?.OrderByDescending(e => GetPropertyValue(e, columnName)).ToList();
+    }
+
+    private object? GetPropertyValue(EntryViewModel entry, string propertyName)
+    {
+        var property = typeof(EntryViewModel).GetProperty(propertyName);
+        return property?.GetValue(entry, null);
     }
 }
+

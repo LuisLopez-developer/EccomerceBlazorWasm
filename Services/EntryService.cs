@@ -22,9 +22,6 @@ namespace EccomerceBlazorWasm.Services
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         };
 
-
-        
-
         public async Task<List<EntryViewModel>> GetAllAsync()
         {
             var entry = await _httpClient.GetFromJsonAsync<List<EntryViewModel>>($"{api}/GetAll");
@@ -44,5 +41,10 @@ namespace EccomerceBlazorWasm.Services
             throw new Exception("Error fetching data");
         }
 
+        public async Task<List<EntryViewModel>> SearchAsync(string name)
+        {
+            var entry = await _httpClient.GetFromJsonAsync<List<EntryViewModel>>($"{api}/search?name={name}");
+            return entry;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿@page "/entry"
+﻿@layout Layout.MainLayout
+@page "/entry"
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Models.ViewModel
 @inject IEntry _entry
@@ -10,20 +11,34 @@
 
 <p class="text-xl pb-4">Bienvenido al apartado de Kardex - entrada</p>
 
-<div class="w-1/3 ml-auto flex items-center space-x-4 pb-4">
+<div class="flex space-x-4 pb-4">
     <div class="flex items-center space-x-2">
-        <label for="startDate">Fecha de Inicio:</label>
-        <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" @bind="startDate" />
+        <label for="startDate" class="whitespace-nowrap">Inicio:</label>
+        <div class="flex flex-col">
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   type="date" id="startDate" @bind="startDate" @oninput="ClearStartDateError" max="@todayString" />
+            @if (startDateError != null)
+            {
+                <div class="text-red-500 text-xs mt-1">@startDateError</div>
+            }
+        </div>
     </div>
     <div class="flex items-center space-x-2">
-        <label for="endDate">Fecha de Fin:</label>
-        <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" @bind="endDate" />
+        <label for="endDate" class="whitespace-nowrap">Fin:</label>
+        <div class="flex flex-col">
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   type="date" id="endDate" @bind="endDate" @oninput="ClearEndDateError" min="@startDateString" max="@todayString" />
+            @if (endDateError != null)
+            {
+                <div class="text-red-500 text-xs mt-1">@endDateError</div>
+            }
+        </div>
     </div>
-    <div class="flex items-center">
-        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
+    <div class="flex items-end space-x-2">
+        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
+        <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
     </div>
 </div>
-
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -72,8 +87,12 @@
 
 @code {
     private List<EntryViewModel>? entrys;
-    private DateTime startDate;
-    private DateTime endDate;
+    private DateTime? startDate;
+    private DateTime? endDate;
+    private string? startDateError;
+    private string? endDateError;
+    private string todayString = DateTime.Today.ToString("yyyy-MM-dd");
+    private string startDateString => startDate?.ToString("yyyy-MM-dd") ?? "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,6 +101,53 @@
 
     private async Task ApplyFilter()
     {
-        entrys = await _entry.FilterByDateAsync(startDate, endDate);
+        ValidateDates();
+
+        if (startDateError == null && endDateError == null)
+        {
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                var endDatePlusOne = endDate.Value.AddDays(1);
+                entrys = await _entry.FilterByDateAsync(startDate.Value, endDatePlusOne);
+            }
+        }
+    }
+
+    private async Task ClearFilter()
+    {
+        startDate = null;
+        endDate = null;
+        startDateError = null;
+        endDateError = null;
+        entrys = await _entry.GetAllAsync();
+    }
+
+    private void ValidateDates()
+    {
+        startDateError = startDate == null ? "Seleccione la fecha de inicio" : null;
+        endDateError = endDate == null ? "Seleccione la fecha de fin" : null;
+    }
+
+    private void ClearStartDateError(ChangeEventArgs e)
+    {
+        startDate = DateTime.TryParse(e.Value?.ToString(), out var result) ? result : null;
+        startDateError = null;
+        UpdateEndDateMin();
+
+        if (startDate.HasValue && endDate.HasValue && startDate > endDate)
+        {
+            endDate = null;
+        }
+    }
+
+    private void ClearEndDateError(ChangeEventArgs e)
+    {
+        endDate = DateTime.TryParse(e.Value?.ToString(), out var result) ? result : null;
+        endDateError = null;
+    }
+
+    private void UpdateEndDateMin()
+    {
+        StateHasChanged();
     }
 }

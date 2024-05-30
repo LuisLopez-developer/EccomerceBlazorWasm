@@ -1,4 +1,4 @@
-﻿using EccomerceBlazorWasm.Interfaces.ProductService;
+﻿using EccomerceBlazorWasm.Interfaces.PorductInterface;
 using EccomerceBlazorWasm.Models.CreateModel;
 using EccomerceBlazorWasm.Models.ViewModel;
 using System.Net.Http.Json;

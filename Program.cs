@@ -1,8 +1,9 @@
 using Blazored.LocalStorage;
 using EccomerceBlazorWasm;
 using EccomerceBlazorWasm.Interfaces;
-using EccomerceBlazorWasm.Interfaces.ProductService;
+using EccomerceBlazorWasm.Interfaces.PorductInterface;
 using EccomerceBlazorWasm.Services;
+using EccomerceBlazorWasm.Services.ProductServices;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IState, StateService>();
 builder.Services.AddScoped<ILossReason, LossReasonService>();
 builder.Services.AddScoped<ILoss, LossService>();
 builder.Services.AddScoped<IEntry, EntryService>();
+builder.Services.AddScoped<IProductPhoto, ProductPhotoService>();
 
 
 builder.Services.AddScoped(sp => new HttpClient

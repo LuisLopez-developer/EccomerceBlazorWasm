@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text;
 using EccomerceBlazorWasm.Models.ViewModel;
-using EccomerceBlazorWasm.Interfaces.ProductService;
+using EccomerceBlazorWasm.Interfaces.PorductInterface;
 
 namespace EccomerceBlazorWasm.Services
 {

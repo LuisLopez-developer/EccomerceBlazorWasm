@@ -4,6 +4,8 @@
 @using EccomerceBlazorWasm.Interfaces.ProductService
 @using EccomerceBlazorWasm.Models.ViewModel
 @inject IProductBrand _productBrand;
+@inject IJSRuntime JS
+@using System.Text.RegularExpressions;
 
 <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
     <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -205,31 +207,42 @@
     {
         if (!string.IsNullOrWhiteSpace(newBrandName))
         {
-            var newBrand = new ProductBrandViewModel
-                {
-                    Name = newBrandName
-                };
+            // Regex to check if the brand name contains only letters and spaces
+            Regex validBrandNameRegex = new Regex(@"^[a-zA-Z\s]+$");
 
-            var result = await _productBrand.CreateAsync(newBrand);
-
-            if (result != null)
+            if (validBrandNameRegex.IsMatch(newBrandName))
             {
-                HideModal();
+                var newBrand = new ProductBrandViewModel
+                    {
+                        Name = newBrandName
+                    };
 
-                await SearchBrands();
+                var result = await _productBrand.CreateAsync(newBrand);
 
-                newBrandName = string.Empty; // Limpiar el campo del nombre de la nueva marca después de agregarla
+                if (result != null)
+                {
+                    HideModal();
+
+                    await SearchBrands();
+
+                    newBrandName = string.Empty; // Limpiar el campo del nombre de la nueva marca después de agregarla
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "Error al crear la marca.");
+                }
             }
             else
             {
-                // Manejar el caso en el que la marca no se pudo crear
+                await JS.InvokeVoidAsync("alert", "El nombre de la marca solo puede contener letras y espacios.");
             }
         }
         else
         {
-            // Manejar el caso en el que el nombre de la marca está vacío
+            await JS.InvokeVoidAsync("alert", "El nombre de la marca no puede estar vacío.");
         }
     }
+
 
     private void ShowModal()
     {
@@ -269,18 +282,36 @@
 
     private async Task EditBrand()
     {
-        hideModalEdit();
-        var result = await _productBrand.UpdateAsync(selectedBrand.Id, selectedBrand);
-
-        if (result)
+        if (!string.IsNullOrWhiteSpace(selectedBrand.Name))
         {
-            await SearchBrands(); // Actualiza la lista de marcas después de editar
+            // Regex to check if the brand name contains only letters and spaces
+            Regex validBrandNameRegex = new Regex(@"^[a-zA-Z\s]+$");
+
+            if (validBrandNameRegex.IsMatch(selectedBrand.Name))
+            {
+                hideModalEdit();
+                var result = await _productBrand.UpdateAsync(selectedBrand.Id, selectedBrand);
+
+                if (result)
+                {
+                    await SearchBrands(); // Actualiza la lista de marcas después de editar
+                }
+                else
+                {
+                    await JS.InvokeVoidAsync("alert", "Error al editar la marca.");
+                }
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", "El nombre de la marca solo puede contener letras y espacios.");
+            }
         }
         else
         {
-            // Manejar el caso en el que la marca no se pudo editar
+            await JS.InvokeVoidAsync("alert", "El nombre de la marca no puede estar vacío.");
         }
     }
+
 
     private async Task DeleteBrand()
     {

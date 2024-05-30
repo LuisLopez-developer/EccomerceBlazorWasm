@@ -18,16 +18,17 @@
 
 <section class="bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-9 00 dark:text-white">Crear Producto</h2>
+        <h2 class="mb-4 text-2xl font-bold text-blue-600 dark:text-white">Crear Producto</h2>
+        <!-- Resto del contenido del formulario -->
         <form @onsubmit="CreateProduct">
             <div Model="product" class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
-                    <input type="text" @bind-value="product.Name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                    <input type="text" @bind-value="product.Name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del Producto  " required="">
                 </div>
                 <div class="w-full">
                     <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo</label>
-                    <input type="text" @bind-value="product.Code" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
+                    <input type="text" @bind-value="product.Code" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Codigo del Producto" required="">
                 </div>
                 <div class="w-full">
                     <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
@@ -35,7 +36,7 @@
                 </div>
                 <div class="w-full">
                     <label for="cost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de Coste</label>
-                    <input type="number" @bind-value="product.Cost" step="0.01" id="cost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                    <input type="number" @bind-value="product.Cost" step="0.01" id="cost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2500" required="">
                 </div>
                 <div class="w-full">
                     <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de venta</label>
@@ -43,12 +44,12 @@
                 </div>
                 <div class="w-full">
                     <label for="existence" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
-                    <input type="number" @bind-value="product.Existence" id="existence" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                    <input type="number" @bind-value="product.Existence" id="existence" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="50" required="">
                 </div>
                 <div>
-                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
                     <select @bind="product.StateId" id="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una categoria</option>
+                        <option selected="">Selecciona un Estado</option>
                         @foreach (var state in states)
                         {
                             <option value="@state.Id">@state.Name</option>
@@ -56,9 +57,9 @@
                     </select>
                 </div>
                 <div>
-                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>
                     <select @bind="product.ProductCategoryId" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una categoria</option>
+                        <option selected="">Selecciona una Categoria</option>
                         @foreach (var category in productCategories)
                         {
                             <option value="@category.Id">@category.Name</option>
@@ -66,9 +67,9 @@
                     </select>
                 </div>
                 <div>
-                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Marca</label>
                     <select @bind="product.ProductBrandId" id="brand" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una marca</option>
+                        <option selected="">Selecciona una Marca</option>
                         @foreach (var brand in productBrands)
                         {
                             <option value="@brand.Id">@brand.Name</option>

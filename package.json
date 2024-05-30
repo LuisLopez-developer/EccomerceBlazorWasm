@@ -2,7 +2,7 @@
   "dependencies": {
     "autoprefixer": "^10.4.17",
     "feather-icons": "^4.29.2",
-    "flowbite": "^2.2.1",
+    "flowbite": "^2.3.0",
     "flowbite-datepicker": "^1.2.6",
     "postcss": "^8.4.33",
     "postcss-cli": "^11.0.0",

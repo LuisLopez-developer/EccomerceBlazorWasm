@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using EccomerceBlazorWasm;
 using EccomerceBlazorWasm.Interfaces;
+using EccomerceBlazorWasm.Interfaces.ProductService;
 using EccomerceBlazorWasm.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;

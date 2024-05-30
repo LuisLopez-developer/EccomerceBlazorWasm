@@ -1,4 +1,6 @@
-﻿namespace EccomerceBlazorWasm.Models.CreateModel
+﻿using EccomerceBlazorWasm.Models.Product;
+
+namespace EccomerceBlazorWasm.Models.CreateModel
 {
     public class ProductCreateModel
     {
@@ -12,5 +14,8 @@
         public int? Existence { get; set; }
         public int? ProductBrandId { get; set; }
         public int? ProductCategoryId { get; set; }
+
+        public List<ProductPhotoViewModel>? Photos { get; set; }
+        public ProductSpecificationViewModel? Specifications { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using EccomerceBlazorWasm.Models.CreateModel;
 using EccomerceBlazorWasm.Models.ViewModel;
 
-namespace EccomerceBlazorWasm.Interfaces
+namespace EccomerceBlazorWasm.Interfaces.ProductService
 {
     public interface IProduct
     {

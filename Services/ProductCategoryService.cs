@@ -1,8 +1,8 @@
-﻿using EccomerceBlazorWasm.Interfaces;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text;
 using EccomerceBlazorWasm.Models.ViewModel;
+using EccomerceBlazorWasm.Interfaces.ProductService;
 
 namespace EccomerceBlazorWasm.Services
 {

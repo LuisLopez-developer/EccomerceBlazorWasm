@@ -1,6 +1,6 @@
 ﻿using EccomerceBlazorWasm.Models.ViewModel;
 
-namespace EccomerceBlazorWasm.Interfaces
+namespace EccomerceBlazorWasm.Interfaces.ProductService
 {
     public interface IProductCategory
     {

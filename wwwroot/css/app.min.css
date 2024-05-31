@@ -1208,6 +1208,10 @@ input:checked + .toggle-bg {
   margin-bottom: 1rem;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -1650,6 +1654,11 @@ input:checked + .toggle-bg {
   border-top-width: 1px;
 }
 
+.border-blue-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(164 202 254 / var(--tw-border-opacity));
+}
+
 .border-blue-600 {
   --tw-border-opacity: 1;
   border-color: rgb(28 100 242 / var(--tw-border-opacity));
@@ -1673,6 +1682,11 @@ input:checked + .toggle-bg {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(235 245 255 / var(--tw-bg-opacity));
 }
 
 .bg-blue-500 {

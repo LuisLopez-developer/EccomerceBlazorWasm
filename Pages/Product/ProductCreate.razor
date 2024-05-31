@@ -1,6 +1,7 @@
 ﻿@layout Layout.MainLayout
 @page "/product/create"
-
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Internal
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Interfaces.PorductInterface
 @using EccomerceBlazorWasm.Models.CreateModel
@@ -8,6 +9,7 @@
 
 @attribute [Authorize(Roles = "admin")]
 
+@inject EccomerceBlazorWasm.Interfaces.IR2 _r2
 @inject IProduct _product
 @inject IProductBrand _productBrand
 @inject IProductCategory _productCategory
@@ -15,12 +17,11 @@
 
 @inject NavigationManager _navigation
 
-
 <section class="bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-2xl font-bold text-blue-600 dark:text-white">Crear Producto</h2>
         <!-- Resto del contenido del formulario -->
-        <form @onsubmit="CreateProduct">
+        <form @onsubmit="HandleSubmit">
             <div Model="product" class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
@@ -76,7 +77,12 @@
                         }
                     </select>
                 </div>
+                <div class="sm:col-span-2">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
+                    <InputFile OnChange="HandleFileSelection" multiple id="default_size" class="block w-full mb-5 text-sm text-gray-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                </div>
             </div>
+                
             <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 Guardar Cambios
             </button>
@@ -84,24 +90,37 @@
 
     </div>
 </section>
-
 @code {
     private ProductCreateModel product = new ProductCreateModel();
     private List<ProductBrandViewModel> productBrands = new List<ProductBrandViewModel>();
     private List<ProductCategoryViewModel> productCategories = new List<ProductCategoryViewModel>();
     private List<StateViewModel> states = new List<StateViewModel>();
+    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
 
-    protected override async Task OnInitializedAsync()
+    private void HandleFileSelection(InputFileChangeEventArgs e)
     {
-        productBrands = await _productBrand.GetAllAsync();
-        productCategories = await _productCategory.GetAllAsync();
-        states = await _state.GetAllAsync();
+        selectedFiles.AddRange(e.GetMultipleFiles());
     }
 
-    private async Task CreateProduct()
+    private async Task HandleSubmit()
     {
-        await _product.CreateAsync(product);
-        _navigation.NavigateTo("/product");
-    }
+        try
+        {
+            if (selectedFiles.Any())
+            {
+                var urls = await _r2.UploadImagesAsync(selectedFiles);
+                foreach (var url in urls)
+                {
+                    Console.WriteLine($"Archivo subido a: {url}");
+                }
+            }
 
+            // Aquí puedes agregar la lógica para manejar el resto del formulario, como guardar los datos del producto.
+            _navigation.NavigateTo("/product/list");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al subir archivos: {ex.Message}");
+        }
+    }
 }

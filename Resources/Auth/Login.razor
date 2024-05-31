@@ -10,7 +10,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <div p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400> Usted ya se encuentra logeado con @context.User.Identity?.Name </div>
+        <RedirectToHome />
     </Authorized>
     <NotAuthorized>
         @if (errors)

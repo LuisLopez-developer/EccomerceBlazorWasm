@@ -27,7 +27,7 @@ builder.Services.AddScoped<ILossReason, LossReasonService>();
 builder.Services.AddScoped<ILoss, LossService>();
 builder.Services.AddScoped<IEntry, EntryService>();
 builder.Services.AddScoped<IProductPhoto, ProductPhotoService>();
-
+builder.Services.AddScoped<IR2, R2Service>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {

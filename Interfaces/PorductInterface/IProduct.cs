@@ -1,4 +1,5 @@
-﻿using EccomerceBlazorWasm.Models.CreateModel;
+﻿using EccomerceBlazorWasm.Models;
+using EccomerceBlazorWasm.Models.CreateModel;
 using EccomerceBlazorWasm.Models.Product;
 using EccomerceBlazorWasm.Models.ViewModel;
 
@@ -12,5 +13,7 @@ namespace EccomerceBlazorWasm.Interfaces.PorductInterface
         Task<ProductCreateModel> CreateAsync(ProductCreateModel product);
         Task<bool> UpdateAsync(int id, ProductCreateModel product);
         Task<bool> ChangeStateAsync(int idProduct);
+
+        Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm = "");
     }
 }

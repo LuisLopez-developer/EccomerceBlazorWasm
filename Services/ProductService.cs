@@ -1,4 +1,5 @@
 ﻿using EccomerceBlazorWasm.Interfaces.PorductInterface;
+using EccomerceBlazorWasm.Models;
 using EccomerceBlazorWasm.Models.CreateModel;
 using EccomerceBlazorWasm.Models.Product;
 using EccomerceBlazorWasm.Models.ViewModel;
@@ -63,6 +64,12 @@ namespace EccomerceBlazorWasm.Services
         {
             var response = await _httpClient.PutAsync($"{api}/changeState/{idProduct}", null);
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm = "")
+        {
+            var response = await _httpClient.GetFromJsonAsync<PagedResponseModel<List<ProductViewModel>>>($"api/Page?page={page}&pageSize={pageSize}&searchTerm={searchTerm}");
+            return response;
         }
     }
 }

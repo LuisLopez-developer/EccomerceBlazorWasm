@@ -1,11 +1,13 @@
 ﻿@layout Layout.MainLayout
-@page "/product"
+@page "/product/{page:int}/{pageSize:int}/{searchTerm?}"
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Interfaces.PorductInterface
+@using EccomerceBlazorWasm.Models
 @using EccomerceBlazorWasm.Models.CreateModel
 @using EccomerceBlazorWasm.Models.ViewModel
 @inject IProduct _product
 @inject NavigationManager _navigation
+@inject IJSRuntime jsRuntime
 
 <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
     <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
@@ -74,7 +76,7 @@
                     <td colspan="7" class="text-center py-4">Cargando...</td>
                 </tr>
             }
-            else if (products.Count == 0)
+            else if (pagedResponse.TotalPages == 0)
             {
                 <tr>
                     <td colspan="7" class="text-center py-4">No hay productos disponibles.</td>
@@ -92,7 +94,7 @@
                         <td class="px-6 py-3">@product.Existence</td>
                         <td class="px-6 py-3">@product.Cost</td>
                         <td class="px-6 py-3">@product.Price</td>
-                        <td class="px-6 py-3">@product.StateName</td>    
+                        <td class="px-6 py-3">@product.StateName</td>
                         <td class="px-6 py-3 flex items-center justify-end">
                             <button @onclick=" () => EditProduct(product.Id)" class="rounded-lg block py-2 px-4 hover:bg-yellow-400 dark:hover:bg-yellow-600 dark:hover:text-white">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -110,6 +112,48 @@
             }
         </tbody>
     </table>
+    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            Mostrando
+            <span class="font-semibold text-gray-900 dark:text-white">@((pageSize * (page - 1) + 1)) - @(Math.Min(pageSize * page, pagedResponse.TotalItems))</span>
+            de
+            <span class="font-semibold text-gray-900 dark:text-white">@pagedResponse.TotalItems</span>
+        </span>
+        <ul class="inline-flex items-stretch -space-x-px">
+            <li>
+                <button @onclick="PreviousPage"  class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <span class="sr-only">Previous</span>
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </li>
+            @for (int i = 1; i <= pagedResponse.TotalPages; i++)
+            {
+                if (i <= 4 || (i == pagedResponse.TotalPages || i == pagedResponse.TotalPages - 1 || i == pagedResponse.TotalPages - 2))
+                {
+                    var pageNumber = i; // Toma temporalmente el valor de "i"
+                    <li>
+                        <button @onclick="() => GoToPage(pageNumber)" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">@pageNumber</button>
+                    </li>
+                }
+                else if (i == 5)
+                {
+                    <li>
+                        <button class="boton flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</button>
+                    </li>
+                }
+            }
+            <li>
+                <button @onclick="NextPage"  class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    <span class="sr-only">Next</span>
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <!-- Modal para eliminar un producto -->
@@ -128,7 +172,7 @@
                 <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                 </svg>
-                <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar la categoría?</p>
+                <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas desactivar el producto: @selectedProduct.Name?</p>
                 <div class="flex justify-center items-center space-x-4">
                     <button type="button" @onclick="HideDeleteModal" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                         No, cancelar
@@ -143,19 +187,65 @@
 }
 
 @code {
+    private PagedResponseModel<List<ProductViewModel>> pagedResponse = new PagedResponseModel<List<ProductViewModel>>();
+    [Parameter] public int page { get; set; } = 1;
+    [Parameter] public int pageSize { get; set; } = 10;
+    [Parameter] public string searchTerm { get; set; } = string.Empty;
+
     private List<ProductViewModel>? products;
-    private string searchTerm = string.Empty;
     private bool _showModalDelete = false;
     private ProductViewModel selectedProduct = new ProductViewModel();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await SearchProducts();
+        await LoadProducts();
+    }
+
+    public async Task GoToPage(int pageNumber)
+    {
+        page = pageNumber;
+        await LoadProducts();
+        UpdateUrl();
+    }
+
+    private async Task LoadProducts()
+    {
+        pagedResponse = await _product.GetPagedProducts(page, pageSize, searchTerm);
+        products = pagedResponse.Items;
     }
 
     private async Task SearchProducts()
     {
-        products = await _product.SearchAsync(searchTerm);
+        page = 1; // Vuelve a la primera pagina
+        await LoadProducts();
+        UpdateUrl();
+
+    }
+
+    private async Task PreviousPage()
+    {
+        if (page > 1)
+        {
+            page--;
+            await LoadProducts();
+            UpdateUrl();
+        }
+    }
+
+    private async Task NextPage()
+    {
+        if (page < pagedResponse.TotalPages)
+        {
+            page++;
+            await LoadProducts();
+            UpdateUrl();
+        }
+    }
+
+    private void UpdateUrl()
+    {
+        var uri = $"/product/{page}/{pageSize}/{searchTerm}";
+         _navigation.NavigateTo(uri);
     }
 
     private void CreateProduct()

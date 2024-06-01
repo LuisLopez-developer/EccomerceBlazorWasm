@@ -1,5 +1,6 @@
 ﻿using EccomerceBlazorWasm.Interfaces.PorductInterface;
 using EccomerceBlazorWasm.Models.CreateModel;
+using EccomerceBlazorWasm.Models.Product;
 using EccomerceBlazorWasm.Models.ViewModel;
 using System.Net.Http.Json;
 using System.Text;

@@ -12,9 +12,9 @@ namespace EccomerceBlazorWasm.Models.CreateModel
         public decimal Price { get; set; }
         public decimal? Cost { get; set; }
         public int Existence { get; set; }
-        public bool IsVisible { get; set; } = false;
+        public bool IsVisible { get; set; }
         public string? Description { get; set; }
-        public string BarCode { get; set; } = "s/n";
+        public string BarCode { get; set; }
         public int ProductBrandId { get; set; }
         public int ProductCategoryId { get; set; }
 

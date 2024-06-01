@@ -1,4 +1,5 @@
 ﻿using EccomerceBlazorWasm.Models.CreateModel;
+using EccomerceBlazorWasm.Models.Product;
 using EccomerceBlazorWasm.Models.ViewModel;
 
 namespace EccomerceBlazorWasm.Interfaces.PorductInterface

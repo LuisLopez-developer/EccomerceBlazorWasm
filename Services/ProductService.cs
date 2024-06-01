@@ -58,5 +58,11 @@ namespace EccomerceBlazorWasm.Services
             var response = await _httpClient.PutAsync($"{api}/{id}", emptyContent);
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> ChangeStateAsync(int idProduct)
+        {
+            var response = await _httpClient.PutAsync($"{api}/changeState/{idProduct}", null);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm, DateTime? startDate, DateTime? endDate)
         {
-            var response = await _httpClient.GetFromJsonAsync<PagedResponseModel<List<ProductViewModel>>>($"{api}/GetPagedProducts?page={page}&pageSize={pageSize}&searchTerm={searchTerm}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}");
+            var response = await _httpClient.GetFromJsonAsync<PagedResponseModel<List<ProductViewModel>>>($"{api}/GetPagedProducts?page={page}&pageSize={pageSize}&searchTerm={searchTerm}&startDate={startDate:yyyy-MM-dd}&endDate={endDate:yyyy-MM-dd}"); //startDate:yyyy-MM-dd - formatear la fecha a años/mes/dia
             return response ?? new PagedResponseModel<List<ProductViewModel>>();
         }
     }

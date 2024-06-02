@@ -290,11 +290,12 @@
     {
         var maxAllowedFiles = 5;
         selectedFiles.AddRange(e.GetMultipleFiles(maxAllowedFiles));
-        currentFileSelection++;
 
         imageUrls.Clear();
         foreach (var file in selectedFiles)
         {
+            currentFileSelection++;
+
             var stream = file.OpenReadStream();
             using var ms = new MemoryStream();
             await stream.CopyToAsync(ms);

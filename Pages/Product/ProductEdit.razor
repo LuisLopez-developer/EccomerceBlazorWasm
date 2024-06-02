@@ -254,7 +254,7 @@
     private async Task UpdateProduct()
     {
         await _product.UpdateAsync(productId, product);
-        _navigation.NavigateTo("/product");
+        _navigation.NavigateTo(URLS.PRODUCT_LIST);
     }
 
 }

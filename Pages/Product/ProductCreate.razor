@@ -274,7 +274,7 @@
 
             var createdProduct = await _product.CreateAsync(product); // Crear el producto a través del servicio
 
-            _navigation.NavigateTo("/product"); // Redirigir a al listado de los productos
+            _navigation.NavigateTo(URLS.PRODUCT_LIST); // Redirigir a al listado de los productos
         }
         catch (Exception ex)
         {

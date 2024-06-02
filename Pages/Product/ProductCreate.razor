@@ -214,9 +214,36 @@
                             <input type="number" @bind-value="productSpecification.BatteryCapacity" id="BatteryCapacity" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         </div>
                         <div class="sm:col-span-3">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
-                            <InputFile OnChange="HandleFileSelection" multiple id="default_size" class="block w-full mb-5 text-sm text-gray-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-4">
+                                <div class="sm:col-span-3">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
+                                    @for (int i = 0; i <= currentFileSelection; i++) // Se genera un nuevo imput despues que se uso el primero u el anterior, esto para evitar el error: "There is no file with ID 1. The file list may have changed"
+                                    {
+                                        <InputFile OnChange="HandleFileSelection" multiple id="@($"default_size_{i}")"
+                                                   class="block w-full mb-5 text-sm text-gray-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                   style="@(i < currentFileSelection ? "display: none;" : "")" /> // Oculta a los imputFile excepto el ultimo 
+                                    }
+                                </div>
+                                @foreach (var imageUrl in imageUrls)
+                                {
+                                    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+                                        <img class="object-scale-down rounded-t-lg h-300 w-252" src="@imageUrl" alt="Imagenes del ceuluar" />
+
+                                        <div class="p-5 mt-2">
+                                            <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                Read more
+                                                <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                                
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -229,15 +256,19 @@
 
     </div>
 </section>
+
+
 @code {
     private ProductCreateModel product = new ProductCreateModel();
     private ProductSpecificationViewModel productSpecification = new ProductSpecificationViewModel();
     private List<ProductBrandViewModel> productBrands = new List<ProductBrandViewModel>();
     private List<ProductCategoryViewModel> productCategories = new List<ProductCategoryViewModel>();
     private List<StateViewModel> states = new List<StateViewModel>();
-    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
-
     private bool isVisibleSpecification = false;
+
+    private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
+    int currentFileSelection = 0;
+    private IList<string> imageUrls = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -246,9 +277,23 @@
         states = await _state.GetAllAsync();
     }
 
-    private void HandleFileSelection(InputFileChangeEventArgs e)
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
     {
-        selectedFiles.AddRange(e.GetMultipleFiles());
+        var maxAllowedFiles = 5;
+        selectedFiles.AddRange(e.GetMultipleFiles(maxAllowedFiles));
+        currentFileSelection++;
+
+        imageUrls.Clear();
+        foreach (var file in selectedFiles)
+        {
+            var stream = file.OpenReadStream();
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var bytes = ms.ToArray();
+            var base64 = Convert.ToBase64String(bytes);
+            var url = $"data:{file.ContentType};base64,{base64}";
+            imageUrls.Add(url);
+        }
     }
 
     private async Task HandleSubmit()

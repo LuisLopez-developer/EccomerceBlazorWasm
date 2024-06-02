@@ -9,34 +9,89 @@
 @inject NavigationManager _navigation
 @inject IJSRuntime jsRuntime
 
-<div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-    <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-        <div class="w-full md:w-1/2">
-            <form class="flex items-center" @onsubmit="SearchProducts">
-                <label for="simple-search" class="sr-only">Buscar</label>
-                <div class="relative w-full">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+        <div class="flex items-center flex-1 space-x-4">
+            <form @onsubmit="SearchProducts" class="flex items-center justify-center flex-shrink-0">
+                <div class="flex">
+                    <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
+                    <button id="filter" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">
+                        All categories <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                         </svg>
+                    </button>
+                    @if (false)
+                    {
+                        <div id="dropdown" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                                <li>
+                                    <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mockups</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Templates</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Design</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+
+                    <div class="relative w-full">
+                        <input type="search" @bind="searchTerm" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Busca algun producto..." />
+                        <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                            <span class="sr-only">Buscar</span>
+                        </button>
                     </div>
-                    <input @bind="searchTerm" type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar">
                 </div>
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Buscar</button>
+
+                <div class="flex items-center justify-center">
+                    <div class="flex items-center space-x-2">
+                        <label for="startDate" class="whitespace-nowrap">Inicio:</label>
+                        <div class="flex flex-col">
+                            <input @bind="startDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" />
+                            @if (startDateError != null)
+                            {
+                                <div class="text-red-500 text-xs mt-1">@startDateError</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label for="endDate" class="whitespace-nowrap">Fin:</label>
+                        <div class="flex flex-col">
+                            <input @bind="endDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" />
+                            @if (endDateError != null)
+                            {
+                                <div class="text-red-500 text-xs mt-1">@endDateError</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-end space-x-2">
+                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Filtrar</button>
+                        <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
+                    </div>
+                </div>
+
             </form>
         </div>
-        <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-            <button @onclick="CreateProduct" type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+
+        <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+            <button @onclick="CreateProduct" type="button" class="flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                 <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                 </svg>
                 Agregar Producto
             </button>
         </div>
-    </div>
-</div>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    </div>
+
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -192,9 +247,47 @@
     [Parameter] public int pageSize { get; set; } = 10;
     [Parameter] public string searchTerm { get; set; } = string.Empty;
 
+    private bool openFilter = false;
+
     private List<ProductViewModel>? products;
     private bool _showModalDelete = false;
     private ProductViewModel selectedProduct = new ProductViewModel();
+
+    private DateTime? startDate { get; set; }
+    private DateTime? endDate { get; set; }
+    private string? startDateError;
+    private string? endDateError;
+    private string todayString = DateTime.Today.ToString("yyyy-MM-dd");
+    private string endDateString => endDate?.ToString("yyyy/MM/dd") ?? "";
+
+    private async Task ClearFilter()
+    {
+        // Limpiar los filtros
+        startDate = null;
+        endDate = null;
+        searchTerm = string.Empty;
+        startDateError = null;
+        endDateError = null;
+
+        // Esperar a que se limpien los filtros antes de cargar las entradas
+        await LoadProducts();
+    }
+
+    private void ClearStartDateError(ChangeEventArgs e)
+    {
+        startDate = DateTime.TryParse(e.Value?.ToString(), out var result) ? result : null;
+        startDateError = null;
+        if (startDate.HasValue && endDate.HasValue && startDate > endDate)
+        {
+            endDate = null;
+        }
+    }
+
+    private void ClearEndDateError(ChangeEventArgs e)
+    {
+        endDate = DateTime.TryParse(e.Value?.ToString(), out var result) ? result : null;
+        endDateError = null;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -210,7 +303,8 @@
 
     private async Task LoadProducts()
     {
-        pagedResponse = await _product.GetPagedProducts(page, pageSize, searchTerm, null, null);
+        // Llamar al método con las fechas formateadas
+        pagedResponse = await _product.GetPagedProducts(page, pageSize, searchTerm, startDate, endDate);
         products = pagedResponse.Items;
     }
 

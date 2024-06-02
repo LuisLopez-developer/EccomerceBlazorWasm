@@ -210,7 +210,7 @@
 
     private async Task LoadProducts()
     {
-        pagedResponse = await _product.GetPagedProducts(page, pageSize, searchTerm);
+        pagedResponse = await _product.GetPagedProducts(page, pageSize, searchTerm, null, null);
         products = pagedResponse.Items;
     }
 

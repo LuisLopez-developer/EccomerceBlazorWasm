@@ -66,9 +66,9 @@ namespace EccomerceBlazorWasm.Services
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm = "")
+        public async Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm, DateTime? startDate, DateTime? endDate)
         {
-            var response = await _httpClient.GetFromJsonAsync<PagedResponseModel<List<ProductViewModel>>>($"api/Page?page={page}&pageSize={pageSize}&searchTerm={searchTerm}");
+            var response = await _httpClient.GetFromJsonAsync<PagedResponseModel<List<ProductViewModel>>>($"{api}/GetPagedProducts?page={page}&pageSize={pageSize}&searchTerm={searchTerm}&startDate=2{startDate}&endDate={endDate}");
             return response;
         }
     }

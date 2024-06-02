@@ -14,6 +14,6 @@ namespace EccomerceBlazorWasm.Interfaces.PorductInterface
         Task<bool> UpdateAsync(int id, ProductCreateModel product);
         Task<bool> ChangeStateAsync(int idProduct);
 
-        Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm = "");
+        Task<PagedResponseModel<List<ProductViewModel>>> GetPagedProducts(int page, int pageSize, string searchTerm, DateTime? startDate, DateTime? endDate);
     }
 }

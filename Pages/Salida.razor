@@ -3,4 +3,12 @@
 
 <PageTitle>Kardex - Salida</PageTitle>
 
-<Maintenance />
+<AuthorizeView>
+    <Authorized>
+        <Maintenance></Maintenance>
+
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>

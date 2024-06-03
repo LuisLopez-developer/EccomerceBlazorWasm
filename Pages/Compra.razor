@@ -3,5 +3,12 @@
 @inject HttpClient Http
 
 <PageTitle>Compra</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <Maintenance></Maintenance>
 
-<Maintenance></Maintenance>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>

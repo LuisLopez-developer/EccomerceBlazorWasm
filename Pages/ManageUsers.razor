@@ -5,8 +5,15 @@
 
 <PageTitle>Control de Usuarios</PageTitle>
 
+<AuthorizeView>
+    <Authorized>
+        <Maintenance></Maintenance>
 
-<h3>User</h3>
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code{
 

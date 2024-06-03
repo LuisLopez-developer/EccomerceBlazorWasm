@@ -7,100 +7,108 @@
 @inject NavigationManager _navigation
 
 <PageTitle>Kardex - Entrada</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <h1 class="text-4xl font-bold">Kardex - entrada</h1>
 
-<h1 class="text-4xl font-bold">Kardex - entrada</h1>
+        <p class="text-xl pb-4">Bienvenido al apartado de Kardex - entrada</p>
 
-<p class="text-xl pb-4">Bienvenido al apartado de Kardex - entrada</p>
-
-<div class="flex flex-wrap w-full">
-    <div class="w-full md:w-1/2 p-2">
-        <form class="flex items-center" @onsubmit="SearchEntries">
-            <label for="simple-search" class="sr-only">Buscar</label>
-            <div class="relative w-full">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <input @bind="searchTerm" type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar">
+        <div class="flex flex-wrap w-full">
+            <div class="w-full md:w-1/2 p-2">
+                <form class="flex items-center" @onsubmit="SearchEntries">
+                    <label for="simple-search" class="sr-only">Buscar</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input @bind="searchTerm" type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar">
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
 
-    <div class="w-full md:w-1/2 p-2 flex items-end">
-        <div class="flex space-x-4 pb-4 w-full">
-            <div class="flex items-center space-x-2">
-                <label for="startDate" class="whitespace-nowrap">Inicio:</label>
-                <div class="flex flex-col">
-                    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" @bind="startDate" @oninput="ClearStartDateError" max="@todayString" />
-                    @if (startDateError != null)
-                    {
-                        <div class="text-red-500 text-xs mt-1">@startDateError</div>
-                    }
+            <div class="w-full md:w-1/2 p-2 flex items-end">
+                <div class="flex space-x-4 pb-4 w-full">
+                    <div class="flex items-center space-x-2">
+                        <label for="startDate" class="whitespace-nowrap">Inicio:</label>
+                        <div class="flex flex-col">
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" @bind="startDate" @oninput="ClearStartDateError" max="@todayString" />
+                            @if (startDateError != null)
+                            {
+                                <div class="text-red-500 text-xs mt-1">@startDateError</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label for="endDate" class="whitespace-nowrap">Fin:</label>
+                        <div class="flex flex-col">
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" @bind="endDate" @oninput="ClearEndDateError" min="@startDateString" max="@todayString" />
+                            @if (endDateError != null)
+                            {
+                                <div class="text-red-500 text-xs mt-1">@endDateError</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-end space-x-2">
+                        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
+                        <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
+                    </div>
                 </div>
-            </div>
-            <div class="flex items-center space-x-2">
-                <label for="endDate" class="whitespace-nowrap">Fin:</label>
-                <div class="flex flex-col">
-                    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" @bind="endDate" @oninput="ClearEndDateError" min="@startDateString" max="@todayString" />
-                    @if (endDateError != null)
-                    {
-                        <div class="text-red-500 text-xs mt-1">@endDateError</div>
-                    }
-                </div>
-            </div>
-            <div class="flex items-end space-x-2">
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" @onclick="ApplyFilter">Filtrar</button>
-                <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.IdEntry))">ID</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Date))">Fecha</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Name))">Nombre</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.UnitCost))">Precio Unitario</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Amount))">Cantidad</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Total))">Total</th>
-                <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Existence))">Existencia</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (entrys == null)
-            {
-                <tr>
-                    <td colspan="7" class="text-center py-4">Cargando...</td>
-                </tr>
-            }
-            else if (entrys.Count == 0)
-            {
-                <tr>
-                    <td colspan="7" class="text-center py-4">No hay productos disponibles.</td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var entry in entrys)
-                {
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">@entry.IdEntry</th>
-                        <td class="px-6 py-3">@entry.Date</td>
-                        <td class="px-6 py-3">@entry.Name</td>
-                        <td class="px-6 py-3">@entry.UnitCost</td>
-                        <td class="px-6 py-3">@entry.Amount</td>
-                        <td class="px-6 py-3">@entry.Total</td>
-                        <td class="px-6 py-3">@entry.Existence</td>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.IdEntry))">ID</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Date))">Fecha</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Name))">Nombre</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.UnitCost))">Precio Unitario</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Amount))">Cantidad</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Total))">Total</th>
+                        <th scope="col" class="px-6 py-3 cursor-pointer" @onclick="() => SortTable(nameof(EntryViewModel.Existence))">Existencia</th>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
-</div>
+                </thead>
+                <tbody>
+                    @if (entrys == null)
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4">Cargando...</td>
+                        </tr>
+                    }
+                    else if (entrys.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4">No hay productos disponibles.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var entry in entrys)
+                        {
+                            <tr>
+                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">@entry.IdEntry</th>
+                                <td class="px-6 py-3">@entry.Date</td>
+                                <td class="px-6 py-3">@entry.Name</td>
+                                <td class="px-6 py-3">@entry.UnitCost</td>
+                                <td class="px-6 py-3">@entry.Amount</td>
+                                <td class="px-6 py-3">@entry.Total</td>
+                                <td class="px-6 py-3">@entry.Existence</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private List<EntryViewModel>? entrys;

@@ -14,70 +14,78 @@
 @inject IState _state
 
 @inject NavigationManager _navigation
+<AuthorizeView>
+    <Authorized>
+        <section class="bg-white dark:bg-gray-900">
+            <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+                <h2 class="mb-4 text-xl font-bold text-gray-9 00 dark:text-white">Crear Producto</h2>
+                <form @onsubmit="CreateLoss">
+                    <div Model="loss" class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                        <div class="w-full">
+                            <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
+                            <input type="datetime-local" @bind-value="loss.Date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
+                        </div>
+                        <div>
+                            <label for="productid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
+                            <select @bind="loss.ProductId" id="productid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option selected="">Selecciona una categoria</option>
+                                @foreach (var product in products)
+                                {
+                                    <option value="@product.Id">@product.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="w-full">
+                            <label for="unitcost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Costo Unitario</label>
+                            <input type="text" @bind-value="loss.UnitCost" id="unitcost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="Amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
+                            <input type="text" @bind-value="loss.Amount" id="Amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
+                        </div>
+                        <div class="w-full">
+                            <label for="total" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">monto total</label>
+                            <input type="number" @bind-value="loss.Total" step="0.01" id="total" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                        </div>
+                        <div>
+                            <label for="StateId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
+                            <select @bind="loss.StateId" id="StateId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option selected="">Selecciona una categoria</option>
+                                @foreach (var state in states)
+                                {
+                                    <option value="@state.Id">@state.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label for="LossReasonId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                            <select @bind="loss.LossReasonId" id="LossReasonId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option selected="">Selecciona una marca</option>
+                                @foreach (var reason in lossReasons)
+                                {
+                                    <option value="@reason.Id">@reason.Reason</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            <textarea @bind="loss.Description" id="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                        Guardar Cambios
+                    </button>
+                </form>
 
-<section class="bg-white dark:bg-gray-900">
-    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-9 00 dark:text-white">Crear Producto</h2>
-        <form @onsubmit="CreateLoss">
-            <div Model="loss" class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                <div class="w-full">
-                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
-                    <input type="datetime-local" @bind-value="loss.Date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
-                </div>
-                <div>
-                    <label for="productid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
-                    <select @bind="loss.ProductId" id="productid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una categoria</option>
-                        @foreach (var product in products)
-                        {
-                            <option value="@product.Id">@product.Name</option>
-                        }
-                    </select>
-                </div>
-                <div class="w-full">
-                    <label for="unitcost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Costo Unitario</label>
-                    <input type="text" @bind-value="loss.UnitCost" id="unitcost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
-                </div>
-                <div class="w-full">
-                    <label for="Amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
-                    <input type="text" @bind-value="loss.Amount" id="Amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
-                </div>
-                <div class="w-full">
-                    <label for="total" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">monto total</label>
-                    <input type="number" @bind-value="loss.Total" step="0.01" id="total" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
-                </div>
-                <div>
-                    <label for="StateId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
-                    <select @bind="loss.StateId" id="StateId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una categoria</option>
-                        @foreach (var state in states)
-                        {
-                            <option value="@state.Id">@state.Name</option>
-                        }
-                    </select>
-                </div>
-                <div>
-                    <label for="LossReasonId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                    <select @bind="loss.LossReasonId" id="LossReasonId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option selected="">Selecciona una marca</option>
-                        @foreach (var reason in lossReasons)
-                        {
-                            <option value="@reason.Id">@reason.Reason</option>
-                        }
-                    </select>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                    <textarea @bind="loss.Description" id="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here"></textarea>
-                </div>
             </div>
-            <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                Guardar Cambios
-            </button>
-        </form>
+        </section>
 
-    </div>
-</section>
+
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private LossCreateModel loss = new LossCreateModel();

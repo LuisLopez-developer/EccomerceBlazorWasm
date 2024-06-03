@@ -3,4 +3,12 @@
 
 <PageTitle>Venta</PageTitle>
 
-<Maintenance></Maintenance>
+<AuthorizeView>
+    <Authorized>
+        <Maintenance></Maintenance>
+
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>

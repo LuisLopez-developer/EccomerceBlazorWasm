@@ -8,6 +8,7 @@ namespace EccomerceBlazorWasm.Interfaces
 
         Task<string> UploadImageAsync(IBrowserFile file);
         Task<IEnumerable<string>> UploadImagesAsync(IEnumerable<IBrowserFile> files);
+        Task<string> DeleteObjectsByUrlAsync(List<string> urls);
 
     }
 }

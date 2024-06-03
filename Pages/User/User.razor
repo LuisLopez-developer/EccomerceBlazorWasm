@@ -1,8 +1,15 @@
 ﻿@layout Layout.MainLayout
 @page "/user"
 
-<PageTitle>s</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <Maintenance></Maintenance>
 
+    </Authorized>
+    <NotAuthorized>
+        <RedirectToLogin />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code{
 

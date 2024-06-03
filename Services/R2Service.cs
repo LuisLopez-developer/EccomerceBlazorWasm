@@ -1,11 +1,8 @@
 ﻿using EccomerceBlazorWasm.Interfaces;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+
 
 namespace EccomerceBlazorWasm.Services
 {
@@ -18,6 +15,13 @@ namespace EccomerceBlazorWasm.Services
         {
             _httpClient = httpClientFactory.CreateClient("Auth");
         }
+
+        public async Task<string> DeleteObjectsByUrlAsync(List<string> urls)
+        {
+            var response = await _httpClient.DeleteAsync($"{api}/DeleteObjects/{urls}");
+            return await response.Content.ReadAsStringAsync();
+        }
+
         public async Task<string> UploadImageAsync(IBrowserFile file)
         {
             var content = new MultipartFormDataContent();
@@ -25,7 +29,7 @@ namespace EccomerceBlazorWasm.Services
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
             content.Add(fileContent, "file", file.Name);
 
-            var response = await _httpClient.PostAsync("api/R2/UploadImage", content);
+            var response = await _httpClient.PostAsync($"{api}/UploadImage", content);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();

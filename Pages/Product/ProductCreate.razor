@@ -216,7 +216,7 @@
                         <div class="sm:col-span-3">
                             <div class="grid gap-4 sm:grid-cols-3 sm:gap-4">
                                 <div class="sm:col-span-3">
-                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>                                 
                                     @for (int i = 0; i <= currentFileSelection; i++) // Se genera un nuevo imput despues que se uso el primero u el anterior, esto para evitar el error: "There is no file with ID 1. The file list may have changed"
                                     {
                                         var e = i; // Pasar a "e" el valor de "i", parque se asi se guarde correctame el id
@@ -296,13 +296,10 @@
     private async Task HandleFileSelection(InputFileChangeEventArgs e)
     {
         var maxAllowedFiles = 5;
-        selectedFiles.AddRange(e.GetMultipleFiles(maxAllowedFiles));
 
-        photos.Clear();
-        tempUrls.Clear(); // Limpiar la lista temporal
-
-        foreach (var file in selectedFiles)
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
         {
+
             currentFileSelection++;
 
             var stream = file.OpenReadStream();
@@ -330,7 +327,7 @@
             {
                 photo.IsMain = false;
             }
-
+            selectedFiles.Add(file); // Añade el archivo a la lista selectedFiles
             photos.Add(photo);
             tempUrls.Add(tempUrl); // Agregar la URL temporal a la lista
         }

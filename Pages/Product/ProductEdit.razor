@@ -13,6 +13,7 @@
 @inject IProductBrand _productBrand
 @inject IProductCategory _productCategory
 @inject IState _state
+@inject EccomerceBlazorWasm.Interfaces.IR2 _r2
 
 @inject NavigationManager _navigation
 
@@ -212,8 +213,48 @@
                             <input type="number" @bind-value="product.Specifications.BatteryCapacity" id="BatteryCapacity" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         </div>
                         <div class="sm:col-span-3">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
-                            <InputFile OnChange="HandleFileSelection" multiple id="default_size" class="block w-full mb-5 text-sm text-gray-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                            <div class="grid gap-4 sm:grid-cols-3 sm:gap-4">
+                                <div class="sm:col-span-3">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="default_size">Subir Imagenes</label>
+                                    @for (int i = 0; i <= currentFileSelection; i++) // Se genera un nuevo imput despues que se uso el primero u el anterior, esto para evitar el error: "There is no file with ID 1. The file list may have changed"
+                                    {
+                                        var e = i; // Pasar a "e" el valor de "i", parque se asi se guarde correctame el id
+                                        <InputFile OnChange="HandleFileSelection" multiple id="@($"imput_file_{e}")"
+                                                   class="block w-full mb-5 text-sm text-gray-900 border border-blue-300 rounded-lg cursor-pointer bg-blue-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                   style="@(i < currentFileSelection ? "display: none;" : "")" />
+                                        // Oculta a los imputFile excepto el ultimo
+                                    }
+                                </div>
+                                @foreach (var imageUrl in product.Photos)
+                                {
+                                    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+                                        <div class="relative">
+                                            <img class="object-scale-down rounded-t-lg h-300 w-252" src="@imageUrl.Url" alt="Imagenes del celular" />
+
+                                            <!-- Botón superpuesto -->
+                                            <button @onclick="() => RemoveImage(imageUrl.Url)" type="button" class="absolute bottom-2 left-2 px-1 py-1 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                <svg class="rtl:rotate-180 w-4 h-4  text-white-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="p-5 flex justify-center items-center">
+                                            @if (IsMainImage(imageUrl.FileName))
+                                            {
+                                                <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                                                    <span class="w-3 h-3 me-1 bg-green-500 rounded-full"></span>
+                                                    <h5 class="text-base">Principal</h5>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <button @onclick="() => SetAsMainImage(imageUrl.FileName)" type="button" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">Seleccionar</button>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -236,23 +277,147 @@
     private List<StateViewModel> states = new List<StateViewModel>();
 
     private List<IBrowserFile> selectedFiles = new List<IBrowserFile>();
+    private List<string> tempUrls = new List<string>(); // Lista temporal para las URLs base64
+    int currentFileSelection = 0;
+    private string? mainImageFileName;
 
-    private void HandleFileSelection(InputFileChangeEventArgs e)
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
     {
-        selectedFiles.AddRange(e.GetMultipleFiles());
+
+        var maxAllowedFiles = 5;
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            currentFileSelection++;
+
+            var stream = file.OpenReadStream();
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var bytes = ms.ToArray();
+            var base64 = Convert.ToBase64String(bytes);
+            var tempUrl = $"data:{file.ContentType};base64,{base64}";
+            string customFileName = $"CustomName_{currentFileSelection}{Path.GetExtension(file.Name)}{DateTime.Now:yyyyMMddHHmmssfff}";
+
+            var photo = new ProductPhotoViewModel
+                {
+                    Url = tempUrl, // Usar la URL temporal por ahora
+                    FileName = customFileName,
+                    ProductId = 0 // El productId puede ser cero ya que la API vincula las fotos enviadas con este producto que se creará
+                };
+
+            if (product.Photos.Count == 0) //Si valida que no hay fotos, convertira a la nueva "photo" como main
+            {
+                photo.IsMain = true;
+                mainImageFileName = customFileName;
+            }
+            else
+            {
+                photo.IsMain = false;
+            }
+            selectedFiles.Add(file); // Añade el archivo a la lista selectedFiles
+            product.Photos.Add(photo);
+            tempUrls.Add(tempUrl); // Agregar la URL temporal a la lista
+        }
+    }
+
+    private void RemoveImage(string imageUrl)
+    {
+        int index = product.Photos.FindIndex(photo => photo.Url == imageUrl);
+        if (index >= 0)
+        {
+            bool isMainImageBeingRemoved = product.Photos[index].IsMain;
+
+            product.Photos.RemoveAt(index);
+            if (index < selectedFiles.Count)
+            {
+                selectedFiles.RemoveAt(index);
+            }
+            if (index < tempUrls.Count)
+            {
+                tempUrls.RemoveAt(index);
+            }
+            currentFileSelection--;
+
+            // Actualizar la imagen principal si se está eliminando la actual principal
+            if (isMainImageBeingRemoved && product.Photos.Count > 0)
+            {
+                SetNextMainImage();
+            }
+
+        }
+    }
+
+    private void SetNextMainImage()
+    {
+        if (product.Photos.Count > 0)
+        {
+            product.Photos[0].IsMain = true;
+            mainImageFileName = product.Photos[0].FileName;
+        }
+        else
+        {
+            mainImageFileName = null;
+        }
+    }
+
+    private void SetAsMainImage(string fileName)
+    {
+        foreach (var photo in product.Photos)
+        {
+            if (photo.FileName == fileName)
+            {
+                photo.IsMain = true;
+                mainImageFileName = fileName;
+            }
+            else
+            {
+                photo.IsMain = false;
+            }
+        }
+    }
+
+    private bool IsMainImage(string fileName)
+    {
+        return fileName == mainImageFileName;
     }
 
     protected override async Task OnInitializedAsync()
-    {
+    {   
         product = await _product.GetByIdAsync(productId);
         productBrands = await _productBrand.GetAllAsync();
         productCategories = await _productCategory.GetAllAsync();
         states = await _state.GetAllAsync();
-        
+
+        if (product.Photos != null)
+        {
+            currentFileSelection += product.Photos.Count(); // Actualiza la cantidad por la cantidad de fotos que se trae
+
+            foreach (var photo in product.Photos)
+            {
+                tempUrls.Add(photo.Url); // Añadir las url's, para als url's temporales
+
+                if (photo.IsMain)
+                {
+                    mainImageFileName = photo.FileName; // Guardar el nombre del archivo de la foto principal
+                }
+            }
+        }
     }
 
     private async Task UpdateProduct()
     {
+        if (selectedFiles.Any())
+        {
+            var urls = (await _r2.UploadImagesAsync(selectedFiles)).ToList();
+
+            // Asignar las URLs correctas a las fotos
+            int newPhotoIndex = product.Photos.Count - selectedFiles.Count; // Índice de nuevas fotos
+            for (int i = 0; i < urls.Count; i++)
+            {
+                product.Photos[newPhotoIndex + i].Url = urls[i];
+            }
+        }
+        Console.WriteLine("ds" + product.Photos);
         await _product.UpdateAsync(productId, product);
         _navigation.NavigateTo(URLS.PRODUCT_LIST);
     }

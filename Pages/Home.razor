@@ -3,13 +3,207 @@
 
 <PageTitle>Inicio</PageTitle>
 
-<h1 class="text-4xl font-bold">Hello, Peru!</h1>
+<!-- DIV DE LAS CARDS -->
 
-<div class="text-xl">Welcome to your new app.</div>
-<div class="mt-5">This is a starter template for Blazor WebAssembly that uses
-    <a href="https://tailwindcss.com/" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Tailwind
-        CSS</a> and <a href="https://flowbite.com/"
-        class="font-medium text-yellow-600 dark:text-red-500 hover:underline">Flowbite</a> UI
-    library for
-    styling.
+<div class="flex flex-wrap gap-4 justify-center">
+    <!-- Primera Card: Ingresos Totales -->
+    <div class="flex-1 min-w-[250px] max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center justify-between">
+        <div>
+            <a>
+                <h5 class="mb-2 text-2xl font-semibold tracking-tight text-blue-500 dark:text-blue-400">Ingresos Totales</h5>
+            </a>
+            <div class="flex items-center mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                </svg>
+                <p class="mb-0 text-lg font-bold text-gray-900 dark:text-white">$45,000</p>
+            </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 ml-2 text-gray-500 dark:text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+    </div>
+
+
+    <!-- Segunda Card: Total de Ventas -->
+    <div class="flex-1 min-w-[250px] max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center justify-between">
+        <div>
+            <a>
+                <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Total de Ventas</h5>
+            </a>
+            <p class="mb-0 text-lg font-bold text-gray-900 dark:text-white">1200 Productos</p>
+            <div class="flex items-center mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                </svg>
+                <p class="mb-0 font-normal text-gray-500 dark:text-gray-400">+8% desde el mes pasado</p>
+            </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 ml-2 text-gray-500 dark:text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+        </svg>
+    </div>
+
+
+    <!-- Tercera Card: Total de Clientes Nuevos -->
+    <div class="flex-1 min-w-[250px] max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center justify-between">
+        <div>
+            <a>
+                <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Total de Clientes Nuevos</h5>
+            </a>
+            <p class="mb-0 text-lg font-bold text-gray-900 dark:text-white">300 Nuevos </p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 ml-2 text-gray-500 dark:text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+        </svg>
+    </div>
+
+    <!-- Cuarto Card: Productos Nuevos -->
+
+    <div class="flex-1 min-w-[250px] max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex items-center justify-between">
+        <div>
+            <a>
+                <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Productos Nuevos</h5>
+            </a>
+            <p class="mb-0 text-lg font-bold text-gray-900 dark:text-white">30 teléfonos</p>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-11 h-11 ml-1 text-gray-500 dark:text-gray-400">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+        </svg>
+    </div>
 </div>
+
+
+<!-- DIV CON EL NUEVO DIV -->
+
+<div class="flex justify-between w-full max-w-6xl p-5 space-x-4">
+
+    <!-- Card -->
+    <div class="bg-white rounded-lg p-6 shadow-lg max-w-sm">
+        <h2 class="text-xl font-semibold mb-2 text-black">Iphone 15</h2>
+        <div class="flex items-center mb-2">
+            <div class="flex text-yellow-400">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927C9.36 2.034 10.64 2.034 10.951 2.927L12.368 7.036A1 1 0 0013.292 8h4.222c.969 0 1.372 1.24.588 1.81l-3.403 2.47a1 1 0 00-.364 1.118l1.41 4.3c.336.993-.807 1.82-1.652 1.227l-3.596-2.519a1 1 0 00-1.17 0l-3.596 2.519c-.846.593-1.988-.234-1.652-1.227l1.41-4.3a1 1 0 00-.364-1.118L2.898 9.81C2.113 9.24 2.517 8 3.486 8h4.222a1 1 0 00.924-.964l1.417-4.11z"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927C9.36 2.034 10.64 2.034 10.951 2.927L12.368 7.036A1 1 0 0013.292 8h4.222c.969 0 1.372 1.24.588 1.81l-3.403 2.47a1 1 0 00-.364 1.118l1.41 4.3c.336.993-.807 1.82-1.652 1.227l-3.596-2.519a1 1 0 00-1.17 0l-3.596 2.519c-.846.593-1.988-.234-1.652-1.227l1.41-4.3a1 1 0 00-.364-1.118L2.898 9.81C2.113 9.24 2.517 8 3.486 8h4.222a1 1 0 00.924-.964l1.417-4.11z"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927C9.36 2.034 10.64 2.034 10.951 2.927L12.368 7.036A1 1 0 0013.292 8h4.222c.969 0 1.372 1.24.588 1.81l-3.403 2.47a1 1 0 00-.364 1.118l1.41 4.3c.336.993-.807 1.82-1.652 1.227l-3.596-2.519a1 1 0 00-1.17 0l-3.596 2.519c-.846.593-1.988-.234-1.652-1.227l1.41-4.3a1 1 0 00-.364-1.118L2.898 9.81C2.113 9.24 2.517 8 3.486 8h4.222a1 1 0 00.924-.964l1.417-4.11z"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927C9.36 2.034 10.64 2.034 10.951 2.927L12.368 7.036A1 1 0 0013.292 8h4.222c.969 0 1.372 1.24.588 1.81l-3.403 2.47a1 1 0 00-.364 1.118l1.41 4.3c.336.993-.807 1.82-1.652 1.227l-3.596-2.519a1 1 0 00-1.17 0l-3.596 2.519c-.846.593-1.988-.234-1.652-1.227l1.41-4.3a1 1 0 00-.364-1.118L2.898 9.81C2.113 9.24 2.517 8 3.486 8h4.222a1 1 0 00.924-.964l1.417-4.11z"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927C9.36 2.034 10.64 2.034 10.951 2.927L12.368 7.036A1 1 0 0013.292 8h4.222c.969 0 1.372 1.24.588 1.81l-3.403 2.47a1 1 0 00-.364 1.118l1.41 4.3c.336.993-.807 1.82-1.652 1.227l-3.596-2.519a1 1 0 00-1.17 0l-3.596 2.519c-.846.593-1.988-.234-1.652-1.227l1.41-4.3a1 1 0 00-.364-1.118L2.898 9.81C2.113 9.24 2.517 8 3.486 8h4.222a1 1 0 00.924-.964l1.417-4.11z"></path></svg>
+            </div>
+            <span class="ml-2 text-gray-600">Ver las 137 reseñas</span>
+        </div>
+        <p class="mb-4 text-gray-600">Me encanta la capacidad y velocidad que maneja</p>
+        <div>
+            <span class="font-medium text-black">CAPACIDAD DE ALMACENAMIENTO</span>
+            <div class="flex space-x-2 mt-2">
+                <button class="px-4 py-2 bg-gray-200 text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">64 GB</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">128 GB</button>
+                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">256 GB</button>
+            </div>
+        </div>
+        <a href="/Home" class="mt-4 text-blue-500 hover:underline">Leer mas reseñas</a>
+    </div>
+
+
+
+    <!-- Table -->
+
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full lg:w-1/2 ml-4">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        Product name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Color
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+                        Category
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Price
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        Apple MacBook Pro 17"
+                    </th>
+                    <td class="px-6 py-4">
+                        Silver
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        Laptop
+                    </td>
+                    <td class="px-6 py-4">
+                        $2999
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        Microsoft Surface Pro
+                    </th>
+                    <td class="px-6 py-4">
+                        White
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        Laptop PC
+                    </td>
+                    <td class="px-6 py-4">
+                        $1999
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        Magic Mouse 2
+                    </th>
+                    <td class="px-6 py-4">
+                        Black
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        Accessories
+                    </td>
+                    <td class="px-6 py-4">
+                        $99
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        Google Pixel Phone
+                    </th>
+                    <td class="px-6 py-4">
+                        Gray
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        Phone
+                    </td>
+                    <td class="px-6 py-4">
+                        $799
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                        Apple Watch 5
+                    </th>
+                    <td class="px-6 py-4">
+                        Red
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                        Wearables
+                    </td>
+                    <td class="px-6 py-4">
+                        $999
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+

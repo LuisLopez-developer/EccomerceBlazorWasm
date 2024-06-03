@@ -341,10 +341,31 @@
         int index = photos.FindIndex(photo => photo.Url == imageUrl);
         if (index >= 0)
         {
+            bool isMainImageBeingRemoved = photos[index].IsMain;
+
             photos.RemoveAt(index);
             selectedFiles.RemoveAt(index);
             tempUrls.RemoveAt(index); // Remover la URL temporal correspondiente
             currentFileSelection--;
+
+            // Actualizar la imagen principal si se está eliminando la actual principal
+            if (isMainImageBeingRemoved && photos.Count > 0)
+            {
+                SetNextMainImage();
+            }
+        }
+    }
+
+    private void SetNextMainImage()
+    {
+        if (photos.Count > 0)
+        {
+            photos[0].IsMain = true;
+            mainImageFileName = photos[0].FileName;
+        }
+        else
+        {
+            mainImageFileName = null;
         }
     }
 

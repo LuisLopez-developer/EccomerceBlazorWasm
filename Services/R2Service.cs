@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components.Forms;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 
 namespace EccomerceBlazorWasm.Services
@@ -16,10 +18,19 @@ namespace EccomerceBlazorWasm.Services
             _httpClient = httpClientFactory.CreateClient("Auth");
         }
 
+        private readonly JsonSerializerOptions jsonSerializerOptions =
+          new()
+          {
+              PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+          };
+
         public async Task<string> DeleteObjectsByUrlAsync(List<string> urls)
         {
-            var response = await _httpClient.DeleteAsync($"{api}/DeleteObjects/{urls}");
-            return await response.Content.ReadAsStringAsync();
+            var emptyContent = new StringContent(JsonSerializer.Serialize(urls), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync($"{api}/DeleteObjects", emptyContent);
+            response.EnsureSuccessStatusCode();
+
+            return response.Content.ToString();
         }
 
         public async Task<string> UploadImageAsync(IBrowserFile file)

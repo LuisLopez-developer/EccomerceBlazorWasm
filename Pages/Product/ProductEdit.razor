@@ -406,6 +406,14 @@
 
     private async Task UpdateProduct()
     {
+
+        // Obtener las URLs que han sido eliminadas
+        // var deletedUrls = tempUrls.Except(product.Photos.Select(photo => photo.Url)).ToList();
+
+        // Eliminar las imágenes correspondientes en el servidor
+        // await _r2.DeleteObjectsByUrlAsync(deletedUrls);
+
+        // Actualizar el producto
         if (selectedFiles.Any())
         {
             var urls = (await _r2.UploadImagesAsync(selectedFiles)).ToList();
@@ -421,5 +429,6 @@
         await _product.UpdateAsync(productId, product);
         _navigation.NavigateTo(URLS.PRODUCT_LIST);
     }
+
 
 }

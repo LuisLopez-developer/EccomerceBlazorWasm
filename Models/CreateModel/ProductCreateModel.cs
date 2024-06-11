@@ -6,7 +6,7 @@ namespace EccomerceBlazorWasm.Models.CreateModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public  string Code { get; set; }
+        public  string SKU { get; set; }
         public int? StateId { get; set; }
         public DateTime? Date { get; set; }
         public decimal Price { get; set; }

@@ -14,7 +14,7 @@ builder.Services.AddAuthorizationCore();
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddBlazoredLocalStorage(); //para alamcenar en el local storage
+builder.Services.AddBlazoredLocalStorage(); //para almacenar en el local storage
 builder.Services.AddTransient<CutomHttpHandler>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped(sp => (IAccountManagement)sp.GetRequiredService<AuthenticationStateProvider>());

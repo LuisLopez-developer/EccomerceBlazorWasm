@@ -29,12 +29,11 @@
                         <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                         </svg>
-                        Agregar Razon de Perdida
+                        Agregar Marca
                     </button>
                 </div>
             </div>
         </div>
-
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -61,7 +60,7 @@
                     else if (productBrands.Count == 0)
                     {
                         <tr>
-                            <td colspan="3" class="text-center py-4">No hay categorías de productos disponibles.</td>
+                            <td colspan="3" class="text-center py-4">No hay marcas de productos disponibles.</td>
                         </tr>
                     }
                     else
@@ -90,21 +89,22 @@
             </table>
         </div>
 
-        <!-- Modal para crear una marca -->
         @if (showModal)
         {
             <!-- Main modal -->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full  bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <!-- Modal header -->
                         <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Add Product
+                                Agregar Marca
                             </h3>
-                            <button @onclick="HideModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <button @onclick="HideModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
                                 <span class="sr-only">Close modal</span>
                             </button>
                         </div>
@@ -112,19 +112,26 @@
                         <form @onsubmit="AddBrand">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div class="col-span-2">
-                                    <label for="brandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input @bind="newBrandName" type="text" id="brandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <label for="brandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                                    <input @bind="newBrandName" type="text" id="brandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba el nombre de la marca" oninput="validarLetras(this)">
                                     <script>
                                         function validarLetras(input) {
-                                            input.value = input.value.replace(/[^a-zA-Z]/g, '');
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Permite letras y espacios
                                         }
                                     </script>
+                                    <!-- Contenedor para el mensaje de error -->
+                                    <div class="mt-1 h-6">
+                                        <div class="h-full bg-red-200 text-red-600 p-2 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                Agregar Categoria
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                Agregar
                             </button>
                         </form>
                     </div>
@@ -132,36 +139,45 @@
             </div>
         }
 
-        <!-- Modal para editar una marca -->
         @if (_showModalEdit)
         {
             <!-- Main modal -->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full  bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
-                    <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                        <button @onclick="HideModalEdit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                        <!-- Modal header -->
-                        <!-- Agrega el código necesario para el encabezado del modal de edición -->
-                        <!-- Modal body -->
+                        <!-- Modal content -->
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Editar Marca
+                            </h3>
+                            <button @onclick="HideModalEdit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
                         <form @onsubmit="EditBrand">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div class="col-span-2">
-                                    <label for="editBrandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input @bind="selectedBrand.Name" type="text" id="editBrandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <label for="editBrandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                                    <input @bind="tempBrandName" type="text" id="editBrandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba el nombre de la marca" oninput="validarLetras(this)">
                                     <script>
                                         function validarLetras(input) {
-                                            input.value = input.value.replace(/[^a-zA-Z]/g, '');
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Permite letras y espacios
                                         }
                                     </script>
+                                    <div class="mt-1 h-6">
+                                        <div class="h-full bg-red-200 text-red-600 p-2 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
                                 Guardar Cambios
                             </button>
                         </form>
@@ -186,7 +202,7 @@
                         <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                         </svg>
-                        <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar la categoría?</p>
+                        <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar esta marca?</p>
                         <div class="flex justify-center items-center space-x-4">
                             <button type="button" @onclick="HideDeleteModal" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                 No, cancelar
@@ -216,6 +232,9 @@
     private bool _showModalDelete = false;
 
     private string newBrandName = string.Empty;
+    private string tempBrandName = string.Empty; // Campo temporal para almacenar el nombre de la marca editada
+    private string errorMessage = string.Empty; // Mensaje de error para mostrar en el modal
+    private ProductBrandViewModel selectedBrand; // Define el objeto seleccionado para la edición
 
     protected override async Task OnInitializedAsync()
     {
@@ -231,7 +250,7 @@
     {
         if (!string.IsNullOrWhiteSpace(newBrandName))
         {
-            // Regex to check if the brand name contains only letters and spaces
+            // Regex para verificar si el nombre de la marca contiene solo letras y espacios
             Regex validBrandNameRegex = new Regex(@"^[a-zA-Z\s]+$");
 
             if (validBrandNameRegex.IsMatch(newBrandName))
@@ -246,27 +265,24 @@
                 if (result != null)
                 {
                     HideModal();
-
                     await SearchBrands();
-
                     newBrandName = string.Empty; // Limpiar el campo del nombre de la nueva marca después de agregarla
                 }
                 else
                 {
-                    await JS.InvokeVoidAsync("alert", "Error al crear la marca.");
+                    errorMessage = "Error al crear la marca."; // Actualizar el mensaje de error
                 }
             }
             else
             {
-                await JS.InvokeVoidAsync("alert", "El nombre de la marca solo puede contener letras y espacios.");
+                errorMessage = "Solo puede contener letras y espacios."; // Actualizar el mensaje de error
             }
         }
         else
         {
-            await JS.InvokeVoidAsync("alert", "El nombre de la marca no puede estar vacío.");
+            errorMessage = "El nombre no puede estar vacío.";
         }
     }
-
 
     private void ShowModal()
     {
@@ -276,12 +292,15 @@
     private void HideModal()
     {
         showModal = false;
+        newBrandName = string.Empty;
+        errorMessage = "";
     }
-
 
     private void HideModalEdit()
     {
         _showModalEdit = false;
+        tempBrandName = string.Empty;
+        errorMessage = string.Empty;
     }
 
     private void HideDeleteModal()
@@ -289,70 +308,68 @@
         _showModalDelete = false;
     }
 
-
     private void ShowDeleteModal(ProductBrandViewModel brand)
     {
         selectedBrand = brand;
         _showModalDelete = true;
     }
 
-    private ProductBrandViewModel selectedBrand;
-
     private void ShowEditModal(ProductBrandViewModel brand)
     {
         selectedBrand = brand;
+        tempBrandName = selectedBrand.Name;
         _showModalEdit = true;
+        errorMessage = string.Empty;
     }
 
     private async Task EditBrand()
     {
-        if (!string.IsNullOrWhiteSpace(selectedBrand.Name))
+        errorMessage = string.Empty;
+        if (selectedBrand != null && !string.IsNullOrWhiteSpace(tempBrandName))
         {
-            // Regex to check if the brand name contains only letters and spaces
             Regex validBrandNameRegex = new Regex(@"^[a-zA-Z\s]+$");
 
-            if (validBrandNameRegex.IsMatch(selectedBrand.Name))
+            if (validBrandNameRegex.IsMatch(tempBrandName))
             {
-                HideModalEdit();
+                selectedBrand.Name = tempBrandName; // Aplicar el nombre temporal a la marca
                 var result = await _productBrand.UpdateAsync(selectedBrand.Id, selectedBrand);
 
                 if (result)
                 {
-                    await SearchBrands(); // Actualiza la lista de marcas después de editar
+                    await SearchBrands();
                 }
                 else
                 {
-                    await JS.InvokeVoidAsync("alert", "Error al editar la marca.");
+                    errorMessage = "Error al editar la marca.";
                 }
+
+                HideModalEdit();
             }
             else
             {
-                await JS.InvokeVoidAsync("alert", "El nombre de la marca solo puede contener letras y espacios.");
+                errorMessage = "Solo puede contener letras y espacios.";
             }
         }
         else
         {
-            await JS.InvokeVoidAsync("alert", "El nombre de la marca no puede estar vacío.");
+            errorMessage = "El nombre no puede estar vacío.";
         }
     }
-
 
     private async Task DeleteBrand()
     {
         _showModalDelete = false;
-
-        productBrands?.Remove(selectedBrand); //Eliminar de la lista local, mientras la eliminación se hace en segundo plano
+        productBrands?.Remove(selectedBrand);
 
         var result = await _productBrand.DeleteAsync(selectedBrand.Id);
 
         if (result)
         {
-            await SearchBrands(); // Actualiza la lista de marcas después de eliminar
+            await SearchBrands();
         }
         else
         {
-            // Manejar el caso en el que la marca no se pudo eliminar
+            errorMessage = "Error al eliminar la marca.";
         }
     }
-
 }

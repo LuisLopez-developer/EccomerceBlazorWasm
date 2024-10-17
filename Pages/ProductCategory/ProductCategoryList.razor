@@ -3,41 +3,40 @@
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Interfaces.PorductInterface
 @using EccomerceBlazorWasm.Models.ViewModel
-@inject IProductCategory _productCategory
-@inject NavigationManager _navigation
+@inject IProductCategory _productCategory;
 @inject IJSRuntime JS
-@using System.Text.RegularExpressions
+@using System.Text.RegularExpressions;
 
 <AuthorizeView>
     <Authorized>
-        <div class="flex justify-between items-center mx-4 mt-4">
-            <!-- Agregado margen horizontal y superior -->
-
-            <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
-                <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                    <div class="w-full md:w-1/2">
-                        <form class="flex items-center" @onsubmit="SearchCategories">
-                            <InputSearch></InputSearch>
-                        </form>
-                    </div>
+        <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+            <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
+                <div class="w-full md:w-1/2">
+                    <form class="flex items-center" @onsubmit="SearchCategories">
+                        <label for="simple-search" class="sr-only">Buscar</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 11-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="text" id="simple-search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Buscar" @bind="searchTerm">
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Buscar</button>
+                    </form>
                 </div>
-            </div>
-
-
-
-            <!-- ButtonAdd Component -->
-            <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                <button type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" @onclick="ShowModal">
-                    <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                    </svg>
-                    Agregar Categoria
-                </button>
+                <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
+                    <button type="button" class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" @onclick="ShowModal">
+                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                        </svg>
+                        Agregar Categoría
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-            <!-- Agregado margen superior -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -91,42 +90,50 @@
             </table>
         </div>
 
-        <!-- Modal para crear una categoria -->
+        <!-- Modal para agregar una categoría -->
         @if (showModal)
         {
             <!-- Main modal -->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full  bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <!-- Modal header -->
                         <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Add Product
+                                Agregar Categoría
                             </h3>
-                            <button @onclick="HideModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                <span class="sr-only">Close modal</span>
+                            <button @onclick="HideModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="sr-only">Cerrar modal</span>
                             </button>
                         </div>
                         <!-- Modal body -->
                         <form @onsubmit="AddCategory">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                <script>
-                                    function validarLetras(input) {
-                                        input.value = input.value.replace(/[^a-zA-Z]/g, '');
-                                    }
-                                </script>
-
                                 <div class="col-span-2">
-                                    <label for="categoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input @bind="newCategoryName" type="text" id="categoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <label for="categoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                                    <input @bind="newCategoryName" type="text" id="categoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba el nombre de la categoría" oninput="validarLetras(this)">
+                                    <script>
+                                        function validarLetras(input) {
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+                                        }
+                                    </script>
+                                    <!-- Contenedor para el mensaje de error -->
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                Agregar Categoria
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                Agregar
                             </button>
                         </form>
                     </div>
@@ -138,37 +145,45 @@
         @if (_showModalEdit)
         {
             <!-- Main modal -->
-            <div id="crud-modal-edit" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <!-- Modal header -->
-                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b dark:border-gray-600">
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Editar Categoria
+                                Editar Categoría
                             </h3>
-                            <button @onclick="hideModalEdit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editModal">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <button @onclick="HideModalEdit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
                                 <span class="sr-only">Cerrar modal</span>
                             </button>
                         </div>
                         <!-- Modal body -->
                         <form @onsubmit="EditCategory">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                <script>
-                                    function validarLetras(input) {
-                                        input.value = input.value.replace(/[^a-zA-Z]/g, '');
-                                    }
-                                </script>
-
                                 <div class="col-span-2">
-                                    <label for="editCategoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input @bind="selectedCategory.Name" type="text" id="editCategoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <label for="editCategoryName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                                    <input @bind="tempCategoryName" type="text" id="editCategoryName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba el nombre de la categoría" oninput="validarLetras(this)">
+                                    <script>
+                                        function validarLetras(input) {
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+                                        }
+                                    </script>
+                                    <!-- Contenedor para el mensaje de error -->
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
                                 Guardar Cambios
                             </button>
                         </form>
@@ -176,7 +191,6 @@
                 </div>
             </div>
         }
-
 
         <!-- Modal para eliminar una categoría -->
         @if (_showModalDelete)
@@ -194,7 +208,7 @@
                         <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                         </svg>
-                        <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar la categoría?</p>
+                        <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas eliminar esta categoría?</p>
                         <div class="flex justify-center items-center space-x-4">
                             <button type="button" @onclick="HideDeleteModal" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                 No, cancelar
@@ -214,7 +228,6 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
 @code {
     private List<ProductCategoryViewModel>? productCategories;
     private string searchTerm = string.Empty;
@@ -224,6 +237,9 @@
     private bool _showModalDelete = false;
 
     private string newCategoryName = string.Empty;
+    private string tempCategoryName = string.Empty; // Campo temporal para almacenar el nombre de la categoría editada
+    private string errorMessage = string.Empty; // Mensaje de error para mostrar en el modal
+    private ProductCategoryViewModel selectedCategory; // Define el objeto seleccionado para la edición
 
     protected override async Task OnInitializedAsync()
     {
@@ -237,37 +253,41 @@
 
     private async Task AddCategory()
     {
-        
-        Regex validCategoryNameRegex = new Regex(@"^[a-zA-Z\s]+$");
-
-        if (!string.IsNullOrWhiteSpace(newCategoryName) && validCategoryNameRegex.IsMatch(newCategoryName))
+        errorMessage = string.Empty;
+        if (!string.IsNullOrWhiteSpace(newCategoryName))
         {
-            var newCategory = new ProductCategoryViewModel
+            Regex validCategoryNameRegex = new Regex(@"^[a-zA-Z\s]+$");
+
+            if (validCategoryNameRegex.IsMatch(newCategoryName))
+            {
+                var newCategory = new ProductCategoryViewModel
                 {
                     Name = newCategoryName
                 };
 
-            var result = await _productCategory.CreateAsync(newCategory);
+                var result = await _productCategory.CreateAsync(newCategory);
 
-            if (result != null)
-            {
-                HideModal();
-                await SearchCategories();
-                newCategoryName = string.Empty;
-                await JS.InvokeVoidAsync("alert", "Categoría agregada con éxito.");
+                if (result != null)
+                {
+                    HideModal();
+                    await SearchCategories();
+                    newCategoryName = string.Empty;
+                }
+                else
+                {
+                    errorMessage = "Error al agregar la categoría.";
+                }
             }
             else
             {
-                await JS.InvokeVoidAsync("alert", "Error al agregar la categoría.");
+                errorMessage = "Solo puede contener letras y espacios.";
             }
         }
         else
         {
-            await JS.InvokeVoidAsync("alert", "El nombre de la categoría no puede estar vacío y debe contener solo letras.");
+            errorMessage = "El nombre no puede estar vacío.";
         }
     }
-
-
 
     private void ShowModal()
     {
@@ -277,12 +297,15 @@
     private void HideModal()
     {
         showModal = false;
+        newCategoryName = string.Empty;
+        errorMessage = string.Empty;
     }
 
-
-    private void hideModalEdit()
+    private void HideModalEdit()
     {
         _showModalEdit = false;
+        tempCategoryName = string.Empty;
+        errorMessage = string.Empty;
     }
 
     private void HideDeleteModal()
@@ -290,67 +313,68 @@
         _showModalDelete = false;
     }
 
-
     private void ShowDeleteModal(ProductCategoryViewModel category)
     {
         selectedCategory = category;
         _showModalDelete = true;
     }
 
-    private ProductCategoryViewModel selectedCategory;
-
     private void ShowEditModal(ProductCategoryViewModel category)
     {
         selectedCategory = category;
+        tempCategoryName = selectedCategory.Name;
         _showModalEdit = true;
+        errorMessage = string.Empty;
     }
 
     private async Task EditCategory()
     {
-        
-        Regex validCategoryNameRegex = new Regex(@"^[a-zA-Z\s]+$");
-
-        if (!string.IsNullOrWhiteSpace(selectedCategory.Name) && validCategoryNameRegex.IsMatch(selectedCategory.Name))
+        errorMessage = string.Empty;
+        if (selectedCategory != null && !string.IsNullOrWhiteSpace(tempCategoryName))
         {
-            hideModalEdit();
+            Regex validCategoryNameRegex = new Regex(@"^[a-zA-Z\s]+$");
 
-            var result = await _productCategory.UpdateAsync(selectedCategory.Id, selectedCategory);
-
-            if (result)
+            if (validCategoryNameRegex.IsMatch(tempCategoryName))
             {
-                await SearchCategories(); // Actualiza la lista de categorías después de editar
-                await JS.InvokeVoidAsync("alert", "Categoría editada con éxito.");
+                selectedCategory.Name = tempCategoryName;
+                var result = await _productCategory.UpdateAsync(selectedCategory.Id, selectedCategory);
+
+                if (result)
+                {
+                    await SearchCategories();
+                }
+                else
+                {
+                    errorMessage = "Error al editar la categoría.";
+                }
+
+                HideModalEdit();
             }
             else
             {
-                await JS.InvokeVoidAsync("alert", "Error al editar la categoría.");
+                errorMessage = "Solo puede contener letras y espacios.";
             }
         }
         else
         {
-            await JS.InvokeVoidAsync("alert", "El nombre de la categoría no puede estar vacío y debe contener solo letras.");
+            errorMessage = "El nombre no puede estar vacío.";
         }
-
-        hideModalEdit(); // Asegura que el modal se cierre incluso si la validación falla
     }
-
 
     private async Task DeleteCategory()
     {
         _showModalDelete = false;
-
-        productCategories?.Remove(selectedCategory); //Eliminar de la fila de manera local, mientras la eliminacion se hace en segundo plano
+        productCategories?.Remove(selectedCategory);
 
         var result = await _productCategory.DeleteAsync(selectedCategory.Id);
 
-        if (result) 
+        if (result)
         {
-            await SearchCategories(); // Actualiza la lista de categorías después de eliminar
+            await SearchCategories();
         }
         else
         {
-            // Manejar el caso en el que la categoría no se pudo eliminar
+            errorMessage = "Error al eliminar la categoría.";
         }
     }
-
 }

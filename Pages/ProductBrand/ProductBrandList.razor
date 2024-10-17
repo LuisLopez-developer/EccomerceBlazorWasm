@@ -120,8 +120,8 @@
                                         }
                                     </script>
                                     <!-- Contenedor para el mensaje de error -->
-                                    <div class="mt-1 h-6">
-                                        <div class="h-full bg-red-200 text-red-600 p-2 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
                                             @errorMessage
                                         </div>
                                     </div>
@@ -167,8 +167,8 @@
                                             input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Permite letras y espacios
                                         }
                                     </script>
-                                    <div class="mt-1 h-6">
-                                        <div class="h-full bg-red-200 text-red-600 p-2 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
                                             @errorMessage
                                         </div>
                                     </div>

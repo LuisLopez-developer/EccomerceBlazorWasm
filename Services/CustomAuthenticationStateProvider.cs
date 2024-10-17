@@ -179,7 +179,7 @@ namespace EccomerceBlazorWasm.Services
             return new FormResult
             {
                 Succeeded = false,
-                ErrorList = ["Correo electrónico inválido y / o contraseña."]
+                ErrorList = ["Usuario inválido y / o contraseña."]
             };
         }
 

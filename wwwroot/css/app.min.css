@@ -1232,10 +1232,6 @@ input:checked + .toggle-bg {
   margin-bottom: 1.25rem;
 }
 
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
 .me-1 {
   margin-inline-end: 0.25rem;
 }
@@ -1258,10 +1254,6 @@ input:checked + .toggle-bg {
 
 .ml-2 {
   margin-left: 0.5rem;
-}
-
-.ml-3 {
-  margin-left: 0.75rem;
 }
 
 .ml-4 {
@@ -1348,6 +1340,10 @@ input:checked + .toggle-bg {
   height: 2.75rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-2 {
   height: 0.5rem;
 }
@@ -1396,6 +1392,10 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1406,6 +1406,10 @@ input:checked + .toggle-bg {
 
 .w-11 {
   width: 2.75rem;
+}
+
+.w-12 {
+  width: 3rem;
 }
 
 .w-14 {
@@ -1474,6 +1478,10 @@ input:checked + .toggle-bg {
 
 .max-w-6xl {
   max-width: 72rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .max-w-sm {
@@ -1636,6 +1644,12 @@ input:checked + .toggle-bg {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -1908,6 +1922,10 @@ input:checked + .toggle-bg {
   padding: 1.5rem;
 }
 
+.p-8 {
+  padding: 2rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -2170,6 +2188,11 @@ input:checked + .toggle-bg {
   color: rgb(240 82 82 / var(--tw-text-opacity));
 }
 
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(224 36 36 / var(--tw-text-opacity));
+}
+
 .text-red-800 {
   --tw-text-opacity: 1;
   color: rgb(155 28 28 / var(--tw-text-opacity));
@@ -2408,6 +2431,11 @@ h1:focus {
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
 }
 
+.focus\:border-blue-600:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(28 100 242 / var(--tw-border-opacity));
+}
+
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
@@ -2438,6 +2466,11 @@ h1:focus {
 .focus\:ring-blue-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
+}
+
+.focus\:ring-blue-600:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(28 100 242 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-gray-100:focus {
@@ -2496,10 +2529,6 @@ h1:focus {
 .dark\:divide-gray-600:is(.dark *) > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-divide-opacity));
-}
-
-.dark\:border:is(.dark *) {
-  border-width: 1px;
 }
 
 .dark\:border-blue-500:is(.dark *) {
@@ -2634,10 +2663,6 @@ h1:focus {
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
 }
 
-.dark\:ring-offset-gray-800:is(.dark *) {
-  --tw-ring-offset-color: #1F2937;
-}
-
 .dark\:hover\:bg-blue-700:hover:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(26 86 219 / var(--tw-bg-opacity));
@@ -2696,6 +2721,11 @@ h1:focus {
 .dark\:focus\:ring-blue-500:focus:is(.dark *) {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(63 131 248 / var(--tw-ring-opacity));
+}
+
+.dark\:focus\:ring-blue-600:focus:is(.dark *) {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(28 100 242 / var(--tw-ring-opacity));
 }
 
 .dark\:focus\:ring-blue-800:focus:is(.dark *) {
@@ -2804,18 +2834,9 @@ h1:focus {
     padding: 1.25rem;
   }
 
-  .sm\:p-8 {
-    padding: 2rem;
-  }
-
   .sm\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
-  }
-
-  .sm\:text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
   }
 }
 
@@ -2826,10 +2847,6 @@ h1:focus {
 
   .md\:mr-0 {
     margin-right: 0px;
-  }
-
-  .md\:mt-0 {
-    margin-top: 0px;
   }
 
   .md\:h-auto {
@@ -2872,17 +2889,6 @@ h1:focus {
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
-  }
-
-  .md\:space-y-6 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-y-reverse: 0;
-    margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
-    margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-  }
-
-  .md\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
   }
 
   .md\:text-5xl {
@@ -2954,10 +2960,6 @@ h1:focus {
 }
 
 @media (min-width: 1280px) {
-  .xl\:p-0 {
-    padding: 0px;
-  }
-
   .xl\:text-6xl {
     font-size: 3.75rem;
     line-height: 1;

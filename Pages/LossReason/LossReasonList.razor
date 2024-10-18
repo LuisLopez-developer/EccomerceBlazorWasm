@@ -3,6 +3,8 @@
 @using EccomerceBlazorWasm.Interfaces
 @using EccomerceBlazorWasm.Models.ViewModel
 @inject ILossReason _lossReason;
+@inject IJSRuntime JS
+@using System.Text.RegularExpressions;
 <AuthorizeView>
     <Authorized>
         <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
@@ -90,14 +92,14 @@
         @if (showModal)
         {
             <!-- Main modal -->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full  bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <!-- Modal header -->
                         <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                Add Product
+                                Agregar Razón de Pérdida
                             </h3>
                             <button @onclick="HideModal" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -107,21 +109,27 @@
                         <!-- Modal body -->
                         <form @onsubmit="AddLossReason">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                <script>
-                                    function validarLetras(input) {
-                                        input.value = input.value.replace(/[^a-zA-Z]/g, '');
-                                    }
-                                </script>
-
                                 <div class="col-span-2">
-                                    <label for="brandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                    <input @bind="newReason" type="text" id="brandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <label for="brandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Razón</label>
+                                    <input @bind="newReason" type="text" id="brandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba la razón de pérdida" oninput="validarLetras(this)">
+                                    <script>
+                                        function validarLetras(input) {
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Permite letras y espacios
+                                        }
+                                    </script>
+                                    <!-- Contenedor para el mensaje de error -->
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                Agregar Categoria
+                                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                Agregar
                             </button>
                         </form>
                     </div>
@@ -133,36 +141,44 @@
         @if (_showModalEdit)
         {
             <!-- Main modal -->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 w-full h-full bg-opacity-35 flex justify-center items-center z-50">
+            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
                 <div class="relative p-4 w-full sm:max-w-sm h-full md:h-auto">
-                    <!-- Modal content -->
                     <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                         <!-- Modal header -->
-                        <div class="flex justify-end">
-                            <!-- Botón de cerrar removido -->
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Editar Razón de Pérdida
+                            </h3>
                             <button @onclick="hideModalEdit" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="editModal">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                <span class="sr-only">Cerrar modal</span>
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
                             </button>
                         </div>
                         <!-- Modal body -->
                         <form @onsubmit="EditReason">
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                                <script>
-                                    function validarLetras(input) {
-                                        input.value = input.value.replace(/[^a-zA-Z]/g, '');
-                                    }
-                                </script>
-
                                 <div class="col-span-2">
                                     <label for="editBrandName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Razón</label>
-                                    <input @bind="selectedLossReason.Reason" type="text" id="editBrandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" oninput="validarLetras(this)">
+                                    <input @bind="tempReasonName" type="text" id="editBrandName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escriba la razón de pérdida" oninput="validarLetras(this)">
+                                    <script>
+                                        function validarLetras(input) {
+                                            input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // Permite letras y espacios
+                                        }
+                                    </script>
+                                    <div class="mt-2 h-6">
+                                        <div class="text-red-600 rounded-lg overflow-hidden transition-all duration-300 @(!string.IsNullOrEmpty(errorMessage) ? "block" : "hidden") text-xs">
+                                            @errorMessage
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                             <div class="flex justify-between">
                                 <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                    <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                    </svg>
                                     Guardar Cambios
                                 </button>
                             </div>
@@ -171,8 +187,6 @@
                 </div>
             </div>
         }
-
-
 
         <!-- Modal para eliminar una razon -->
         @if (_showModalDelete)
@@ -212,13 +226,17 @@
 
 
 @code {
-    private List<LossReasonViewModel> lossReasons = new List<LossReasonViewModel>();
+    private List<LossReasonViewModel>? lossReasons;
     private string searchTerm = string.Empty;
+
     private bool showModal = false;
-    private string newReason = string.Empty;
     private bool _showModalEdit = false;
     private bool _showModalDelete = false;
-    private LossReasonViewModel selectedLossReason = new LossReasonViewModel();
+
+    private string newReason = string.Empty;
+    private string tempReasonName = string.Empty; 
+    private string errorMessage = string.Empty;
+    private LossReasonViewModel selectedLossReason;
 
     protected override async Task OnInitializedAsync()
     {
@@ -234,27 +252,37 @@
     {
         if (!string.IsNullOrWhiteSpace(newReason))
         {
-            var newLossReason = new LossReasonViewModel
-                {
-                    Reason = newReason
-                };
-
-            var result = await _lossReason.CreateAsync(newLossReason);
-
-            if (result != null)
+            // Regex para verificar si el nombre de la marca contiene solo letras y espacios
+            Regex validReasonNameRegex = new Regex(@"^[a-zA-Z\s]+$");
+            if(validReasonNameRegex.IsMatch(newReason))
             {
-                HideModal();
-                await SearchLossReasons();
-                newReason = string.Empty;
+                // Crear una nueva marca (LossReason)
+                var newLossReason = new LossReasonViewModel
+				{
+					Reason = newReason
+				};
+
+                var result = await _lossReason.CreateAsync(newLossReason);
+
+                if (result != null)
+                {
+                    HideModal();
+                    await SearchLossReasons();
+                    newReason = string.Empty;
+                }
+                else
+                {
+                    errorMessage = "Error al crear la razón de pérdida.";
+                }
             }
             else
             {
-                // Handle case where loss reason could not be created
+                errorMessage = "Solo puede contener letras y espacios.";
             }
         }
         else
         {
-            // Handle case where loss reason name is empty
+            errorMessage = "La razón no puede estar vacío.";
         }
     }
 
@@ -266,21 +294,20 @@
     private void HideModal()
     {
         showModal = false;
+        newReason = string.Empty;
+        errorMessage = "";
     }
 
-    private void ShowEditModal(LossReasonViewModel lossReason)
-    {
-        selectedLossReason = lossReason;
-        _showModalEdit = true;
-    }
-
-    private void HideEditModal()
-    {
-        _showModalEdit = false;
-    }
     private void hideModalEdit()
     {
         _showModalEdit = false;
+        tempReasonName = string.Empty;
+        errorMessage = string.Empty;
+    }
+
+    private void HideDeleteModal()
+    {
+        _showModalDelete = false;
     }
 
     private void ShowDeleteModal(LossReasonViewModel lossReason)
@@ -289,23 +316,44 @@
         _showModalDelete = true;
     }
 
-    private void HideDeleteModal()
+    private void ShowEditModal(LossReasonViewModel lossReason)
     {
-        _showModalDelete = false;
+        selectedLossReason = lossReason;
+        tempReasonName = selectedLossReason.Reason;
+        _showModalEdit = true;
+        errorMessage = string.Empty;
     }
 
     private async Task EditReason()
     {
-        HideEditModal();
-        var result = await _lossReason.UpdateAsync(selectedLossReason.Id, selectedLossReason);
-
-        if (result)
+        errorMessage = string.Empty;
+        if (selectedLossReason != null && !string.IsNullOrWhiteSpace(tempReasonName))
         {
-            await SearchLossReasons(); // Actualiza la lista de marcas después de editar
+            Regex validReasonNameRegex = new Regex(@"^[a-zA-Z\s]+$");
+
+            if (validReasonNameRegex.IsMatch(tempReasonName))
+            {
+                selectedLossReason.Reason = tempReasonName; // Aplicar el nombre temporal a la marca
+                var result = await _lossReason.UpdateAsync(selectedLossReason.Id, selectedLossReason);
+
+                if (result)
+                {
+                    await SearchLossReasons();
+                }
+                else
+                {
+                    errorMessage = "Error al editar la razón";
+                }
+                hideModalEdit();
+            }
+            else
+            {
+                errorMessage = "Solo puede contener letras y espacios.";
+            }
         }
         else
         {
-            // Manejar el caso en el que la marca no se pudo editar
+            errorMessage = "La razón no puede estar vacío.";
         }
     }
 
@@ -313,17 +361,17 @@
     {
         _showModalDelete = false;
 
-        lossReasons?.Remove(selectedLossReason); //Eliminar de la lista local, mientras la eliminación se hace en segundo plano
+        lossReasons?.Remove(selectedLossReason); 
 
         var result = await _lossReason.DeleteAsync(selectedLossReason.Id);
 
         if (result)
         {
-            await SearchLossReasons(); // Actualiza la lista de marcas después de eliminar
+            await SearchLossReasons();
         }
         else
         {
-            // Manejar el caso en el que la marca no se pudo eliminar
+            errorMessage = "Error al eliminar la razón de pérdida";
         }
     }
 }

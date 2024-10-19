@@ -26,8 +26,10 @@
                         <div class="sm:col-span-2">
                             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                                 <div class="sm:col-span-2">
-                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Producto</label>
-                                    <input type="text" @bind-value="product.Name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del Producto  " required="">
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Nombre del Producto <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="text" @bind-value="product.Name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombre del Producto" required="">
                                 </div>
                                 <script>
                                     function validarNumeros(input) {
@@ -36,32 +38,46 @@
                                 </script>
 
                                 <div class="w-full">
-                                    <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">SKU</label>
-                                    <input type="text" @bind-value="product.SKU" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Codigo interno" required/>
+                                    <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        SKU <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="text" @bind-value="product.SKU" id="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Codigo interno" required oninput="validarNumeros(this)">
                                 </div>
                                 <div class="w-full">
-                                    <label for="BarCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo de Barras</label>
+                                    <label for="BarCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Codigo de Barras <span class="text-red-600">*</span>
+                                    </label>
                                     <input type="text" @bind-value="product.BarCode" id="BarCode" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Codigo de Barras" required oninput="validarNumeros(this)">
                                 </div>
 
                                 <div class="w-full">
-                                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
+                                    <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Fecha <span class="text-red-600">*</span>
+                                    </label>
                                     <input type="datetime-local" @bind-value="product.Date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required="">
                                 </div>
                                 <div class="w-full">
-                                    <label for="existence" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
-                                    <input type="number" @bind-value="product.Existence" id="existence" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="50" required="">
+                                    <label for="existence" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Cantidad <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="number" @bind-value="product.Existence" id="existence" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="50" required min="0">
                                 </div>
                                 <div class="w-full">
-                                    <label for="cost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de Coste</label>
-                                    <input type="number" @bind-value="product.Cost" step="0.01" id="cost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2500" required="">
+                                    <label for="cost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Precio de Coste <span class="text-red-600">*</span>
+                                     </label>
+                                    <input type="number" @bind-value="product.Cost" step="0.01" id="cost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2500" required="" min="0">
                                 </div>
                                 <div class="w-full">
-                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio de venta</label>
-                                    <input type="number" @bind-value="product.Price" step="0.01" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
+                                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Precio de venta <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="number" @bind-value="product.Price" step="0.01" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" min="0">
                                 </div>
                                 <div>
-                                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>
+                                    <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Categoria <span class="text-red-600">*</span>
+                                    </label>
                                     <select @bind="product.ProductCategoryId" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option selected="">Selecciona una Categoria</option>
                                         @foreach (var category in productCategories)
@@ -71,7 +87,9 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Marca</label>
+                                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Marca <span class="text-red-600">*</span>
+                                    </label>
                                     <select @bind="product.ProductBrandId" id="brand" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option selected="">Selecciona una Marca</option>
                                         @foreach (var brand in productBrands)
@@ -81,7 +99,9 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
+                                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Estado <span class="text-red-600">*</span>
+                                    </label>
                                     <select @bind="product.StateId" id="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         <option selected="">Selecciona un Estado</option>
                                         @foreach (var state in states)
@@ -91,11 +111,14 @@
                                     </select>
                                 </div>
                                 <div class="w-full">
-                                    <label for="visible" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Visible para la tienda</label>
+                                    <label for="visible" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Visible para la tienda <span class="text-red-600">*</span>
+                                    </label>
                                     <label class="mt-2 inline-flex items-center cursor-pointer">
+                                        <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
                                         <input @bind="product.IsVisible" type="checkbox" class="sr-only peer">
                                         <div class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
+                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">SI</span>
                                     </label>
                                 </div>
                                 <div class="sm:col-span-2">
@@ -104,38 +127,101 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Detalles -->
                         <div class="sm:col-span-2">
                             <div class="grid gap-4 sm:grid-cols-3 sm:gap-6">
+                                <!-- Especificaciones -->
+                                <script>
+                                    function validarNombreProducto(input) {
+                                        input.value = input.value.replace(/[^a-zA-Z0-9\s]/g, '');
+                                    }
+                                    function validarLetras(input) {
+                                        input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+                                    }
+                                    function validarNumerosYLetras(input) {
+                                        let value = input.value.toUpperCase();
+                                        if (!value.startsWith("IP")) {
+                                            value = "IP" + value.replace(/[^0-9]/g, '');
+                                        } else {
+                                            value = value.replace(/[^0-9]/g, '');
+                                            value = "IP" + value;
+                                        }
+                                        input.value = value.substring(0, 4);
+                                    }
+                                    function validarSensor(input) {
+                                        input.value = input.value.replace(/[^a-zA-Z,\s]/g, '');
+                                    }
+                                    function validarBluetoothVersion(input) {
+                                        input.value = input.value.replace(/[^0-9.]/g, '');
+                                    }
+                                    function validarRearCameraResolution(input) {
+                                        input.value = input.value.replace(/[^0-9MP+\s]/g, '');
+                                    }
+                                </script>
                                 <label class="sm:col-span-3 block border-b-4 border-gray-400  text-lg font-medium text-gray-900 dark:text-white">Especificaciones</label>
                                 <div class="sm:col-span-3">
                                     <label for="model" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Modelo</label>
-                                    <input type="text" @bind-value="productSpecification.ModelNumber" id="model" placeholder="Digite el modelo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.ModelNumber" id="model" placeholder="Digite el modelo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarNombreProducto(this)">
                                 </div>
                                 <div>
-                                    <label for="RAM" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RAM (GB)</label>
-                                    <input type="number" @bind-value="productSpecification.RAM" id="RAM" placeholder='6.2"' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <label for="RAM" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RAM</label>
+                                    <select @bind="productSpecification.RAM" id="RAM" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Selecciona la RAM</option>
+                                        <option value="2">2 GB</option>
+                                        <option value="4">4 GB</option>
+                                        <option value="6">6 GB</option>
+                                        <option value="8">8 GB</option>
+                                        <option value="12">12 GB</option>
+                                        <option value="16">16 GB</option>
+                                        <option value="18">18 GB</option>
+                                        <option value="20">20 GB</option>
+                                        <option value="24">24 GB</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="ProcessorSpeed" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Velocidad del procesador</label>
-                                    <input type="number" step="0.01" @bind-value="productSpecification.ProcessorSpeed" id="ProcessorSpeed" placeholder='6.2"' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="number" step="0.01" @bind-value="productSpecification.ProcessorSpeed" id="ProcessorSpeed" placeholder='6.2"' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" min="0">
                                 </div>
                                 <div>
                                     <label for="InternalStorage" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Almacenamiento (GB)</label>
-                                    <input type="number" @bind-value="productSpecification.InternalStorage" id="InternalStorage" placeholder='6.2"' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.InternalStorage" id="InternalStorage" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Selecciona el Almacenamiento</option>
+                                        <option value="16">16 GB</option>
+                                        <option value="32">32 GB</option>
+                                        <option value="64">64 GB</option>
+                                        <option value="128">128 GB</option>
+                                        <option value="256">256 GB</option>
+                                        <option value="512">512 GB</option>
+                                        <option value="1024">1 TB</option>
+                                        <option value="2048">2 TB</option>
+                                    </select>
                                 </div>
                                 <!-- Pantalla -->
                                 <label class="sm:col-span-3 block border-b-4 border-gray-400  text-lg font-medium text-gray-900 dark:text-white">Pantalla</label>
                                 <div>
                                     <label for="ScreenSize" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tamaño</label>
-                                    <input type="number" step="0.01" @bind-value="productSpecification.ScreenSize" id="ScreenSize" placeholder='6.2' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="number" step="0.01" @bind-value="productSpecification.ScreenSize" id="ScreenSize" placeholder='6.2' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" min="0">
                                 </div>
                                 <div>
                                     <label for="ScreenResolution" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Resolución</label>
-                                    <input type="text" @bind-value="productSpecification.ScreenResolution" id="ScreenResolution" placeholder="2712 x 1220 px" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.ScreenResolution" id="ScreenResolution" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="720p">HD (720p)</option>
+                                        <option value="1080p">FHD (1080p)</option>
+                                        <option value="1440p">QHD (1440p)</option>
+                                        <option value="2160p">4K (2160p)</option>
+                                    </select>
                                 </div>
-                                <div>
-                                    <label for="ScreenTechnology" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tecnología</label>
-                                    <input type="text" @bind-value="productSpecification.ScreenTechnology" id="ScreenTechnology" placeholder="AMOLED" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <div class="w-full">
+                                    <label for="ScreenTechnology" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tecnología de Pantalla</label>
+                                    <select @bind="productSpecification.ScreenTechnology" id="ScreenTechnology" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Selecciona la Tecnología</option>
+                                        <option value="LCD">LCD</option>
+                                        <option value="LED">LED</option>
+                                        <option value="OLED">OLED</option>
+                                        <option value="AMOLED">AMOLED</option>
+                                        <option value="Retina">Retina</option>
+                                    </select>
                                 </div>
 
                                 <!-- Cámara -->
@@ -143,38 +229,55 @@
 
                                 <div>
                                     <label for="RearCameraResolution" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cámara trasera</label>
-                                    <input type="text" @bind-value="productSpecification.RearCameraResolution" id="RearCameraResolution" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.RearCameraResolution" id="RearCameraResolution" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarRearCameraResolution(this)">
                                 </div>
                                 <div>
                                     <label for="FrontCameraResolution" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cámara delantera (MP)</label>
-                                    <input type="number" @bind-value="productSpecification.FrontCameraResolution" id="FrontCameraResolution" placeholder="16" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="number" @bind-value="productSpecification.FrontCameraResolution" id="FrontCameraResolution" placeholder="16" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" min="0">
                                 </div>
 
                                 <!-- Conectividad -->
                                 <label class="sm:col-span-3 block border-b-4 border-gray-400  text-lg font-medium text-gray-900 dark:text-white">Conectividad</label>
                                 <div>
                                     <label for="SimType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de SIM trasera</label>
-                                    <input type="text" @bind-value="productSpecification.SimType" id="SimType" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.SimType" id="SimType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="SIM Estándar">SIM Estándar</option>
+                                        <option value="Micro SIM">Micro SIM</option>
+                                        <option value="Nano SIM">Nano SIM</option>
+                                        <option value="eSIM">eSIM</option>
+                                        <option value="SIM Virtual">SIM Virtual</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="SimCount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad de tarjetas SIM</label>
-                                    <input type="number" @bind-value="productSpecification.SimCount" id="SimCount" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.SimCount" id="SimCount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="1">Single SIM</option>
+                                        <option value="2">Dual SIM</option>
+                                    </select>
                                 </div>
                                 <div class="w-full">
                                     <label for="NFC" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cuenta con NFC</label>
                                     <label class="mt-2 inline-flex items-center cursor-pointer">
+                                        <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
                                         <input @bind="productSpecification.NFC" id="NFC" type="checkbox" class="sr-only peer">
                                         <div class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
+                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">SI</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label for="BluetoothVersion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Versión de Bluetooth</label>
-                                    <input type="text" @bind-value="productSpecification.BluetoothVersion" id="BluetoothVersion" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.BluetoothVersion" id="BluetoothVersion" placeholder="5.0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarBluetoothVersion(this)">
                                 </div>
                                 <div>
                                     <label for="UsbInterface" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Interfaz USB</label>
-                                    <input type="text" @bind-value="productSpecification.UsbInterface" id="UsbInterface" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.UsbInterface" id="UsbInterface" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Micro USB">Micro USB</option>
+                                        <option value="USB-C">USB-C</option>
+                                        <option value="Lightning">Lightning</option>
+                                    </select>
                                 </div>
 
                                 <!-- Resistencia -->
@@ -182,22 +285,24 @@
                                 <div class="w-full">
                                     <label for="Waterproof" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Resistencia al agua</label>
                                     <label class="mt-2 inline-flex items-center cursor-pointer">
+                                        <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
                                         <input @bind="productSpecification.Waterproof" id="Waterproof" type="checkbox" class="sr-only peer">
                                         <div class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
+                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">SI</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label for="WaterResistanceRating" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clasificación </label>
-                                    <input type="text" @bind-value="productSpecification.WaterResistanceRating" id="WaterResistanceRating" placeholder="200MP + 8MP + 2MP" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.WaterResistanceRating" id="WaterResistanceRating" placeholder="IP12" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarNumerosYLetras(this)">
                                 </div>
 
                                 <div class="w-full">
                                     <label for="SplashResistant" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Resistente a salpicaduras</label>
                                     <label class="mt-2 inline-flex items-center cursor-pointer">
+                                        <span class="me-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
                                         <input @bind="productSpecification.SplashResistant" id="SplashResistant" type="checkbox" class="sr-only peer">
                                         <div class="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">NO</span>
+                                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">SI</span>
                                     </label>
                                 </div>
 
@@ -205,19 +310,32 @@
                                 <label class="sm:col-span-3 block border-b-4 border-gray-400  text-lg font-medium text-gray-900 dark:text-white">Otros</label>
                                 <div>
                                     <label for="color" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Color</label>
-                                    <input type="text" @bind-value="productSpecification.Color" id="color" placeholder="Gris" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.Color" id="color" placeholder="Gris" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarLetras(this)">
                                 </div>
                                 <div>
                                     <label for="Sensor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sensor</label>
-                                    <input type="text" @bind-value="productSpecification.Sensor" id="Sensor" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <input type="text" @bind-value="productSpecification.Sensor" id="Sensor" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" oninput="validarSensor(this)">
                                 </div>
-                                <div>
+                                <div class="w-full">
                                     <label for="OperatingSystem" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sistema Operativo</label>
-                                    <input type="text" @bind-value="productSpecification.OperatingSystem" id="OperatingSystem" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <select @bind="productSpecification.OperatingSystem" id="OperatingSystem" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Android">Android</option>
+                                        <option value="iOS">iOS</option>
+                                    </select>
                                 </div>
                                 <div>
-                                    <label for="BatteryCapacity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacidad de bateria</label>
-                                    <input type="number" @bind-value="productSpecification.BatteryCapacity" id="BatteryCapacity" placeholder="..." class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <label for="BatteryCapacity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacidad de batería</label>
+                                    <select @bind="productSpecification.BatteryCapacity" id="BatteryCapacity" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="3000">3000 mAh</option>
+                                        <option value="3500">3500 mAh</option>
+                                        <option value="4000">4000 mAh</option>
+                                        <option value="4500">4500 mAh</option>
+                                        <option value="5000">5000 mAh</option>
+                                        <option value="5500">5500 mAh</option>
+                                        <option value="6000">6000 mAh</option>
+                                    </select>
                                 </div>
                                 <div class="sm:col-span-3">
                                     <div class="grid gap-4 sm:grid-cols-3 sm:gap-4">
@@ -305,6 +423,7 @@
         productBrands = await _productBrand.GetAllAsync();
         productCategories = await _productCategory.GetAllAsync();
         states = await _state.GetAllAsync();
+        product.IsVisible = true;
     }
 
     private async Task HandleFileSelection(InputFileChangeEventArgs e)

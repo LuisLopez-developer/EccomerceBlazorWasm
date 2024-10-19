@@ -1,7 +1,7 @@
 # Antes de Empezar 
 Requisitos para levantar el proyecto:
 
-- Node.js v20.13.1+
+- Node.js v20.13.0+
 - npm 10.8.0+
 - .NET 8.0.6
 - .NET SDK 8.0.301

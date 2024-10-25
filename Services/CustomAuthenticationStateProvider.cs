@@ -153,9 +153,9 @@ namespace EccomerceBlazorWasm.Services
             {
                 var result = await _httpClient.PostAsJsonAsync(
                     //"login?useCookies=true", new //usar cookies
-                    "login", new
+                    "/api/eccomerce/Account/login", new
                     {
-                        email,
+                        UserNameOrEmail = email,
                         password
                     });
 
@@ -222,7 +222,7 @@ namespace EccomerceBlazorWasm.Services
             {
             }
 
-            return new List<Role>();
+            return [];
 
         }
 

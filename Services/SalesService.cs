@@ -50,7 +50,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<List<OrderViewModel>> SearchOrdersAsync(string searchTerm)
         {
-            return await _httpClient.GetFromJsonAsync<List<OrderViewModel>>($"{api}/search?term={searchTerm}");
+            return await _httpClient.GetFromJsonAsync<List<OrderViewModel>>($"{api}/search?term={searchTerm}") ?? [];
         }
     }
 }

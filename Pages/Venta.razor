@@ -17,25 +17,24 @@
 
 <AuthorizeView>
     <Authorized>
-        @* <Maintenance></Maintenance> *@
-        <h3>Generar Nueva Orden de Venta</h3>
+        <h3 class="text-2xl font-bold text-center my-4">Generar Nueva Orden de Venta</h3>
 
-        <div class="container">
-            <div class="form-group">
-                <label for="customerDni">DNI del Cliente</label>
-                <input type="text" id="customerDni" @bind="orderRequest.CustomerDNI" class="form-control" />
+        <div class="container mx-auto p-4 bg-white shadow-md rounded-md">
+            <div class="mb-4">
+                <label for="customerDni" class="block text-gray-700 font-semibold">DNI del Cliente</label>
+                <input type="text" id="customerDni" @bind="orderRequest.CustomerDNI" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
             </div>
-            <div class="form-group">
-                <label for="customerEmail">Email del Cliente</label>
-                <input type="email" id="customerEmail" @bind="orderRequest.CustomerEmail" class="form-control" />
+            <div class="mb-4">
+                <label for="customerEmail" class="block text-gray-700 font-semibold">Email del Cliente</label>
+                <input type="email" id="customerEmail" @bind="orderRequest.CustomerEmail" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
             </div>
-            <div class="form-group">
-                <label for="workerId">ID del Trabajador</label>
-                <input type="text" id="workerId" @bind="orderRequest.WorkerId" class="form-control" />
+            <div class="mb-4">
+                <label for="workerId" class="block text-gray-700 font-semibold">ID del Trabajador</label>
+                <input type="text" id="workerId" @bind="orderRequest.WorkerId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
             </div>
-            <div class="form-group">
-                <label for="paymentMethod">Método de Pago</label>
-                <select id="paymentMethod" @bind="orderRequest.PaymentMethodId" class="form-control">
+            <div class="mb-4">
+                <label for="paymentMethod" class="block text-gray-700 font-semibold">Método de Pago</label>
+                <select id="paymentMethod" @bind="orderRequest.PaymentMethodId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
                     <option value="">Selecciona un método de pago</option>
                     @foreach (var method in paymentMethods)
                     {
@@ -43,9 +42,9 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
-                <label for="status">Estado de la Orden</label>
-                <select id="status" @bind="orderRequest.StatusId" class="form-control">
+            <div class="mb-4">
+                <label for="status" class="block text-gray-700 font-semibold">Estado de la Orden</label>
+                <select id="status" @bind="orderRequest.StatusId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
                     <option value="">Selecciona el estado</option>
                     @foreach (var status in orderStatuses)
                     {
@@ -54,30 +53,41 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="product">Seleccionar Producto</label>
-                <select id="product" @bind="selectedProductId" class="form-control">
-                    <option value="">Selecciona un producto</option>
-                    @foreach (var product in products)
-                    {
-                        <option value="@product.Id">@product.Name</option>
-                    }
-                </select>
-                <button @onclick="AddProduct" class="btn btn-primary">Agregar Producto</button>
+            <div class="mb-4">
+                <label for="product" class="block text-gray-700 font-semibold">Seleccionar Producto</label>
+                <div class="flex gap-2">
+                    <select id="product" @bind="selectedProductId" class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
+                        <option value="">Selecciona un producto</option>
+                        @foreach (var product in products)
+                        {
+                            <option value="@product.Id">@product.Name</option>
+                        }
+                    </select>
+                    <button @onclick="AddProduct" class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Agregar Producto</button>
+                </div>
             </div>
 
-            <h4>Productos Seleccionados</h4>
-            @* <div class="selected-products">
-                @foreach (var item in orderRequest.OrderItems)
+            <h4 class="text-xl font-semibold text-gray-700 mt-6">Productos Seleccionados</h4>
+            <div class="selected-products bg-gray-100 p-4 rounded-md">
+                @if (orderRequest.OrderItems.Any())
                 {
-                    <div class="product-item">
-                        <span>@item.ProductName - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
-                        <button @onclick="() => RemoveProduct(item)" class="btn btn-danger">Eliminar</button>
-                    </div>
+                    <ul>
+                        @foreach (var item in orderRequest.OrderItems)
+                        {
+                            <li class="flex justify-between items-center p-2 bg-white rounded-md mb-2">
+                                <span class="text-gray-700">@*Nombre del Producto*@(item.ProductId) - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
+                                <button @onclick="() => RemoveProduct(item)" class="btn btn-danger bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Eliminar</button>
+                            </li>
+                        }
+                    </ul>
                 }
-            </div> *@
+                else
+                {
+                    <p class="text-gray-500">No hay productos seleccionados</p>
+                }
+            </div>
 
-            <button @onclick="CreateOrder" class="btn btn-success">Generar Orden</button>
+            <button @onclick="CreateOrder" class="btn btn-success bg-green-500 text-white px-6 py-2 mt-6 rounded-md hover:bg-green-600 w-full">Generar Orden</button>
         </div>
     </Authorized>
     <NotAuthorized>
@@ -85,7 +95,7 @@
     </NotAuthorized>
 </AuthorizeView>
 
-@code {
+@* @code {
         private OrderRequest orderRequest = new OrderRequest
         {
             OrderItems = new List<OrderDetailRequestDTO>(),
@@ -103,24 +113,6 @@
             orderStatuses = await _orderStatusService.GetAllAsync();
         }
 
-        // private void AddProduct()
-        // {
-        //     if (selectedProductId.HasValue)
-        //     {
-        //         var product = products.FirstOrDefault(p => p.Id == selectedProductId);
-        //         if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
-        //         {
-        //             orderRequest.OrderItems.Add(new OrderDetailRequestDTO
-        //             {
-        //                 ProductId = product.Id,
-        //                 //ProductName = product.Name,
-        //                 Quantity = 1,
-        //                 UnitPrice = product.Price ?? 0
-        //             });
-        //         }
-        //         selectedProductId = null;
-        //     }
-        // }
         private void AddProduct()
         {
             if (selectedProductId.HasValue)
@@ -152,30 +144,76 @@
             orderRequest.OrderItems.Remove(item);
         }
 
-        // private async Task CreateOrder()
-        // {
-        //     await SaleService.CreateOrderAsync(orderRequest);
-        //     // _navigation.NavigateTo("/ordenes");
-        // }
-
         private async Task CreateOrder()
         {
-            // Verificación adicional antes de enviar
-            foreach (var item in orderRequest.OrderItems)
-            {
-                Console.WriteLine($"Producto en OrderItems: {item.ProductId}, {item.Quantity}, {item.UnitPrice}");
-            }
+            await SaleService.CreateOrderAsync(orderRequest);
+            // _navigation.NavigateTo("/ordenes");
+        } 
 
-            if (orderRequest.OrderItems.Count > 0)
+} *@
+@code {
+    private OrderRequest orderRequest = new OrderRequest
+        {
+            OrderItems = new List<OrderDetailRequestDTO>(),
+            CreatedAt = DateTime.Now
+        };
+    private List<ProductViewModel> products = new List<ProductViewModel>();
+    private List<PaymentMethodViewModel> paymentMethods = new List<PaymentMethodViewModel>();
+    private List<OrderStatusViewModel> orderStatuses = new List<OrderStatusViewModel>();
+    private int? selectedProductId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllAsync();
+        paymentMethods = await _paymentMethodsService.GetAllPaymentMethodsAsync();
+        orderStatuses = await _orderStatusService.GetAllAsync();
+    }
+
+    private void AddProduct()
+    {
+        if (selectedProductId.HasValue)
+        {
+            var product = products.FirstOrDefault(p => p.Id == selectedProductId);
+            if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
             {
-                await SaleService.CreateOrderAsync(orderRequest);
-                //_navigation.NavigateTo("/ordenes");
+                var orderDetail = new OrderDetailRequestDTO
+                    {
+                        ProductId = product.Id,
+                        Quantity = 1,
+                        UnitPrice = product.Price ?? 0
+                    };
+
+                orderRequest.OrderItems.Add(orderDetail);
+
+                // Verificación de producto agregado en consola
+                Console.WriteLine($"Producto agregado: {orderDetail.ProductId}, {orderDetail.Quantity}, {orderDetail.UnitPrice}");
             }
-            else
-            {
-                Console.WriteLine("No se puede crear una orden sin productos.");
-            }
+            selectedProductId = null;
         }
-  
+    }
 
+    private void RemoveProduct(OrderDetailRequestDTO item)
+    {
+        orderRequest.OrderItems.Remove(item);
+    }
+
+    private async Task CreateOrder()
+    {
+        if (orderRequest.OrderItems.Count == 0)
+        {
+            Console.WriteLine("No hay productos en la orden.");
+            return;
+        }
+
+        try
+        {
+            await SaleService.CreateOrderAsync(orderRequest);
+            Console.WriteLine("Orden creada exitosamente.");
+            _navigation.NavigateTo("/ordenes");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al crear la orden: {ex.Message}");
+        }
+    }
 }

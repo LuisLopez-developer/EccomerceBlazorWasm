@@ -2,13 +2,13 @@
 {
     public class OrderRequest
     {
-        public string CustomerDNI { get; set; }
-        public string CustomerEmail { get; set; }
-        public string WorkerId { get; set; }
+        public string CustomerDNI { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string WorkerId { get; set; } = string.Empty;
         public int StatusId { get; set; }
         public int PaymentMethodId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public List<OrderDetailRequestDTO> OrderItems { get; set; }
+        public List<OrderDetailRequestDTO> OrderItems { get; set; } = new List<OrderDetailRequestDTO>();
 
     }
 

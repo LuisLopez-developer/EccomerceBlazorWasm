@@ -10,7 +10,7 @@ namespace EccomerceBlazorWasm.Services
     public class SaleService : ISaleService
     {
 
-    private readonly string api = "api/Order";
+    private readonly string api = "api/system/Order";
     private readonly HttpClient _httpClient;
 
         public SaleService(IHttpClientFactory httpClientFactory)
@@ -25,7 +25,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<OrderRequest> CreateOrderAsync(OrderRequest orderCreateModel)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{api}/create", orderCreateModel);
+            var response = await _httpClient.PostAsJsonAsync($"{api}", orderCreateModel);
             var orderObject = await response.Content.ReadAsStringAsync();
             var createdOrder = JsonSerializer.Deserialize<OrderRequest>(orderObject, jsonSerializerOptions);
 

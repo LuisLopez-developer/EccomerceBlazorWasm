@@ -31,7 +31,7 @@ builder.Services.AddScoped<IR2, R2Service>();
 //Ventas :v
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
-builder.Services.AddHttpClient<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 
 
 builder.Services.AddScoped(sp => new HttpClient

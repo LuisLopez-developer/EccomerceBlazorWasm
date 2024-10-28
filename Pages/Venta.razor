@@ -10,7 +10,8 @@
 @inject ISaleService SaleService
 @inject IProduct ProductService
 @inject NavigationManager _navigation
-
+@inject IPaymentMethodService _paymentMethodsService
+@inject IOrderStatusService _orderStatusService
 
 <PageTitle>Venta</PageTitle>
 
@@ -85,50 +86,96 @@
 </AuthorizeView>
 
 @code {
-    private OrderRequest orderRequest = new OrderRequest
+        private OrderRequest orderRequest = new OrderRequest
         {
             OrderItems = new List<OrderDetailRequestDTO>(),
             CreatedAt = DateTime.Now
         };
-    private List<ProductViewModel> products = new List<ProductViewModel>();
-    private List<PaymentMethodViewModel> paymentMethods = new List<PaymentMethodViewModel>();
-    private List<OrderStatusViewModel> orderStatuses = new List<OrderStatusViewModel>();
-    private int? selectedProductId;
+        private List<ProductViewModel> products = new List<ProductViewModel>();
+        private List<PaymentMethodViewModel> paymentMethods = new List<PaymentMethodViewModel>();
+        private List<OrderStatusViewModel> orderStatuses = new List<OrderStatusViewModel>();
+        private int? selectedProductId;
 
-    protected override async Task OnInitializedAsync()
-    {
-        products = await ProductService.GetAllAsync();
-        paymentMethods = await PaymentMethodService.GetAllPaymentMethodsAsync();
-        orderStatuses = await OrderStatusService.GetAllAsync();
-    }
-
-    private void AddProduct()
-    {
-        if (selectedProductId.HasValue)
+        protected override async Task OnInitializedAsync()
         {
-            var product = products.FirstOrDefault(p => p.Id == selectedProductId);
-            if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
-            {
-                orderRequest.OrderItems.Add(new OrderDetailRequestDTO
-                    {
-                        ProductId = product.Id,
-                        ProductName = product.Name,
-                        Quantity = 1,
-                        UnitPrice = product.Price
-                    });
-            }
-            selectedProductId = null;
+            products = await ProductService.GetAllAsync();
+            paymentMethods = await _paymentMethodsService.GetAllPaymentMethodsAsync();
+            orderStatuses = await _orderStatusService.GetAllAsync();
         }
-    }
 
-    private void RemoveProduct(OrderDetailRequestDTO item)
-    {
-        orderRequest.OrderItems.Remove(item);
-    }
+        // private void AddProduct()
+        // {
+        //     if (selectedProductId.HasValue)
+        //     {
+        //         var product = products.FirstOrDefault(p => p.Id == selectedProductId);
+        //         if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
+        //         {
+        //             orderRequest.OrderItems.Add(new OrderDetailRequestDTO
+        //             {
+        //                 ProductId = product.Id,
+        //                 //ProductName = product.Name,
+        //                 Quantity = 1,
+        //                 UnitPrice = product.Price ?? 0
+        //             });
+        //         }
+        //         selectedProductId = null;
+        //     }
+        // }
+        private void AddProduct()
+        {
+            if (selectedProductId.HasValue)
+            {
+                var product = products.FirstOrDefault(p => p.Id == selectedProductId);
+                if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
+                {
+                    var orderDetail = new OrderDetailRequestDTO
+                        {
+                            ProductId = product.Id,
+                            Quantity = 1,
+                            UnitPrice = product.Price ?? 0
+                        };
 
-    private async Task CreateOrder()
-    {
-        await SaleService.CreateOrderAsync(orderRequest);
-        _navigation.NavigateTo("/ordenes");
-    }
+                    orderRequest.OrderItems.Add(orderDetail);
+
+                    // Verificar si el producto se agrega a la lista de detalles
+                    Console.WriteLine($"Producto agregado: {orderDetail.ProductId}, {orderDetail.Quantity}, {orderDetail.UnitPrice}");
+                }
+                selectedProductId = null;
+            }
+        }
+
+
+
+
+        private void RemoveProduct(OrderDetailRequestDTO item)
+        {
+            orderRequest.OrderItems.Remove(item);
+        }
+
+        // private async Task CreateOrder()
+        // {
+        //     await SaleService.CreateOrderAsync(orderRequest);
+        //     // _navigation.NavigateTo("/ordenes");
+        // }
+
+        private async Task CreateOrder()
+        {
+            // Verificación adicional antes de enviar
+            foreach (var item in orderRequest.OrderItems)
+            {
+                Console.WriteLine($"Producto en OrderItems: {item.ProductId}, {item.Quantity}, {item.UnitPrice}");
+            }
+
+            if (orderRequest.OrderItems.Count > 0)
+            {
+                await SaleService.CreateOrderAsync(orderRequest);
+                //_navigation.NavigateTo("/ordenes");
+            }
+            else
+            {
+                Console.WriteLine("No se puede crear una orden sin productos.");
+            }
+        }
+  
+
 }

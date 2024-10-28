@@ -17,66 +17,68 @@
 
 <AuthorizeView>
     <Authorized>
-        <h3 class="text-2xl font-bold text-center my-4">Generar Nueva Orden de Venta</h3>
+        <h3 class="text-3xl font-bold text-center my-6">Generar Nueva Orden de Venta</h3>
 
-        <div class="container mx-auto p-4 bg-white shadow-md rounded-md">
-            <div class="mb-4">
-                <label for="customerDni" class="block text-gray-700 font-semibold">DNI del Cliente</label>
-                <input type="text" id="customerDni" @bind="orderRequest.CustomerDNI" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-            </div>
-            <div class="mb-4">
-                <label for="customerEmail" class="block text-gray-700 font-semibold">Email del Cliente</label>
-                <input type="email" id="customerEmail" @bind="orderRequest.CustomerEmail" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-            </div>
-            <div class="mb-4">
-                <label for="workerId" class="block text-gray-700 font-semibold">ID del Trabajador</label>
-                <input type="text" id="workerId" @bind="orderRequest.WorkerId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-            </div>
-            <div class="mb-4">
-                <label for="paymentMethod" class="block text-gray-700 font-semibold">Método de Pago</label>
-                <select id="paymentMethod" @bind="orderRequest.PaymentMethodId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
-                    <option value="">Selecciona un método de pago</option>
-                    @foreach (var method in paymentMethods)
-                    {
-                        <option value="@method.Id">@method.Name</option>
-                    }
-                </select>
-            </div>
-            <div class="mb-4">
-                <label for="status" class="block text-gray-700 font-semibold">Estado de la Orden</label>
-                <select id="status" @bind="orderRequest.StatusId" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
-                    <option value="">Selecciona el estado</option>
-                    @foreach (var status in orderStatuses)
-                    {
-                        <option value="@status.Id">@status.Name</option>
-                    }
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <label for="product" class="block text-gray-700 font-semibold">Seleccionar Producto</label>
-                <div class="flex gap-2">
-                    <select id="product" @bind="selectedProductId" class="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500">
-                        <option value="">Selecciona un producto</option>
-                        @foreach (var product in products)
+        <div class="container mx-auto p-6 bg-white shadow-lg rounded-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="mb-4">
+                    <label for="customerDni" class="block text-gray-700 font-semibold">DNI del Cliente</label>
+                    <input type="text" id="customerDni" @bind="orderRequest.CustomerDNI" class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+                </div>
+                <div class="mb-4">
+                    <label for="customerEmail" class="block text-gray-700 font-semibold">Email del Cliente</label>
+                    <input type="email" id="customerEmail" @bind="orderRequest.CustomerEmail" class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+                </div>
+                <div class="mb-4">
+                    <label for="workerId" class="block text-gray-700 font-semibold">ID del Trabajador</label>
+                    <input type="text" id="workerId" @bind="orderRequest.WorkerId" class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+                </div>
+                <div class="mb-4">
+                    <label for="paymentMethod" class="block text-gray-700 font-semibold">Método de Pago</label>
+                    <select id="paymentMethod" @bind="orderRequest.PaymentMethodId" class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+                        <option value="">Selecciona un método de pago</option>
+                        @foreach (var method in paymentMethods)
                         {
-                            <option value="@product.Id">@product.Name</option>
+                            <option value="@method.Id">@method.Name</option>
                         }
                     </select>
-                    <button @onclick="AddProduct" class="btn btn-primary bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Agregar Producto</button>
                 </div>
+                <div class="mb-4">
+                    <label for="status" class="block text-gray-700 font-semibold">Estado de la Orden</label>
+                    <select id="status" @bind="orderRequest.StatusId" class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+                        <option value="">Selecciona el estado</option>
+                        @foreach (var status in orderStatuses)
+                        {
+                            <option value="@status.Id">@status.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-semibold text-gray-700 mt-6">Detalles del Producto</h4>
+            <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <select id="product" @bind="selectedProductId" class="flex-1 px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+                    <option value="">Selecciona un producto</option>
+                    @foreach (var product in products)
+                    {
+                        <option value="@product.Id">@product.Name</option>
+                    }
+                </select>
+                <input type="number" id="quantity" @bind="orderDetail.Quantity" placeholder="Cantidad" class="flex-1 px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+                <input type="number" id="unitPrice" @bind="orderDetail.UnitPrice" placeholder="Precio Unitario" class="flex-1 px-4 py-3 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" />
+                <button @onclick="AddProduct" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">Agregar Producto</button>
             </div>
 
             <h4 class="text-xl font-semibold text-gray-700 mt-6">Productos Seleccionados</h4>
             <div class="selected-products bg-gray-100 p-4 rounded-md">
                 @if (orderRequest.OrderItems.Any())
                 {
-                    <ul>
+                    <ul class="space-y-2">
                         @foreach (var item in orderRequest.OrderItems)
                         {
-                            <li class="flex justify-between items-center p-2 bg-white rounded-md mb-2">
-                                <span class="text-gray-700">Nombre del Producto: (item.ProductId) - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
-                                <button @onclick="() => RemoveProduct(item)" class="btn btn-danger bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Eliminar</button>
+                            <li class="flex justify-between items-center p-2 bg-white rounded-md shadow-sm">
+                                <span class="text-gray-700">Nombre del Producto: (@item.ProductId) - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
+                                <button @onclick="() => RemoveProduct(item)" class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition">Eliminar</button>
                             </li>
                         }
                     </ul>
@@ -87,22 +89,14 @@
                 }
             </div>
 
-            <div class="mb-4">
-                <label for="quantity" class="block text-gray-700 font-semibold">Cantidad</label>
-                <input type="number" id="quantity" @bind="orderDetail.Quantity" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-            </div>
-            <div class="mb-4">
-                <label for="unitPrice" class="block text-gray-700 font-semibold">Precio Unitario</label>
-                <input type="number" id="unitPrice" @bind="orderDetail.UnitPrice" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-            </div>
-
-            <button @onclick="CreateOrder" class="btn btn-success bg-green-500 text-white px-6 py-2 mt-6 rounded-md hover:bg-green-600 w-full">Generar Orden</button>
+            <button @onclick="CreateOrder" class="bg-green-500 text-white px-6 py-3 mt-6 rounded-md hover:bg-green-600 transition w-full">Generar Orden</button>
         </div>
     </Authorized>
     <NotAuthorized>
         <RedirectToLogin />
     </NotAuthorized>
 </AuthorizeView>
+
 
 @code {
     private OrderDetailRequestDTO orderDetail = new OrderDetailRequestDTO();

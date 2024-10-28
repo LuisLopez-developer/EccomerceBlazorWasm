@@ -20,6 +20,7 @@ namespace EccomerceBlazorWasm.Services
            new(new ClaimsIdentity());
 
         private readonly HttpClient _httpClient;
+        private ClaimsPrincipal _authenticatedUser = new(new ClaimsIdentity());
 
         private readonly JsonSerializerOptions jsonSerializerOptions =
         new()
@@ -40,65 +41,63 @@ namespace EccomerceBlazorWasm.Services
         {
             if (_authenticated)
             {
-                // Si ya está autenticado, no realizar nuevamente la llamada a /manage/info
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())); // devolver el estado actual
+                Console.WriteLine("Already authenticated.");
+                return new AuthenticationState(_authenticatedUser);
             }
 
-            _authenticated = false;
             var user = Unauthenticated;
-
             try
             {
                 var accessToken = await _localStorageService.GetItemAsync<string>("accessToken");
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {
+                    Console.WriteLine("Access token is null or empty.");
                     return new AuthenticationState(user);
                 }
 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                var userResponse = await _httpClient.GetAsync("manage/info");
-                userResponse.EnsureSuccessStatusCode();
+                var userResponse = await _httpClient.GetAsync("/api/eccomerce/Account/GetUserInfo");
+                if (!userResponse.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Failed to get user info.");
+                    return new AuthenticationState(user);
+                }
 
-                var userJson = await userResponse.Content.ReadAsStringAsync();
-                var userInfo = JsonSerializer.Deserialize<UserInfo>(userJson, jsonSerializerOptions);
+                var userInfo = JsonSerializer.Deserialize<UserInfo>(
+                    await userResponse.Content.ReadAsStringAsync(), jsonSerializerOptions);
 
                 if (userInfo != null)
                 {
-                    var claims = new List<Claim>
-            {
-                new(ClaimTypes.Name, userInfo.Email),
-                new(ClaimTypes.Email, userInfo.Email)
-            };
+                    var claims = userInfo.Claims
+                        .Select(c => new Claim(c.Key, c.Value))
+                        .ToList();
 
-                    claims.AddRange(
-                      userInfo.Claims.Where(c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
-                    .Select(c => new Claim(c.Key, c.Value)));
+                    claims.Add(new Claim(ClaimTypes.PrimarySid, userInfo.Id));
+                    claims.Add(new Claim(ClaimTypes.Name, userInfo.UserName));
+                    claims.Add(new Claim(ClaimTypes.Email, userInfo.Email));
 
-                    var rolesResponse = await _httpClient.GetAsync($"api/Role/GetuserRole?userEmail={userInfo.Email}");
-                    rolesResponse.EnsureSuccessStatusCode();
-                    var rolesJson = await rolesResponse.Content.ReadAsStringAsync();
+                    userInfo.Roles?.ToList().ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
 
-                    var roles = JsonSerializer.Deserialize<string[]>(rolesJson, jsonSerializerOptions);
-                    if (roles != null && roles.Length > 0)
-                    {
-                        foreach (var role in roles)
-                        {
-                            claims.Add(new(ClaimTypes.Role, role));
-                        }
-                    }
-
-                    var id = new ClaimsIdentity(claims, nameof(CustomAuthenticationStateProvider));
-                    user = new ClaimsPrincipal(id);
+                    _authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(claims, nameof(CustomAuthenticationStateProvider)));
                     _authenticated = true;
+
+                    // Mensaje de depuración
+                    Console.WriteLine($"User authenticated: {userInfo.UserName}, ID: {userInfo.Id}");
+                }
+                else
+                {
+                    // Mensaje de depuración
+                    Console.WriteLine("UserInfo is null after deserialization.");
                 }
             }
             catch (Exception ex)
             {
-                // Manejar la excepción según sea necesario
+                // Mensaje de depuración
+                Console.WriteLine($"Exception in GetAuthenticationStateAsync: {ex.Message}");
             }
 
-            return new AuthenticationState(user);
+            return new AuthenticationState(_authenticatedUser);
         }
 
 

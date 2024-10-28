@@ -12,114 +12,70 @@
     <Authorized>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
-                <div class="flex items-center flex-1 space-x-4">
-                    <form @onsubmit="SearchProducts" class="flex items-center justify-center flex-shrink-0">
-                        <div class="flex">
-                            <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
-                            <button id="filter" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">
-                                All categories <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                <form @onsubmit="SearchProducts" class="flex flex-col lg:flex-row items-center justify-between w-full space-y-3 lg:space-y-0 lg:space-x-4">
+                    <div class="flex items-center w-full">
+                        <button id="filter" type="button" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                            Todas las categorías
+                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                            </svg>
+                        </button>
+                        <div class="relative w-full">
+                            <input type="search" @bind="searchTerm" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Busca algún producto..." />
+                            <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
+                                <span class="sr-only">Buscar</span>
                             </button>
-                            @if (false)
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <label for="startDate" class="whitespace-nowrap">Inicio:</label>
+                            <input @bind="startDate" type="date" id="startDate" class="ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            @if (startDateError != null)
                             {
-                                <div id="dropdown" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-                                        <li>
-                                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mockups</button>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Templates</button>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Design</button>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <div class="text-red-500 text-xs mt-1">@startDateError</div>
                             }
-
-                            <div class="relative w-full">
-                                <input type="search" @bind="searchTerm" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Busca algun producto..." />
-                                <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                    </svg>
-                                    <span class="sr-only">Buscar</span>
-                                </button>
-                            </div>
                         </div>
-
-                        <div class="flex items-center justify-center">
-                            <div class="flex items-center space-x-2">
-                                <label for="startDate" class="whitespace-nowrap">Inicio:</label>
-                                <div class="flex flex-col">
-                                    <input @bind="startDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="startDate" />
-                                    @if (startDateError != null)
-                                    {
-                                        <div class="text-red-500 text-xs mt-1">@startDateError</div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <label for="endDate" class="whitespace-nowrap">Fin:</label>
-                                <div class="flex flex-col">
-                                    <input @bind="endDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" type="date" id="endDate" />
-                                    @if (endDateError != null)
-                                    {
-                                        <div class="text-red-500 text-xs mt-1">@endDateError</div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="flex items-end space-x-2">
-                                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Filtrar</button>
-                                <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" @onclick="ClearFilter">Limpiar</button>
-                            </div>
+                        <div class="flex items-center">
+                            <label for="endDate" class="whitespace-nowrap">Fin:</label>
+                            <input @bind="endDate" type="date" id="endDate" class="ml-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            @if (endDateError != null)
+                            {
+                                <div class="text-red-500 text-xs mt-1">@endDateError</div>
+                            }
                         </div>
-
-                    </form>
-                </div>
+                        <div class="flex space-x-2">
+                            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5">Filtrar</button>
+                            <button class="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5" @onclick="ClearFilter">Limpiar</button>
+                        </div>
+                    </div>
+                </form>
 
                 <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
-                    <button @onclick="CreateProduct" type="button" class="flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <button @onclick="CreateProduct" type="button" class="flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                         </svg>
                         Agregar Producto
                     </button>
                 </div>
-
             </div>
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                            ID
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nombre
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Marca
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Categoría
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Existencia
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Costo
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Precio
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Estado
-                        </th>
+                        <th scope="col" class="px-6 py-3">ID</th>
+                        <th scope="col" class="px-6 py-3">Nombre</th>
+                        <th scope="col" class="px-6 py-3">Marca</th>
+                        <th scope="col" class="px-6 py-3">Categoría</th>
+                        <th scope="col" class="px-6 py-3">Existencia</th>
+                        <th scope="col" class="px-6 py-3">Costo</th>
+                        <th scope="col" class="px-6 py-3">Precio</th>
+                        <th scope="col" class="px-6 py-3">Estado</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             <span class="sr-only">Acciones</span>
                         </th>
@@ -129,13 +85,13 @@
                     @if (products == null)
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-4">Cargando...</td>
+                            <td colspan="9" class="text-center py-4">Cargando...</td>
                         </tr>
                     }
                     else if (pagedResponse.TotalPages == 0)
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-4">No hay productos disponibles.</td>
+                            <td colspan="9" class="text-center py-4">No hay productos disponibles.</td>
                         </tr>
                     }
                     else
@@ -151,8 +107,8 @@
                                 <td class="px-6 py-3">@product.Cost</td>
                                 <td class="px-6 py-3">@product.Price</td>
                                 <td class="px-6 py-3">@product.StateName</td>
-                                <td class="px-6 py-3 flex items-center justify-end">
-                                    <button @onclick=" () => EditProduct(product.Id)" class="rounded-lg block py-2 px-4 hover:bg-yellow-400 dark:hover:bg-yellow-600 dark:hover:text-white">
+                                <td class="px-6 py-3 flex items-center justify-end space-x-2">
+                                    <button @onclick="() => EditProduct(product.Id)" class="rounded-lg block py-2 px-4 hover:bg-yellow-400 dark:hover:bg-yellow-600 dark:hover:text-white">
                                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h4M12 14v4M8 12h8" />
                                         </svg>
@@ -168,6 +124,7 @@
                     }
                 </tbody>
             </table>
+
             <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
                 <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
                     Mostrando
@@ -179,7 +136,7 @@
                     <li>
                         <button @onclick="PreviousPage" class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span class="sr-only">Previous</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                             </svg>
                         </button>
@@ -188,22 +145,21 @@
                     {
                         if (i <= 4 || (i == pagedResponse.TotalPages || i == pagedResponse.TotalPages - 1 || i == pagedResponse.TotalPages - 2))
                         {
-                            var pageNumber = i; // Toma temporalmente el valor de "i"
                             <li>
-                                <button @onclick="() => GoToPage(pageNumber)" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">@pageNumber</button>
+                                <button @onclick="() => GoToPage(i)" class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">@i</button>
                             </li>
                         }
                         else if (i == 5)
                         {
                             <li>
-                                <button class="boton flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</button>
+                                <button class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</button>
                             </li>
                         }
                     }
                     <li>
                         <button @onclick="NextPage" class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span class="sr-only">Next</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                             </svg>
                         </button>
@@ -215,25 +171,25 @@
         <!-- Modal para eliminar un producto -->
         @if (_showModalDelete)
         {
-            <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-35 flex justify-center items-center z-50">
-                <div class="relative p-4 w-full sm:max-w-md h-full md:h-auto">
+            <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                <div class="relative w-full sm:max-w-md bg-white rounded-lg shadow-md">
                     <!-- Modal content -->
-                    <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                        <button type="button" @onclick="HideDeleteModal" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <div class="p-6 text-center">
+                        <button type="button" @onclick="HideDeleteModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                             </svg>
                             <span class="sr-only">Cerrar modal</span>
                         </button>
-                        <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="text-gray-400 w-12 h-12 mb-4 mx-auto" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                         </svg>
-                        <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estás seguro de que deseas desactivar el producto: @selectedProduct.Name?</p>
+                        <p class="mb-4 text-gray-600">¿Estás seguro de que deseas desactivar el producto: <strong>@selectedProduct.Name</strong>?</p>
                         <div class="flex justify-center items-center space-x-4">
-                            <button type="button" @onclick="HideDeleteModal" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                            <button type="button" @onclick="HideDeleteModal" class="py-2 px-4 text-sm font-medium text-gray-600 bg-gray-200 rounded-lg border border-gray-300 hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:hover:text-white">
                                 No, cancelar
                             </button>
-                            <button type="button" @onclick="ChangeState" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">
+                            <button type="button" @onclick="ChangeState" class="py-2 px-4 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none dark:bg-red-500 dark:hover:bg-red-600">
                                 Sí, estoy seguro
                             </button>
                         </div>
@@ -241,7 +197,7 @@
                 </div>
             </div>
         }
-s
+
     </Authorized>
     <NotAuthorized>
         <RedirectToLogin />

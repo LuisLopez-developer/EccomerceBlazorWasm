@@ -1,7 +1,5 @@
 ﻿using EccomerceBlazorWasm.Interfaces;
 using EccomerceBlazorWasm.Models;
-using EccomerceBlazorWasm.Models.CreateModel;
-using EccomerceBlazorWasm.Models.ViewModel;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -10,8 +8,8 @@ namespace EccomerceBlazorWasm.Services
     public class SaleService : ISaleService
     {
 
-    private readonly string api = "api/system/Order";
-    private readonly HttpClient _httpClient;
+        private readonly string api = "api/system/Order";
+        private readonly HttpClient _httpClient;
 
         public SaleService(IHttpClientFactory httpClientFactory)
         {
@@ -39,7 +37,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<OrderViewModel> GetOrderByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<OrderViewModel>($"{api}/getById/{id}") ?? new OrderViewModel() ;
+            return await _httpClient.GetFromJsonAsync<OrderViewModel>($"{api}/getById/{id}") ?? new OrderViewModel();
         }
 
         public async Task<bool> DeleteOrderAsync(int id)

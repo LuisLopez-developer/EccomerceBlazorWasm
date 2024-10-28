@@ -37,6 +37,11 @@ dotnet watch
 > dotnet watch
 > ```
 
+5. Publicación del Proyecto:
+```bash
+https://eccomerce-blazor.netlify.app/login
+```
+
 ## Creditos especiales
 A: [**Rasheed K Mozaffar**](https://github.com/rasheed-k-mozaffar/FlowbiteBlazorWasmStarter) 
 

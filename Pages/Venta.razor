@@ -1,14 +1,134 @@
 ﻿@layout Layout.MainLayout
 @page "/venta"
+@using EccomerceBlazorWasm.Interfaces
+@using EccomerceBlazorWasm.Interfaces.PorductInterface
+@using EccomerceBlazorWasm.Models
+@using EccomerceBlazorWasm.Models.CreateModel
+@using EccomerceBlazorWasm.Models.ViewModel
+@using EccomerceBlazorWasm.Services
+
+@inject ISaleService SaleService
+@inject IProduct ProductService
+@inject NavigationManager _navigation
+
 
 <PageTitle>Venta</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <Maintenance></Maintenance>
+        @* <Maintenance></Maintenance> *@
+        <h3>Generar Nueva Orden de Venta</h3>
 
+        <div class="container">
+            <div class="form-group">
+                <label for="customerDni">DNI del Cliente</label>
+                <input type="text" id="customerDni" @bind="orderRequest.CustomerDNI" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="customerEmail">Email del Cliente</label>
+                <input type="email" id="customerEmail" @bind="orderRequest.CustomerEmail" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="workerId">ID del Trabajador</label>
+                <input type="text" id="workerId" @bind="orderRequest.WorkerId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Método de Pago</label>
+                <select id="paymentMethod" @bind="orderRequest.PaymentMethodId" class="form-control">
+                    <option value="">Selecciona un método de pago</option>
+                    @foreach (var method in paymentMethods)
+                    {
+                        <option value="@method.Id">@method.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">Estado de la Orden</label>
+                <select id="status" @bind="orderRequest.StatusId" class="form-control">
+                    <option value="">Selecciona el estado</option>
+                    @foreach (var status in orderStatuses)
+                    {
+                        <option value="@status.Id">@status.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="product">Seleccionar Producto</label>
+                <select id="product" @bind="selectedProductId" class="form-control">
+                    <option value="">Selecciona un producto</option>
+                    @foreach (var product in products)
+                    {
+                        <option value="@product.Id">@product.Name</option>
+                    }
+                </select>
+                <button @onclick="AddProduct" class="btn btn-primary">Agregar Producto</button>
+            </div>
+
+            <h4>Productos Seleccionados</h4>
+            @* <div class="selected-products">
+                @foreach (var item in orderRequest.OrderItems)
+                {
+                    <div class="product-item">
+                        <span>@item.ProductName - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
+                        <button @onclick="() => RemoveProduct(item)" class="btn btn-danger">Eliminar</button>
+                    </div>
+                }
+            </div> *@
+
+            <button @onclick="CreateOrder" class="btn btn-success">Generar Orden</button>
+        </div>
     </Authorized>
     <NotAuthorized>
         <RedirectToLogin />
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    private OrderRequest orderRequest = new OrderRequest
+        {
+            OrderItems = new List<OrderDetailRequestDTO>(),
+            CreatedAt = DateTime.Now
+        };
+    private List<ProductViewModel> products = new List<ProductViewModel>();
+    private List<PaymentMethodViewModel> paymentMethods = new List<PaymentMethodViewModel>();
+    private List<OrderStatusViewModel> orderStatuses = new List<OrderStatusViewModel>();
+    private int? selectedProductId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllAsync();
+        paymentMethods = await PaymentMethodService.GetAllPaymentMethodsAsync();
+        orderStatuses = await OrderStatusService.GetAllAsync();
+    }
+
+    private void AddProduct()
+    {
+        if (selectedProductId.HasValue)
+        {
+            var product = products.FirstOrDefault(p => p.Id == selectedProductId);
+            if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
+            {
+                orderRequest.OrderItems.Add(new OrderDetailRequestDTO
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.Name,
+                        Quantity = 1,
+                        UnitPrice = product.Price
+                    });
+            }
+            selectedProductId = null;
+        }
+    }
+
+    private void RemoveProduct(OrderDetailRequestDTO item)
+    {
+        orderRequest.OrderItems.Remove(item);
+    }
+
+    private async Task CreateOrder()
+    {
+        await SaleService.CreateOrderAsync(orderRequest);
+        _navigation.NavigateTo("/ordenes");
+    }
+}

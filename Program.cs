@@ -28,6 +28,11 @@ builder.Services.AddScoped<ILoss, LossService>();
 builder.Services.AddScoped<IEntry, EntryService>();
 builder.Services.AddScoped<IProductPhoto, ProductPhotoService>();
 builder.Services.AddScoped<IR2, R2Service>();
+//Ventas :v
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+builder.Services.AddHttpClient<IOrderStatusService, OrderStatusService>();
+
 
 builder.Services.AddScoped(sp => new HttpClient
 {

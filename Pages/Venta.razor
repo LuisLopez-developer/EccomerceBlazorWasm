@@ -75,7 +75,7 @@
                         @foreach (var item in orderRequest.OrderItems)
                         {
                             <li class="flex justify-between items-center p-2 bg-white rounded-md mb-2">
-                                <span class="text-gray-700">@*Nombre del Producto*@(item.ProductId) - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
+                                <span class="text-gray-700">Nombre del Producto: (item.ProductId) - Cantidad: @item.Quantity - Precio Unitario: @item.UnitPrice</span>
                                 <button @onclick="() => RemoveProduct(item)" class="btn btn-danger bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">Eliminar</button>
                             </li>
                         }
@@ -87,6 +87,15 @@
                 }
             </div>
 
+            <div class="mb-4">
+                <label for="quantity" class="block text-gray-700 font-semibold">Cantidad</label>
+                <input type="number" id="quantity" @bind="orderDetail.Quantity" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
+            </div>
+            <div class="mb-4">
+                <label for="unitPrice" class="block text-gray-700 font-semibold">Precio Unitario</label>
+                <input type="number" id="unitPrice" @bind="orderDetail.UnitPrice" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
+            </div>
+
             <button @onclick="CreateOrder" class="btn btn-success bg-green-500 text-white px-6 py-2 mt-6 rounded-md hover:bg-green-600 w-full">Generar Orden</button>
         </div>
     </Authorized>
@@ -95,63 +104,8 @@
     </NotAuthorized>
 </AuthorizeView>
 
-@* @code {
-        private OrderRequest orderRequest = new OrderRequest
-        {
-            OrderItems = new List<OrderDetailRequestDTO>(),
-            CreatedAt = DateTime.Now
-        };
-        private List<ProductViewModel> products = new List<ProductViewModel>();
-        private List<PaymentMethodViewModel> paymentMethods = new List<PaymentMethodViewModel>();
-        private List<OrderStatusViewModel> orderStatuses = new List<OrderStatusViewModel>();
-        private int? selectedProductId;
-
-        protected override async Task OnInitializedAsync()
-        {
-            products = await ProductService.GetAllAsync();
-            paymentMethods = await _paymentMethodsService.GetAllPaymentMethodsAsync();
-            orderStatuses = await _orderStatusService.GetAllAsync();
-        }
-
-        private void AddProduct()
-        {
-            if (selectedProductId.HasValue)
-            {
-                var product = products.FirstOrDefault(p => p.Id == selectedProductId);
-                if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
-                {
-                    var orderDetail = new OrderDetailRequestDTO
-                        {
-                            ProductId = product.Id,
-                            Quantity = 1,
-                            UnitPrice = product.Price ?? 0
-                        };
-
-                    orderRequest.OrderItems.Add(orderDetail);
-
-                    // Verificar si el producto se agrega a la lista de detalles
-                    Console.WriteLine($"Producto agregado: {orderDetail.ProductId}, {orderDetail.Quantity}, {orderDetail.UnitPrice}");
-                }
-                selectedProductId = null;
-            }
-        }
-
-
-
-
-        private void RemoveProduct(OrderDetailRequestDTO item)
-        {
-            orderRequest.OrderItems.Remove(item);
-        }
-
-        private async Task CreateOrder()
-        {
-            await SaleService.CreateOrderAsync(orderRequest);
-            // _navigation.NavigateTo("/ordenes");
-        } 
-
-} *@
 @code {
+    private OrderDetailRequestDTO orderDetail = new OrderDetailRequestDTO();
     private OrderRequest orderRequest = new OrderRequest
         {
             OrderItems = new List<OrderDetailRequestDTO>(),
@@ -169,28 +123,66 @@
         orderStatuses = await _orderStatusService.GetAllAsync();
     }
 
-    private void AddProduct()
+    private async Task AddProduct()
     {
         if (selectedProductId.HasValue)
         {
-            var product = products.FirstOrDefault(p => p.Id == selectedProductId);
-            if (product != null && !orderRequest.OrderItems.Any(i => i.ProductId == product.Id))
+            // Obtén el producto por ID
+            var product = await ProductService.GetByIdAsync(selectedProductId.Value);
+            if (product != null)
             {
-                var orderDetail = new OrderDetailRequestDTO
+                // Asegúrate de que el precio sea válido
+                decimal minPrice = product.Cost * 1.1m ?? 0; // 10% más que el costo
+                if (orderDetail.UnitPrice < minPrice)
+                {
+                    Console.WriteLine($"El precio debe ser al menos un 10% mayor que el costo: {minPrice}");
+                    return; // Sale del método si el precio es demasiado bajo
+                }
+
+                orderDetail.ProductId = product.Id; // Asigna el ID del producto
+                orderRequest.OrderItems.Add(new OrderDetailRequestDTO
                     {
-                        ProductId = product.Id,
-                        Quantity = 1,
-                        UnitPrice = product.Price ?? 0
-                    };
+                        ProductId = orderDetail.ProductId,
+                        Quantity = orderDetail.Quantity,
+                        UnitPrice = orderDetail.UnitPrice
+                    });
 
-                orderRequest.OrderItems.Add(orderDetail);
-
-                // Verificación de producto agregado en consola
-                Console.WriteLine($"Producto agregado: {orderDetail.ProductId}, {orderDetail.Quantity}, {orderDetail.UnitPrice}");
+                // Reinicia las propiedades después de agregar
+                orderDetail = new OrderDetailRequestDTO();
+                selectedProductId = null; // Reiniciar la selección del producto
             }
-            selectedProductId = null;
         }
     }
+
+    // private async Task AddProduct()
+    // {
+    //     if (selectedProductId.HasValue)
+    //     {
+    //         // Obtén el producto por ID
+    //         var product = await ProductService.GetByIdAsync(selectedProductId.Value);
+    //         if (product != null)
+    //         {
+    //             // Suponiendo que el modelo de producto tiene una propiedad Cost
+    //             decimal minPrice = product.Cost * 1.1m ?? 0; // 10% más que el costo
+    //             if (product.Price < minPrice)
+    //             {
+    //                 // Puedes mostrar un mensaje de error o manejar el caso como desees
+    //                 Console.WriteLine($"El precio debe ser al menos un 10% mayor que el costo: {minPrice}");
+    //                 return; // Sale del método si el precio es demasiado bajo
+    //             }
+
+    //             var orderItem = new OrderDetailRequestDTO
+    //                 {
+    //                     ProductId = product.Id,
+    //                     Quantity = 1, // Puedes ajustar la cantidad según tu necesidad
+    //                     UnitPrice = product.Price ?? 0// Asignar el precio del producto
+    //                 };
+
+    //             orderRequest.OrderItems.Add(orderItem);
+    //             selectedProductId = null; // Reiniciar la selección del producto
+    //         }
+    //     }
+    // }
 
     private void RemoveProduct(OrderDetailRequestDTO item)
     {
@@ -201,14 +193,13 @@
     {
         if (orderRequest.OrderItems.Count == 0)
         {
-            Console.WriteLine("No hay productos en la orden.");
+            Console.WriteLine("No se puede crear una orden sin productos.");
             return;
         }
 
         try
         {
             await SaleService.CreateOrderAsync(orderRequest);
-            Console.WriteLine("Orden creada exitosamente.");
             _navigation.NavigateTo("/ordenes");
         }
         catch (Exception ex)

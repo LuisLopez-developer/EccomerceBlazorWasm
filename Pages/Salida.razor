@@ -1,14 +1,64 @@
 ﻿@layout Layout.MainLayout
 @page "/salida"
+@using EccomerceBlazorWasm.Interfaces
+@using EccomerceBlazorWasm.Models
 
-<PageTitle>Kardex - Salida</PageTitle>
+@inject ISaleService _saleService
+
+<PageTitle>Ordenes</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <Maintenance></Maintenance>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+                <thead class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">ID</th>
+                        <th scope="col" class="px-6 py-3">Nombre de Usuario</th>
+                        <th scope="col" class="px-6 py-3">Creado por</th>
+                        <th scope="col" class="px-6 py-3">Estado</th>
+                        <th scope="col" class="px-6 py-3">Método de Pago</th>
+                        <th scope="col" class="px-6 py-3">Total</th>
+                        <th scope="col" class="px-6 py-3">Fecha</th>
+                        <th scope="col" class="px-6 py-3">Lugar de venta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in orders)
+                    {
+                        <tr>
+                            <td class="whitespace-nowrap px-6 py-4">@order.Id</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.UserName</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.CreatedByUserName</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.Status</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.PaymentMethod</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.Total</td>
+                            <td class="whitespace-nowrap px-6 py-4">@order.CreatedAt</td>
+                            @if (@order.IsCreatedBySameUser)
+                            {
+                                <td class="whitespace-nowrap px-6 py-4">Eccomerce</td>
+                            }
+                            else
+                            {
 
+                                <td class="whitespace-nowrap px-6 py-4">Interno</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </Authorized>
     <NotAuthorized>
         <RedirectToLogin />
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    private List<OrdersViewModel> orders = new List<OrdersViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await _saleService.GetAllOrdersAsync();
+    }
+}

@@ -34,12 +34,12 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<List<OrderViewModel>> GetAllOrdersAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<OrderViewModel>>($"{api}/getAll");
+            return await _httpClient.GetFromJsonAsync<List<OrderViewModel>>($"{api}/getAll") ?? [];
         }
 
         public async Task<OrderViewModel> GetOrderByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<OrderViewModel>($"{api}/getById/{id}");
+            return await _httpClient.GetFromJsonAsync<OrderViewModel>($"{api}/getById/{id}") ?? new OrderViewModel() ;
         }
 
         public async Task<bool> DeleteOrderAsync(int id)

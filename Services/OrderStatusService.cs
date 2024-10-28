@@ -16,7 +16,7 @@ namespace EccomerceBlazorWasm.Services
 
         public async Task<List<OrderStatusViewModel>> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<OrderStatusViewModel>>(api);
+            return await _httpClient.GetFromJsonAsync<List<OrderStatusViewModel>>(api) ?? [];
         }
     }
 }
